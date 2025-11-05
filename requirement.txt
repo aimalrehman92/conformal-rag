@@ -1,0 +1,15 @@
+openai
+python-dotenv
+faiss-cpu
+numpy
+PyPDF2
+langchain
+transformers
+sentence-transformers
+flask
+flask-cors
+transformers
+torch
+datasets
+matplotlib
+jsonschema

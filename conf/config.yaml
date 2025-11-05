@@ -1,0 +1,39 @@
+dataset:
+  name: "pop_qa"  # Options: fact_score, hotpot_qa, pop_qa, medlf_qa
+  query_size: 500
+  wiki_db_file: "enwiki-20230401.db"
+  
+  
+# Index configuration
+index:
+  delete_existing: false
+  embedding_model: "text-embedding-3-large"
+  # Truncation strategies by dataset
+  truncation_config:  # TODO
+    strategy: "fixed_length"  # false
+    truncate_by: null  # "\n"
+    chunk_size: 2000
+    chunk_overlap: 25
+
+
+# RAG configuration
+rag:
+  retrival_topk: 10
+  retrival_threshold: 0.3
+  response_model: "gpt-4o-mini" 
+  response_temperature: 0.7
+  fact_generation_model: "gpt-4o-mini"  
+
+
+# Prediction configuration
+conformal_prediction:
+  aggregation_strategy: "mean"
+  scoring_strategy: "product"
+  claim_verification_model: "gpt-4o-mini"  # "gpt-4o-mini" 
+  split_conformal: true
+  conformal_alphas:
+    start: 0.05
+    end: 0.45
+    step: 0.05
+  a_value: 1.0
+

@@ -1,0 +1,552 @@
+[
+    {
+        "input": "What is Lanny Flaherty's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Lanny Flaherty"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Marianne McAndrew's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Marianne McAndrew"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Chaim Malinowitz's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Chaim Malinowitz"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Doug Sheehan's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Doug Sheehan"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Gerhard Fischer (inventor)'s occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Gerhard Fischer (inventor)"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Chief Jones's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Chief Jones"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Focus...'s occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Focus..."
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Joey D. Vieira's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Joey D. Vieira"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Taral Hicks's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Taral Hicks"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Lees Knowles's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Lees Knowles"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Carolina Portesi Peroni's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Carolina Portesi Peroni"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Quintus Sosius Senecio's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Quintus Sosius Senecio"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Joeri Adams's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Joeri Adams"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Dominic King's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Dominic King"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Vincenzo Tusa's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Vincenzo Tusa"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Jean Daull\u00e9's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Jean Daull\u00e9"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Richard Burkewood Welbourn's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Richard Burkewood Welbourn"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Damir Memovi\u0107's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Damir Memovi\u0107"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Mar\u00eda Elena Medina-Mora Icaza's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Mar\u00eda Elena Medina-Mora Icaza"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Hesham Nazih's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Hesham Nazih"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Luis Guillermo Rivera's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Luis Guillermo Rivera"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Desmond Luke's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Desmond Luke"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Miguel D\u00edaz (baseball)'s occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Miguel D\u00edaz (baseball)"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Roxana D\u00edaz (athlete)'s occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Roxana D\u00edaz (athlete)"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Fernando (footballer, born 1984)'s occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Fernando (footballer, born 1984)"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Gerardo Fernandez Fe's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Gerardo Fernandez Fe"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Augusto Mart\u00ednez S\u00e1nchez's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Augusto Mart\u00ednez S\u00e1nchez"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Sharad Kumar (athlete)'s occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Sharad Kumar (athlete)"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Ko Itakura's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Ko Itakura"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Besant Ravi's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Besant Ravi"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Thomas Houghton (rugby league)'s occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Thomas Houghton (rugby league)"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Katsunosuke Hori's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Katsunosuke Hori"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Ra Jong-yil's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Ra Jong-yil"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Song Kang's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Song Kang"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Rin Iwanaga's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Rin Iwanaga"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Keita Kadokura's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Keita Kadokura"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Lily Branscombe's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Lily Branscombe"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Luis N. Rivera-Pag\u00e1n's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Luis N. Rivera-Pag\u00e1n"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Jesse Foppert's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Jesse Foppert"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Mike Trivisonno's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Mike Trivisonno"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Zelma Wilson's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Zelma Wilson"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Michael Valpy's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Michael Valpy"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Prince Rivers's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Prince Rivers"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is John Estes's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "John Estes"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Eric Hacker's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Eric Hacker"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Alma Katsu's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Alma Katsu"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Carlos Alfonso's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Carlos Alfonso"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Rennie Fritchie, Baroness Fritchie's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Rennie Fritchie, Baroness Fritchie"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Daniel Charles's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Daniel Charles"
+                }
+            ]
+        }
+    },
+    {
+        "input": "What is Zamfir Arbore's occupation?",
+        "output": {
+            "answer": "",
+            "provenance": [
+                {
+                    "title": "Zamfir Arbore"
+                }
+            ]
+        }
+    }
+]

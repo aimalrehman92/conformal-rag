@@ -1,0 +1,7 @@
+# Path configuration
+paths:
+  raw_data_dir: "data/raw"
+  processed_data_dir: "data/processed"
+  response_dir: "data/out"
+  wiki_db_dir: "data/raw/WikiDB"
+  result_dir: "data/result"

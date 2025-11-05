@@ -1,0 +1,17 @@
+datasets:
+  fact_score: 
+    name: "FactScore"
+    index_store: "index_store/FactScore"
+    is_grouped: false
+  hotpot_qa: 
+    name: "HotpotQA"
+    index_store: "index_store/HotpotQA"
+    is_grouped: false
+  pop_qa: 
+    name: "PopQA"
+    index_store: "index_store/PopQA"
+    is_grouped: false
+  medlf_qa: 
+    name: "MedLFQA"
+    index_store: "index_store/MedLFQA"
+    is_grouped: true

@@ -1,0 +1,4282 @@
+[
+    {
+        "query": "What is Lanny Flaherty's occupation?",
+        "gld_ans": "",
+        "response": "Lanny Flaherty is an American actor.",
+        "subclaims": [
+            {
+                "subclaim": "Lanny Flaherty is an American actor:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.45577080222368244
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Marianne McAndrew's occupation?",
+        "gld_ans": "",
+        "response": "Marianne McAndrew is an actress, known for her role as Irene Molloy in the film \"Hello, Dolly!\"",
+        "subclaims": [
+            {
+                "subclaim": "Marianne McAndrew is an actress: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3698780537605286
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Marianne McAndrew is known for her role as Irene Molloy in the film \"Hello, Dolly!\": supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4305130900859833
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " The film \"Hello, Dolly!\" features a character named Irene Molloy: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3166929779052734
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Chaim Malinowitz's occupation?",
+        "gld_ans": "",
+        "response": "Chaim Malinowitz was a Haredi community rabbi, a dayan (rabbinical court judge), and a Talmudic scholar. He was also the general editor of the Schottenstein Edition of the Babylonian Talmud published by ArtScroll. After immigrating to Israel, he served as the rabbi of Beis Tefillah Yonah Avraham in Ramat Beit Shemesh.",
+        "subclaims": [
+            {
+                "subclaim": "Chaim Malinowitz was a Haredi community rabbi:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4906873934268951
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Chaim Malinowitz was a dayan (rabbinical court judge):supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5217339384555817
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Chaim Malinowitz was a Talmudic scholar:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.531123052239418
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Chaim Malinowitz was the general editor of the Schottenstein Edition of the Babylonian Talmud published by ArtScroll:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.46746852722167964
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Chaim Malinowitz immigrated to Israel:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.45645819454193115
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Chaim Malinowitz served as the rabbi of Beis Tefillah Yonah Avraham in Ramat Beit Shemesh:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4546292264699936
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Doug Sheehan's occupation?",
+        "gld_ans": "",
+        "response": "Doug Sheehan is an American actor. He is known for his roles in television series such as \"Knots Landing\" and \"General Hospital.\"",
+        "subclaims": [
+            {
+                "subclaim": "Dug Sheehan is an American actor:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.295687776735425
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Doug Sheehan is known for his roles in television series such as \"Knots Landing\":supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.40001752287149434
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Doug Sheehan is known for his roles in television series such as \"General Hospital\":supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.35760944112539295
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Gerhard Fischer (inventor)'s occupation?",
+        "gld_ans": "",
+        "response": "Gerhard Fischer was an entrepreneur and inventor, specifically known for contributing to the development and popularization of the handheld metal detector. He founded Fisher Research Laboratory, Inc. in 1931 and served as its president until his retirement in 1967.",
+        "subclaims": [
+            {
+                "subclaim": "Gerhard Fischer was an entrepreneur and inventor: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4505252458691597
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Gerhard Fischer contributed to the development and popularization of the handheld metal detector: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.49430298643112186
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Gerhard Fischer founded Fisher Research Laboratory, Inc. in 1931: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.447712082695961
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Gerhard Fischer served as president of Fisher Research Laboratory, Inc. until his retirement in 1967: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.41955047851204874
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Chief Jones's occupation?",
+        "gld_ans": "",
+        "response": "Chief Jones's occupation was that of a professional ice hockey goaltender.",
+        "subclaims": [
+            {
+                "subclaim": "Chief Jones's occupation was that of a professional ice hockey goaltender:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3505759946107865
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Focus...'s occupation?",
+        "gld_ans": "",
+        "response": "Focus..., whose full name is Bernard Edwards Jr., is a music producer. He has worked with prominent artists and gained recognition in the music industry, particularly after signing with Dr. Dre's Aftermath Entertainment. He is also the CEO of his own entertainment company, N|VZXN Entertainment.",
+        "subclaims": [
+            {
+                "subclaim": "Focus...:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.2438851071536541
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Bernard Edwards Jr.:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.22399369324743748
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Bernard Edwards Jr. is a music producer.:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.28764135333895685
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Bernard Edwards Jr. has worked with prominent artists.:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.2655728545427322
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Bernard Edwards Jr. gained recognition in the music industry.:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.27294844524860384
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Bernard Edwards Jr. signed with Dr. Dre's Aftermath Entertainment.:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.2798647191345692
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Bernard Edwards Jr. is the CEO of N|VZXN Entertainment.:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.2534011576294899
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " N|VZXN Entertainment is an entertainment company.:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.13842754983007907
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Joey D. Vieira's occupation?",
+        "gld_ans": "",
+        "response": "Joey D. Vieira is an American film and television actor. He is known for his work as a child actor on the TV series \"Lassie\" and has appeared in various other television shows and films. Additionally, he has experience as a writer, producer, and director, and he had a music career in the 1970s and 1980s.",
+        "subclaims": [
+            {
+                "subclaim": "Joey D. Vieira is an American film and television actor:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.38339619519710544
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Joey D. Vieira is known for his work as a child actor on the TV series \"Lassie\":supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.41623512926101686
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Joey D. Vieira has appeared in various other television shows and films:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3534442187190056
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Joey D. Vieira has experience as a writer, producer, and director:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3367940475225449
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Joey D. Vieira had a music career in the 1970s and 1980s:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.32821014505624774
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Taral Hicks's occupation?",
+        "gld_ans": "",
+        "response": "Taral Hicks is an American actress and singer. She is known for her roles in films such as \"A Bronx Tale\" and her music career, including her debut album \"This Time.\"",
+        "subclaims": [
+            {
+                "subclaim": "Taral Hicks is an American actress: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.47762856742143633
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Taral Hicks is an American singer: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4725926226139069
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Taral Hicks is known for her roles in films such as \"A Bronx Tale\": supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5271120644330979
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Taral Hicks has a music career: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.44713712216019635
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Taral Hicks released a debut album titled \"This Time\": supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4049057830095291
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Lees Knowles's occupation?",
+        "gld_ans": "",
+        "response": "Lees Knowles was a British barrister, military historian, and Conservative politician. He was called to the bar in 1882 and held various political roles, including serving as a Member of Parliament and being involved in military affairs. Additionally, he had a notable interest in military history and wrote several books on the subject.",
+        "subclaims": [
+            {
+                "subclaim": "Lees Knowles was a British barrister: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4655014404952526
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Lees Knowles was a military historian: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4652829551696777
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Lees Knowles was a Conservative politician: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4198767240643501
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Lees Knowles was called to the bar in 1882: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4310862093865871
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Lees Knowles held various political roles: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3776020528078079
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Lees Knowles served as a Member of Parliament: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3960508647859096
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Lees Knowles was involved in military affairs: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.430944860458374
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Lees Knowles had a notable interest in military history: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4691217086791992
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Lees Knowles wrote several books on military history: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.42852349162101744
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Carolina Portesi Peroni's occupation?",
+        "gld_ans": "",
+        "response": "Carolina Portesi Peroni is an Italian ice dancer.",
+        "subclaims": [
+            {
+                "subclaim": "Carolina Portesi Peroni is an Italian ice dancer:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.48399137949943544
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Quintus Sosius Senecio's occupation?",
+        "gld_ans": "",
+        "response": "Quintus Sosius Senecio was a Roman senator and held various political offices during his career, including being a two-time ordinary consul, first in 99 AD and again in 107 AD. He also served as quaestor, plebeian tribune, praetor, legatus legionis (commander of a legion), and governor of Gallia Belgica. His career was marked by significant political and military roles, demonstrating his prominence in the Roman political system.",
+        "subclaims": [
+            {
+                "subclaim": "Quintus Sosius Senecio was a Roman senator:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4941261756896973
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Quintus Sosius Senecio held various political offices during his career:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4932940492153168
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Quintus Sosius Senecio was a two-time ordinary consul:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.49373952922821046
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Quintus Sosius Senecio served as quaestor:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4914611158370972
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Quintus Sosius Senecio served as plebeian tribune:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4660266531944275
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Quintus Sosius Senecio served as praetor:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.47110006947517397
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Quintus Sosius Senecio served as legatus legionis:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4762011293411255
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Quintus Sosius Senecio served as governor of Gallia Belgica:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4611060040950775
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Quintus Sosius Senecio's career was marked by significant political and military roles:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4969159954071045
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Quintus Sosius Senecio demonstrated prominence in the Roman political system:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.46411269865036014
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Joeri Adams's occupation?",
+        "gld_ans": "",
+        "response": "Joeri Adams is a former professional cyclist from Belgium.",
+        "subclaims": [
+            {
+                "subclaim": "Joeri Adams is a former professional cyclist: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.42362720060348513
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Joeri Adams is from Belgium: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.42707089138031007
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Dominic King's occupation?",
+        "gld_ans": "",
+        "response": "Dominic King is a British racewalker and also works at the University of Essex.",
+        "subclaims": [
+            {
+                "subclaim": "Dominic King is a British racewalker:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5012068826556205
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Dominic King works at the University of Essex:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3629082077741623
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Vincenzo Tusa's occupation?",
+        "gld_ans": "",
+        "response": "Vincenzo Tusa was an Italian archaeologist. He held various significant positions in the field, including serving as the Superintendent for the BBCC of western Sicily and as a professor of Punic Antiquities at the University of Palermo.",
+        "subclaims": [
+            {
+                "subclaim": "Vincenzo Tusa was an Italian archaeologist:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5338562409281731
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Vincenzo Tusa held various significant positions in the field:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.45765946736335755
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Vincenzo Tusa served as the Superintendent for the BBCC of western Sicily:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4635675769686699
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Vincenzo Tusa served as a professor of Punic Antiquities at the University of Palermo:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5351753038287163
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Jean Daull\u00e9's occupation?",
+        "gld_ans": "",
+        "response": "Jean Daull\u00e9 was a French engraver known for his work in engraving portraits and plates of historical subjects. He was recognized for his skill in engraving and was eventually named \"Engraver to the King.\"",
+        "subclaims": [
+            {
+                "subclaim": "Jean Daull\u00e9 was a French engraver:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.45193601615428924
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Jean Daull\u00e9 was known for his work in engraving portraits and plates of historical subjects:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4892595580279827
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Jean Daull\u00e9 was recognized for his skill in engraving:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.456257388907671
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Jean Daull\u00e9 was named \"Engraver to the King\":supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.45086359167695045
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Richard Burkewood Welbourn's occupation?",
+        "gld_ans": "",
+        "response": "Richard Burkewood Welbourn was a British scientist and educator, specializing in surgical endocrinology. He held the position of Professor and Chairman of the Department of Surgery at the Royal Postgraduate Medical School, Hammersmith Hospital.",
+        "subclaims": [
+            {
+                "subclaim": "Richard Burkewood Welbourn was a British scientist: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.40087083740234375
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Richard Burkewood Welbourn was a British educator: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.39619686748981475
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Richard Burkewood Welbourn specialized in surgical endocrinology: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.418769482421875
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Richard Burkewood Welbourn held the position of Professor and Chairman of the Department of Surgery at the Royal Postgraduate Medical School: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4607528594732284
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Richard Burkewood Welbourn worked at Hammersmith Hospital: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.42507714983224865
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Damir Memovi\u0107's occupation?",
+        "gld_ans": "",
+        "response": "Damir Memovi\u0107 is a professional footballer who plays as a defender.",
+        "subclaims": [
+            {
+                "subclaim": "Damir Memovi\u0107 is a professional footballer:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4517794320344925
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Damir Memovi\u0107 plays as a defender:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.44670291223526
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Mar\u00eda Elena Medina-Mora Icaza's occupation?",
+        "gld_ans": "",
+        "response": "Mar\u00eda Elena Medina-Mora Icaza is a researcher and psychologist. She is an expert in mental health and addiction and serves as a faculty member at the National Autonomous University of Mexico (UNAM) in the medical and psychology departments. Additionally, she has held various leadership positions, including director of the National Institute of Psychiatry and director of the mental health and psychiatric department at UNAM.",
+        "subclaims": [
+            {
+                "subclaim": "Mar\u00eda Elena Medina-Mora Icaza is a researcher and psychologist:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5920176384329796
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Mar\u00eda Elena Medina-Mora Icaza is an expert in mental health and addiction:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.6068197509169578
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Mar\u00eda Elena Medina-Mora Icaza serves as a faculty member at the National Autonomous University of Mexico (UNAM) in the medical and psychology departments:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.6137660783529282
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Mar\u00eda Elena Medina-Mora Icaza has held various leadership positions:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5110388989627361
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Mar\u00eda Elena Medina-Mora Icaza was director of the National Institute of Psychiatry:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.61372631290555
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Mar\u00eda Elena Medina-Mora Icaza was director of the mental health and psychiatric department at UNAM:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.6400959378898144
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Hesham Nazih's occupation?",
+        "gld_ans": "",
+        "response": "Hesham Nazih is an Egyptian composer, musician, and actor. He is best known for scoring soundtracks for various Egyptian films and TV shows.",
+        "subclaims": [
+            {
+                "subclaim": "Hesham Nazih is an Egyptian composer: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3943398637771606
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Hesham Nazih is a musician: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.36721956100463865
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Hesham Nazih is an actor: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.35890681991577145
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Hesham Nazih is best known for scoring soundtracks for various Egyptian films: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.38154426085948945
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Hesham Nazih is best known for scoring soundtracks for various Egyptian TV shows: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3788737953186035
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Luis Guillermo Rivera's occupation?",
+        "gld_ans": "",
+        "response": "Luis Guillermo Rivera is a retired Colombian footballer who played as an attacking midfielder. He is known for his time with Emelec in the Ecuadorian Football League.",
+        "subclaims": [
+            {
+                "subclaim": "Luis Guillermo Rivera is a retired Colombian footballer:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4327659525632858
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Luis Guillermo Rivera played as an attacking midfielder:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4169953955411911
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Luis Guillermo Rivera is known for his time with Emelec:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.38751366519927977
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Emelec is in the Ecuadorian Football League:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.21627309921979904
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Desmond Luke's occupation?",
+        "gld_ans": "",
+        "response": "Desmond Luke was a lawyer and held various political positions, including Ambassador to West Germany, Foreign Minister, and Minister of Health in Sierra Leone. He also served as Chief Justice from 1998 to 2002.",
+        "subclaims": [
+            {
+                "subclaim": "Desmond Luke was a lawyer:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.46468594164848326
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Desmond Luke held various political positions:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3793994252264499
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Desmond Luke served as Ambassador to West Germany:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3513137291431427
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Desmond Luke served as Foreign Minister:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.38795268847346304
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Desmond Luke served as Minister of Health in Sierra Leone:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.424195817553997
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Desmond Luke served as Chief Justice from 1998 to 2002:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.36552430087327953
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Miguel D\u00edaz (baseball)'s occupation?",
+        "gld_ans": "",
+        "response": "Miguel D\u00edaz is a professional baseball pitcher currently in the Detroit Tigers organization. He made his Major League Baseball (MLB) debut in 2017 with the San Diego Padres.",
+        "subclaims": [
+            {
+                "subclaim": "Miguel D\u00edaz is a professional baseball pitcher: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5156769639730453
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Miguel D\u00edaz is currently in the Detroit Tigers organization: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.49844589238166814
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Miguel D\u00edaz made his Major League Baseball (MLB) debut in 2017: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4809873512864113
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Miguel D\u00edaz made his debut with the San Diego Padres: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4387405039310455
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Roxana D\u00edaz (athlete)'s occupation?",
+        "gld_ans": "",
+        "response": "Roxana D\u00edaz is a female track and field sprinter from Cuba.",
+        "subclaims": [
+            {
+                "subclaim": "Roxana D\u00edaz is a female track and field sprinter: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5397661971092225
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Roxana D\u00edaz is from Cuba: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.444301041507721
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Fernando (footballer, born 1984)'s occupation?",
+        "gld_ans": "",
+        "response": "Fernando (footballer, born 1984) is a professional football goalkeeper.",
+        "subclaims": [
+            {
+                "subclaim": "Fernando is a professional football goalkeeper: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4292546206712723
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Fernando was born in 1984: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.379328089094162
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Gerardo Fernandez Fe's occupation?",
+        "gld_ans": "",
+        "response": "Gerardo Fernandez Fe is a Cuban novelist and essayist. He has published works including novels, essays, and poetry, and has also worked as a translator and a professor of French.",
+        "subclaims": [
+            {
+                "subclaim": "Gerardo Fernandez Fe is a Cuban novelist and essayist:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.41089238567352293
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Gerardo Fernandez Fe has published novels, essays, and poetry:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.38777518191933635
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Gerardo Fernandez Fe has worked as a translator:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.34600392467975616
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Gerardo Fernandez Fe has worked as a professor of French:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.337235220348835
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Augusto Mart\u00ednez S\u00e1nchez's occupation?",
+        "gld_ans": "",
+        "response": "Augusto Mart\u00ednez S\u00e1nchez was a Cuban lawyer, military officer, and politician. He held several significant positions, including being one of the commanders of the Cuban Revolution, Minister of Labor, Military Prosecutor, Judge of the Revolutionary Court, and Minister of National Defense.",
+        "subclaims": [
+            {
+                "subclaim": "Augusto Mart\u00ednez S\u00e1nchez was a Cuban lawyer: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.445745802628994
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Augusto Mart\u00ednez S\u00e1nchez was a military officer: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3839414741456509
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Augusto Mart\u00ednez S\u00e1nchez was a politician: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.38923548245429995
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Augusto Mart\u00ednez S\u00e1nchez held several significant positions: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.35789608855843547
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Augusto Mart\u00ednez S\u00e1nchez was one of the commanders of the Cuban Revolution: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4436507896006107
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Augusto Mart\u00ednez S\u00e1nchez was the Minister of Labor: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3843929954409599
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Augusto Mart\u00ednez S\u00e1nchez was the Military Prosecutor: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.39535894804000854
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Augusto Mart\u00ednez S\u00e1nchez was the Judge of the Revolutionary Court: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.38464074891209604
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Augusto Mart\u00ednez S\u00e1nchez was the Minister of National Defense: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.36966572471857073
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Sharad Kumar (athlete)'s occupation?",
+        "gld_ans": "",
+        "response": "Sharad Kumar is an Indian para high jumper.",
+        "subclaims": [
+            {
+                "subclaim": "Sarhad Kumar is an Indian para high jumper:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.47623443871736526
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Ko Itakura's occupation?",
+        "gld_ans": "",
+        "response": "Ko Itakura is a professional football player. He has played as a defensive midfielder and has been a member of various clubs, including Kawasaki Frontale, Manchester City, Groningen, Schalke 04, and Borussia M\u00f6nchengladbach. He has also represented the Japan national football team in international competitions.",
+        "subclaims": [
+            {
+                "subclaim": "Ko Itakura is a professional football player:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3077829032421112
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Ko Itakura has played as a defensive midfielder:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.29761289548873904
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Ko Itakura has been a member of various clubs:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.23653052392601964
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Ko Itakura has played for Kawasaki Frontale:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.30161932303905487
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Ko Itakura has played for Manchester City:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.2976376658141613
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Ko Itakura has played for Groningen:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.2715232420027256
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Ko Itakura has played for Schalke 04:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.2940259933590889
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Ko Itakura has played for Borussia M\u00f6nchengladbach:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.2817091133952141
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Ko Itakura has represented the Japan national football team:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3184315264225006
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Ko Itakura has participated in international competitions:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.2637645302832127
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Besant Ravi's occupation?",
+        "gld_ans": "",
+        "response": "Besant Ravi is an Indian actor and stunt choreographer. He is known for playing antagonistic supporting roles in films across various Indian languages, including Tamil and Hindi. Additionally, he has a background as a bike mechanic and is also an expert in mixed martial arts and boxing.",
+        "subclaims": [
+            {
+                "subclaim": "Besant Ravi is an Indian actor: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4339984644174576
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Besant Ravi is a stunt choreographer: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4367826997637749
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Besant Ravi is known for playing antagonistic supporting roles in films across various Indian languages: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4170551948547363
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Besant Ravi works in Tamil films: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4371904468178749
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Besant Ravi works in Hindi films: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.40828978358507156
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Besant Ravi has a background as a bike mechanic: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4137217447042465
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Besant Ravi is an expert in mixed martial arts: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.42541753541231153
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Besant Ravi is an expert in boxing: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.41043079498410223
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Thomas Houghton (rugby league)'s occupation?",
+        "gld_ans": "",
+        "response": "Thomas Houghton was a rugby league footballer who represented New Zealand in 1909. Later in his career, he served as an official at the North Sydney Bears club in the NSWRL Premiership.",
+        "subclaims": [
+            {
+                "subclaim": "Thomas Houghton was a rugby league footballer: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5305150561332702
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Thomas Houghton represented New Zealand in 1909: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.40768030440807346
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Thomas Houghton served as an official at the North Sydney Bears club: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4596558853983879
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " North Sydney Bears club is part of the NSWRL Premiership: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.25827166289091114
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Katsunosuke Hori's occupation?",
+        "gld_ans": "",
+        "response": "Katsunosuke Hori is a voice actor known for his work in television drama, video games, dubbing roles, theatrical animation, and television animation.",
+        "subclaims": [
+            {
+                "subclaim": "Katsunosuke Hori is a voice actor: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3230563899993896
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Katsunosuke Hori is known for his work in television drama: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3892010351955891
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Katsunosuke Hori is known for his work in video games: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3515284630894661
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Katsunosuke Hori is known for his dubbing roles: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3312619637846947
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Katsunosuke Hori is known for his work in theatrical animation: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3272100580215454
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Katsunosuke Hori is known for his work in television animation: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3296991568446159
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Ra Jong-yil's occupation?",
+        "gld_ans": "",
+        "response": "Ra Jong-yil is a former South Korean ambassador who has served in various diplomatic roles, including as the ambassador to the United Kingdom and to Japan. Additionally, he is an author who has written books on political issues concerning North Korea.",
+        "subclaims": [
+            {
+                "subclaim": "Ra Jong-yil is a former South Korean ambassador: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.47048901917934416
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Ra Jong-yil has served in various diplomatic roles: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.44962200293540955
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Ra Jong-yil was the ambassador to the United Kingdom: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4989859102010727
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Ra Jong-yil was the ambassador to Japan: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4779268056154251
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Ra Jong-yil is an author: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4387279503643513
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Ra Jong-yil has written books on political issues concerning North Korea: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4142772112488746
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Song Kang's occupation?",
+        "gld_ans": "",
+        "response": "Song Kang is a South Korean actor. He is known for his lead roles in various television series, particularly on Netflix, including \"Love Alarm,\" \"Sweet Home,\" \"Navillera,\" \"Nevertheless,\" and \"Forecasting Love and Weather.\"",
+        "subclaims": [
+            {
+                "subclaim": "Song Kang is a South Korean actor:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4032412796318531
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Song Kang is known for lead roles in various television series:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.41207844629883766
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Song Kang has starred in television series on Netflix:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3785079599916935
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Song Kang starred in \"Love Alarm\":supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.39147726593613624
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Song Kang starred in \"Sweet Home\":supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3810965131759644
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Song Kang starred in \"Navillera\":supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.35613124325871465
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Song Kang starred in \"Nevertheless\":supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.36946404845118525
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Song Kang starred in \"Forecasting Love and Weather\":supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3662519562125206
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Rin Iwanaga's occupation?",
+        "gld_ans": "",
+        "response": "Rin Iwanaga is a badminton player, specifically competing in women's doubles events.",
+        "subclaims": [
+            {
+                "subclaim": "Rin Iwanaga is a badminton player:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.31770424729585645
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Rin Iwanaga competes in women's doubles events:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3191021783351898
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Keita Kadokura's occupation?",
+        "gld_ans": "",
+        "response": "Keita Kadokura is a professional shogi player.",
+        "subclaims": [
+            {
+                "subclaim": "Keita Kadokura is a professional shogi player:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4548872956514358
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Lily Branscombe's occupation?",
+        "gld_ans": "",
+        "response": "Lily Branscombe was a stage and film actress.",
+        "subclaims": [
+            {
+                "subclaim": "Lily Branscombe was a stage actress:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.43773667105436326
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Lily Branscombe was a film actress:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.44274748533368113
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Luis N. Rivera-Pag\u00e1n's occupation?",
+        "gld_ans": "",
+        "response": "Luis N. Rivera-Pag\u00e1n is a theologian and academic. He has held positions as a Professor of Systematic Theology at the Evangelical Seminary of Puerto Rico and as the Henry Winters Luce Professor of Ecumenics and Mission at Princeton Theological Seminary, from which he is now retired and holds the status of Professor Emeritus. Additionally, he is involved in the field of humanities at the University of Puerto Rico.",
+        "subclaims": [
+            {
+                "subclaim": "Luis N. Rivera-Pag\u00e1n is a theologian and academic:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.46682281928658487
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Luis N. Rivera-Pag\u00e1n has held positions as a Professor of Systematic Theology at the Evangelical Seminary of Puerto Rico:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5005295873343945
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Luis N. Rivera-Pag\u00e1n has held the position of Henry Winters Luce Professor of Ecumenics and Mission at Princeton Theological Seminary:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.48666827012300495
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Luis N. Rivera-Pag\u00e1n is now retired from Princeton Theological Seminary:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.45551095352172855
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Luis N. Rivera-Pag\u00e1n holds the status of Professor Emeritus:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.43355433250665665
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Luis N. Rivera-Pag\u00e1n is involved in the field of humanities at the University of Puerto Rico:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.43664100666046146
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Jesse Foppert's occupation?",
+        "gld_ans": "",
+        "response": "Jesse Foppert is a former Major League Baseball pitcher and currently serves as the head coach at Marin Catholic High School in Kentfield. He also runs the Jesse Foppert Pitching Academy, which is based in Kentfield.",
+        "subclaims": [
+            {
+                "subclaim": "Jesse Foppert is a former Major League Baseball pitcher:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5262410407066345
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Jesse Foppert currently serves as the head coach at Marin Catholic High School in Kentfield:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.506283739054203
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Jesse Foppert runs the Jesse Foppert Pitching Academy:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4773455670237541
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " The Jesse Foppert Pitching Academy is based in Kentfield:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4485238348066806
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Mike Trivisonno's occupation?",
+        "gld_ans": "",
+        "response": "Mike Trivisonno was an American radio broadcaster, known for hosting his own afternoon talk show on Cleveland radio station WTAM AM 1100. He was widely recognized in the Cleveland media and was often referred to as \"Triv.\" Throughout his career, he discussed a variety of topics including sports, politics, and local issues.",
+        "subclaims": [
+            {
+                "subclaim": "Mike Trivisonno was an American radio broadcaster:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4975082720160484
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Mike Trivisonno hosted his own afternoon talk show on Cleveland radio station WTAM AM 1100:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5491239860773086
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Mike Trivisonno was widely recognized in the Cleveland media:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.49110381906032563
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Mike Trivisonno was often referred to as \"Triv\":supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.54975775526762
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Mike Trivisonno discussed a variety of topics including sports, politics, and local issues:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.48838031430244444
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Zelma Wilson's occupation?",
+        "gld_ans": "",
+        "response": "Zelma Wilson was an architect. She opened her architectural practice, Zelma Wilson and Associates, AIA, in 1967 and primarily designed community buildings such as schools, churches, and libraries, along with private residences and other structures.",
+        "subclaims": [
+            {
+                "subclaim": "Zelma Wilson was an architect:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.47939855504035944
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zelma Wilson opened her architectural practice in 1967:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4464282360076904
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " The architectural practice is named Zelma Wilson and Associates, AIA:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4316606145620346
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zelma Wilson primarily designed community buildings:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4120840727806091
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zelma Wilson designed schools:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4007733063697815
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zelma Wilson designed churches:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.39221589016914365
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zelma Wilson designed libraries:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3679857782363891
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zelma Wilson designed private residences:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4280515889167785
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zelma Wilson designed other structures:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4005670969963073
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Michael Valpy's occupation?",
+        "gld_ans": "",
+        "response": "Michael Valpy is a Canadian journalist and author. He has worked for various newspapers, including \"The Globe and Mail\" and \"Vancouver Sun,\" where he served in multiple roles such as reporter, national political columnist, and features writer. He continues to write as a freelance journalist for several publications. Additionally, Valpy is involved in academia, serving as a senior fellow at Massey College at the University of Toronto and teaching in the university's book and media studies program.",
+        "subclaims": [
+            {
+                "subclaim": "Michael Valpy is a Canadian journalist and author:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5450316162705422
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Michael Valpy has worked for various newspapers:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5229922253489495
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Michael Valpy worked for \"The Globe and Mail\":supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5773991053104401
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Michael Valpy worked for \"Vancouver Sun\":supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5622005369663239
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Michael Valpy served as a reporter:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5363756959438324
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Michael Valpy served as a national political columnist:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.49673671948909764
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Michael Valpy served as a features writer:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5196528226733208
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Michael Valpy continues to write as a freelance journalist:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5149300348162651
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Michael Valpy writes for several publications:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5102219628095627
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Michael Valpy is involved in academia:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5227927279472351
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Michael Valpy serves as a senior fellow at Massey College:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.49014011335372926
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Massey College is located at the University of Toronto:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.24145302924513817
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Michael Valpy teaches in the university's book and media studies program:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.46556035709381105
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Prince Rivers's occupation?",
+        "gld_ans": "",
+        "response": "Prince Rivers was a soldier in the Union Army during the American Civil War and later became a state politician during the Reconstruction era. After the war, he served in various roles including as a state legislator, trial judge, and registrar for Edgefield County. He was also involved in local politics and community development, being one of the founders of Aiken County.",
+        "subclaims": [
+            {
+                "subclaim": "Prince Rivers was a soldier in the Union Army during the American Civil War:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.37459686386585234
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Prince Rivers became a state politician during the Reconstruction era:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3360758056640625
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Prince Rivers served in various roles including as a state legislator:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3110198305845261
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Prince Rivers served as a trial judge:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.29472520244121553
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Prince Rivers served as a registrar for Edgefield County:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3600243245959282
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Prince Rivers was involved in local politics and community development:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3225770553350449
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Prince Rivers was one of the founders of Aiken County:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.37200861299037935
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is John Estes's occupation?",
+        "gld_ans": "",
+        "response": "John Estes is a former professional American football player who played as a center and guard. After his playing career, he transitioned into coaching and served as a graduate assistant and later as an offensive line coach for the Houston Roughnecks in the XFL.",
+        "subclaims": [
+            {
+                "subclaim": "John Estes is a former professional American football player:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3896420953989029
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " John Estes played as a center and guard:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.35630525254011153
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " John Estes transitioned into coaching:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.31965462092757224
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " John Estes served as a graduate assistant for the Houston Roughnecks:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3634037438035011
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " John Estes served as an offensive line coach for the Houston Roughnecks:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.38819912320375444
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " The Houston Roughnecks are part of the XFL:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.21363836860656737
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Eric Hacker's occupation?",
+        "gld_ans": "",
+        "response": "Eric Hacker is a professional baseball pitcher who is currently a free agent. He has played in Major League Baseball (MLB) for teams such as the Pittsburgh Pirates, Minnesota Twins, and San Francisco Giants, and he has also spent time in the KBO League with teams like the Nexen Heroes and NC Dinos.",
+        "subclaims": [
+            {
+                "subclaim": "Eric Hacker is a professional baseball pitcher:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4761724276542664
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Eric Hacker is currently a free agent:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.41537849998474125
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Eric Hacker has played in Major League Baseball (MLB):supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.46032423480749124
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Eric Hacker has played for the Pittsburgh Pirates:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4476596329212189
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Eric Hacker has played for the Minnesota Twins:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4448703428149223
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Eric Hacker has played for the San Francisco Giants:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.46075468547344206
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Eric Hacker has spent time in the KBO League:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4403299479842186
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Eric Hacker has played for the Nexen Heroes:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4584130067586899
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Eric Hacker has played for the NC Dinos:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.43195079830884936
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Alma Katsu's occupation?",
+        "gld_ans": "",
+        "response": "Alma Katsu is an American writer of adult fiction. Additionally, she has had a 29-year career in the US federal government, working in various positions related to intelligence and foreign policy, with a focus on technology issues.",
+        "subclaims": [
+            {
+                "subclaim": "Alma Katsu is an American writer of adult fiction:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5376464605093002
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Alma Katsu has had a 29-year career in the US federal government:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.38102194845676424
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Alma Katsu worked in various positions related to intelligence and foreign policy:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.36877844816744326
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Alma Katsu's career had a focus on technology issues:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3524492303609848
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Carlos Alfonso's occupation?",
+        "gld_ans": "",
+        "response": "Carlos Alfonso is a former minor league baseball player and manager, as well as a former minor and major league coach. He currently serves as the Tampa Bay Rays Director of International Operations.",
+        "subclaims": [
+            {
+                "subclaim": "Carlos Alfonso is a former minor league baseball player: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4368564719200134
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Carlos Alfonso is a former minor league manager: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4392948510110379
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Carlos Alfonso is a former major league coach: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4355877109766007
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Carlos Alfonso currently serves as the Tampa Bay Rays Director of International Operations: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.47006096833348276
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Rennie Fritchie, Baroness Fritchie's occupation?",
+        "gld_ans": "",
+        "response": "Rennie Fritchie, Baroness Fritchie, is a British crossbench peer and has held various positions throughout her career. She has served as a Commissioner for Public Appointments, holds an honorary Professorship in Creative Leadership at York University, is Pro-Chancellor at Southampton University, and is involved in various charitable organizations. Additionally, she has been the Chair of the 2gether NHS Foundation Trust and was appointed Chancellor of the University of Gloucestershire. Her career has included significant contributions to training and development, particularly in the context of women's health and equal opportunities.",
+        "subclaims": [
+            {
+                "subclaim": "Rennie Fritchie is a British crossbench peer:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.5094780735254288
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Rennie Fritchie has held various positions throughout her career:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4016534376144409
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Rennie Fritchie has served as a Commissioner for Public Appointments:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.424717390537262
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Rennie Fritchie holds an honorary Professorship in Creative Leadership at York University:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4418154376745224
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Rennie Fritchie is Pro-Chancellor at Southampton University:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4779475448131561
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Rennie Fritchie is involved in various charitable organizations:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3919484553337097
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Rennie Fritchie has been the Chair of the 2gether NHS Foundation Trust:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.42132532485127444
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Rennie Fritchie was appointed Chancellor of the University of Gloucestershire:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.45648653433322905
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Rennie Fritchie's career has included significant contributions to training and development:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.34901147956848144
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Rennie Fritchie's contributions are particularly in the context of women's health and equal opportunities:supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.39784822952747345
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Daniel Charles's occupation?",
+        "gld_ans": "",
+        "response": "Daniel Charles was a French musician, musicologist, and philosopher. He had a significant academic career, teaching music and philosophy at various universities, including the University of Paris VIII and the University of Nice Sophia-Antipolis. He also contributed to the field of music through his writings and lectures.",
+        "subclaims": [
+            {
+                "subclaim": "Daniel Charles was a French musician: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3549592339396477
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Daniel Charles was a musicologist: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3626277282714844
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Daniel Charles was a philosopher: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.30360123443603515
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Daniel Charles had a significant academic career: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.29233795878887175
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Daniel Charles taught music at the University of Paris VIII: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3794821854591369
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Daniel Charles taught philosophy at the University of Paris VIII: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.32674069261550903
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Daniel Charles taught music at the University of Nice Sophia-Antipolis: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.36061689653396606
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "I"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Daniel Charles taught philosophy at the University of Nice Sophia-Antipolis: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3091755065381527
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Daniel Charles contributed to the field of music through his writings: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.3130917730808258
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Daniel Charles contributed to the field of music through his lectures: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.30418481922149654
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "query": "What is Zamfir Arbore's occupation?",
+        "gld_ans": "",
+        "response": "Zamfir Arbore was a Romanian political activist known for his involvement in various revolutionary movements, particularly as an anarchist and socialist. He was also an amateur historian, geographer, and ethnographer. Throughout his life, he participated in left-wing politics, including the International Workingmen's Association, and he contributed to the socialist cause in Romania and Bessarabia. Additionally, he worked in academia, teaching geography and topography at the Bucharest War School and engaging in research on Bessarabian geography and history.",
+        "subclaims": [
+            {
+                "subclaim": "Zamfir Arbore was a Romanian political activist: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.48378841392993926
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zamfir Arbore was known for his involvement in various revolutionary movements: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4604135254859924
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zamfir Arbore was an anarchist and socialist: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.43522050327062606
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zamfir Arbore was an amateur historian, geographer, and ethnographer: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.47474795494079586
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zamfir Arbore participated in left-wing politics: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4155932536363601
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zamfir Arbore was involved in the International Workingmen's Association: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4065563535928726
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zamfir Arbore contributed to the socialist cause in Romania and Bessarabia: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.41870550793409345
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zamfir Arbore worked in academia: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.43709032773971557
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zamfir Arbore taught geography and topography at the Bucharest War School: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.4096314304828644
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            },
+            {
+                "subclaim": " Zamfir Arbore engaged in research on Bessarabian geography and history: supported",
+                "scores": [
+                    {
+                        "type": "similarity",
+                        "score": 0.43963651615977284
+                    }
+                ],
+                "annotations": [
+                    {
+                        "type": "gpt",
+                        "annotation": "S"
+                    }
+                ]
+            }
+        ]
+    }
+]

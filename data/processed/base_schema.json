@@ -1,0 +1,16 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema",
+    "type": "object",
+    "properties": {
+      "input": { "type": "string" },
+      "output": {
+        "type": "object",
+        "properties": {
+          "answer": { "type": "string" }
+        },
+        "required": ["answer"]
+      }
+    },
+    "required": ["input", "output"]
+  }
+  

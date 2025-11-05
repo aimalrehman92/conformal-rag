@@ -1,0 +1,56 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The question string."
+      },
+      "gld_ans": {
+        "type": "string",
+        "description": "The golden answer."
+      },
+      "response": {
+        "type": "string",
+        "description": "LLM-generated response."
+      },
+      "retrieved_docs": {
+        "type": "array",
+        "description": "Document retrival results."
+      },
+      "subclaims": {
+        "type": "array",
+        "description": "Array of subclaims related to the response.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "subclaim": {
+              "type": "string",
+              "description": "one subclaim string."
+            },
+            "scores": {
+              "type": "object",
+              "properties": {
+                "similarity": {
+                  "type": "number",
+                  "description": "The similarity score associated with the subclaim."
+                }
+              }
+            },
+            "annotations": {
+              "type": "object",
+              "properties": {
+                "gpt": {
+                  "type": "string",
+                  "description": "Annotation provided by GPT."
+                }
+              }
+            }
+          },
+          "required": ["subclaim"]
+        }
+      }
+    },
+    "required": ["query", "gld_ans", "response"]
+  }
+  
