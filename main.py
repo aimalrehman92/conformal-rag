@@ -237,6 +237,7 @@ def main():
     logging.info(f"Setting up FAISS index manager")
     faiss_manager = FAISSIndexManager(
         index_truncation_config=index_truncation_config,
+        embedding_model=embedding_model,
         index_path=index_file_path,
         indice2fm_path=indice2fm_path,
     )
