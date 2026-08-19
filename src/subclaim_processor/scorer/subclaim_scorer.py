@@ -37,6 +37,7 @@ class SubclaimScorer(IDocumentScorer):
         self.embedding_model = embedding_model
         self.faiss_manager = FAISSIndexManager(
             index_truncation_config=index_truncation_config,
+            embedding_model=embedding_model,
             index_path=index_path,
             indice2fm_path=indice2fm_path,
         )
@@ -70,9 +71,13 @@ class SubclaimScorer(IDocumentScorer):
         if len(retrieved_docs) == 0:
             return 0
 
-        claim_embedding = self.faiss_manager.openaiManager.client.embeddings.create(
-            input=[claim], model=self.embedding_model
+        claim_embedding = (
+            self.faiss_manager._get_openai_manager().client.embeddings.create(
+                input=[claim],
+                model=self.embedding_model,
+            )
         )
+        
         claim_vector = (
             np.array(claim_embedding.data[0].embedding).astype("float32").reshape(1, -1)
         )
@@ -94,16 +99,24 @@ class SubclaimScorer(IDocumentScorer):
     def cosine_similarity(self, claim: str, query: str) -> float:
         # claim score will be the maximum product of cosine similarity between the claim and the retrieved documents
 
-        claim_embedding = self.faiss_manager.openaiManager.client.embeddings.create(
-            input=[claim], model=self.embedding_model
+        claim_embedding = (
+            self.faiss_manager._get_openai_manager().client.embeddings.create(
+                input=[claim],
+                model=self.embedding_model,
+            )
         )
+
         claim_vector = (
             np.array(claim_embedding.data[0].embedding).astype("float32").reshape(1, -1)
         )
 
-        query_embedding = self.faiss_manager.openaiManager.client.embeddings.create(
-            input=[query], model=self.embedding_model
+        query_embedding = (
+            self.faiss_manager._get_openai_manager().client.embeddings.create(
+                input=[query],
+                model=self.embedding_model,
+            )
         )
+        
         query_vector = (
             np.array(query_embedding.data[0].embedding).astype("float32").reshape(1, -1)
         )
