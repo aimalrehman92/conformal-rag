@@ -1,8 +1,8 @@
 import os
 import json
 import random
+import hashlib
 import logging
-import numpy as np
 from typing import Union, Optional
 from tqdm import tqdm
 from jsonschema import validate
@@ -15,6 +15,30 @@ from src.subclaim_processor.scorer.document_scorer import IDocumentScorer
 from src.calibration.utils import load_subclaim_data
 
 
+def _make_stable_rng(
+    seed: int,
+    query: str,
+    subclaim: str,
+    subclaim_index: int,
+    purpose: str,
+) -> random.Random:
+    """
+    Create a deterministic RNG for a specific subclaim and purpose.
+
+    The generated random values are stable across reruns and do not
+    depend on the order in which entries or subclaims are processed.
+    """
+    payload = (
+        f"{seed}|{purpose}|{query}|{subclaim_index}|{subclaim}"
+    ).encode("utf-8")
+
+    digest = hashlib.sha256(payload).digest()
+    stable_seed = int.from_bytes(digest[:8], byteorder="big")
+
+    return random.Random(stable_seed)
+
+
+
 class SubclaimProcessor(IQueryProcessor):
     def __init__(
         self,
@@ -24,7 +48,9 @@ class SubclaimProcessor(IQueryProcessor):
         claim_verification_model: str,
         scorer: IScorer,
         subclaims_file: str,
-    ):
+        seed: int = 42,
+        ):
+
         self.faiss_manager = faiss_manager
         self.response_agent = OpenAIRAGAgent(faiss_manager, model=response_model)
         self.generator = OpenAIAtomicFactGenerator(model=fact_generation_model)
@@ -32,6 +58,8 @@ class SubclaimProcessor(IQueryProcessor):
         print(f"claim_verification_model: {claim_verification_model}")
         self.scorer = scorer
         self.subclaims_file = subclaims_file
+        self.seed = seed
+
         with open(
             "data/out/subclaims_schema.json", "r", encoding="utf-8"
         ) as schemafile:
@@ -147,7 +175,15 @@ class SubclaimProcessor(IQueryProcessor):
                 for i, subclaim in enumerate(entry["subclaims"]):
                     if isinstance(self.scorer, IDocumentScorer):
                         if "noise" not in subclaim["scores"].keys():
-                            subclaim["scores"]["noise"] = np.random.normal(0, 0.001)
+                            noise_rng = _make_stable_rng(
+                                seed=self.seed,
+                                query=entry["query"],
+                                subclaim=subclaim["subclaim"],
+                                subclaim_index=i,
+                                purpose="noise",
+                            )
+                            subclaim["scores"]["noise"] = noise_rng.gauss(0, 0.001)
+                        
                         if "relavance" not in subclaim["scores"].keys():
                             relavance_score = self.scorer.score(
                                 claim=subclaim["subclaim"],
@@ -194,8 +230,17 @@ class SubclaimProcessor(IQueryProcessor):
                                 n_samples=5,
                             )
                             subclaim["scores"]["frequency"] = float(frequency_score)
+
                         if "random" not in subclaim["scores"].keys():
-                            subclaim["scores"]["random"] = random.random()
+                            random_rng = _make_stable_rng(
+                                seed=self.seed,
+                                query=entry["query"],
+                                subclaim=subclaim["subclaim"],
+                                subclaim_index=i,
+                                purpose="random",
+                                )
+                            subclaim["scores"]["random"] = random_rng.random()
+  
                         if "ordinal" not in subclaim["scores"].keys():
                             subclaim["scores"]["ordinal"] = (
                                 (i / len(entry["subclaims"]))
@@ -305,6 +350,7 @@ def process_subclaims(
 
     top_k = config["rag"]["retrival_topk"]
     threshold = config["rag"]["retrival_threshold"]
+    seed = config.get("seed", 42)
     response_model = config["rag"]["response_model"]
     response_temperature = config["rag"]["response_temperature"]
     fact_generation_model = config["rag"]["fact_generation_model"]
@@ -367,6 +413,7 @@ def process_subclaims(
         claim_verification_model,
         scorer,
         subclaims_path,
+        seed=seed
     )
 
     # Generate subclaims if data doesn't exist
