@@ -10,16 +10,81 @@ from collections import defaultdict
 from src.calibration.conformal import SplitConformalCalibration
 from src.calibration.utils import compute_threshold
 from src.calibration.utils import append_result_to_csv
-from src.calibration.utils import split_group
 
 
 CORRECT_ANNOTATIONS = ["S"]
 
 
 class GroupConditionalConformal(SplitConformalCalibration):
-    def __init__(self, dataset_name: str, result_dir: str, runs: int = 1000):
-        super().__init__(dataset_name, runs)
+    def __init__(
+            self,
+            dataset_name: str,
+            result_dir: str,
+            runs: int = 1000,
+            seed: int = 42
+            ):
+        super().__init__(dataset_name, runs, seed)
         self.result_dir = result_dir
+
+    def _split_group_data(
+            self,
+            data: list,
+            run_index: int,
+            calibrate_range: float = 0.5
+            ):
+        """
+        Create deterministic calibration/test splits independently within
+        each group.
+        
+        A given run index produces the same group-wise split across
+        confidence methods, alpha values, and evaluation routines.
+        The input data is never shuffled or mutated in place.
+        """
+        if not 0 < calibrate_range < 1:
+            raise ValueError(
+                f"calibrate_range must be in (0, 1), got {calibrate_range}"
+            )
+
+        group_data = defaultdict(list)
+
+        for entry in data:
+            if not entry.get("groups"):
+                raise ValueError(
+                    "Every entry must contain at least one group label"
+                )
+
+            group = entry["groups"][0]
+            group_data[group].append(entry)
+
+        if not group_data:
+            raise ValueError("No groups found in data")
+
+        calibration_data = {}
+        test_data = []
+
+        rng = random.Random(self.seed + run_index)
+
+        for group in sorted(group_data):
+            group_entries = list(group_data[group])
+
+            if len(group_entries) < 2:
+                raise ValueError(
+                    f"Group '{group}' has {len(group_entries)} entry; "
+                    "at least 2 are required for group-conditional "
+                    "calibration and testing"
+                )
+
+            rng.shuffle(group_entries)
+
+            split_index = int(np.ceil(len(group_entries) * calibrate_range))
+
+            if split_index >= len(group_entries):
+                split_index = len(group_entries) - 1
+
+            calibration_data[group] = group_entries[:split_index]
+            test_data.extend(group_entries[split_index:])
+
+        return calibration_data, test_data
 
 
     def compute_conformal_results(
@@ -40,9 +105,11 @@ class GroupConditionalConformal(SplitConformalCalibration):
                 correctness_list = []
                 fraction_removed_list = []
                 test_data = []
-                for _ in range(self.runs):
-                    random.shuffle(data)
-                    calibration_data, test_data = split_group(data)
+                for run_index in range(self.runs):
+                    calibration_data, test_data = self._split_group_data(
+                        data,
+                        run_index,
+                        )
                     groups = list(calibration_data.keys())
 
                     assert (
@@ -161,9 +228,12 @@ class GroupConditionalConformal(SplitConformalCalibration):
                 thresholds_per_group = defaultdict(list)
                 correctness_per_group = defaultdict(list)
 
-                for _ in range(self.runs):
-                    random.shuffle(data)
-                    calibration_data, test_data = split_group(data, calibrate_range)
+                for run_index in range(self.runs):
+                    calibration_data, test_data = self._split_group_data(
+                        data,
+                        run_index,
+                        calibrate_range,
+                        )
                     groups = list(calibration_data.keys())
 
                     # assert on nonempty
