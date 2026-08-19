@@ -18,8 +18,13 @@ class SplitConformalCalibration(ICalibration):
     Implementation of standard conformal calibration.
     """
 
-    def __init__(self, dataset_name: str, runs: int = 1000):
+    def __init__(self,
+                 dataset_name: str,
+                 runs: int = 1000,
+                 seed: int = 42):
         self.dataset_name = dataset_name
+        self.runs = runs
+        self.seed = seed
         self.confidence_method = [
             "relavance",
             "frequency",
@@ -29,7 +34,36 @@ class SplitConformalCalibration(ICalibration):
             "random",
             "ordinal",
         ]
-        self.runs = runs
+
+    def _split_data(self, data: list, run_index: int):
+        """
+        Create a deterministic 50/50 calibration-test split.
+        
+        The split for a given run index is identical across confidence
+        methods, alpha values, and evaluation routines. The input data
+        is never shuffled or mutated in place.
+        """
+        if len(data) < 2:
+            raise ValueError(
+                "At least two data entries are required for calibration/test splitting"
+                )
+
+        indices = list(range(len(data)))
+
+        rng = random.Random(self.seed + run_index)
+        rng.shuffle(indices)
+
+        split_index = len(indices) // 2
+
+        calibration_indices = indices[:split_index]
+        test_indices = indices[split_index:]
+
+        calibration_data = [data[i] for i in calibration_indices]
+        test_data = [data[i] for i in test_indices]
+
+        return calibration_data, test_data
+
+    
 
     def plot_conformal_removal(
         self, data, alphas, a, fig_filename, csv_filename
@@ -91,16 +125,11 @@ class SplitConformalCalibration(ICalibration):
                 thresholds = []
                 correctness_list = []
                 fraction_removed_list = []
-                for _ in range(self.runs):
-                    random.shuffle(data)
-                    split_index = len(data) // 2
-                    calibration_data = data[:split_index]
-                    test_data = data[split_index:]
-
-                    assert (
-                        len(calibration_data) != 0
-                    ), "Calibration data should not be empty"
-                    assert len(test_data) != 0, "Test data should not be empty"
+                for run_index in range(self.runs):
+                    calibration_data, test_data = self._split_data(
+                        data,
+                        run_index,
+                        )
 
                     threshold = compute_threshold(alpha, calibration_data, a, confidence_method)
 
@@ -300,16 +329,11 @@ class SplitConformalCalibration(ICalibration):
             ):
                 thresholds = []
                 correctness = []
-                for _ in range(self.runs):
-                    random.shuffle(data)
-                    split_index = len(data) // 2
-                    calibration_data = data[:split_index]
-                    test_data = data[split_index:]
-
-                    assert (
-                        len(calibration_data) != 0
-                    ), "Calibration data should not be empty"
-                    assert len(test_data) != 0, "Test data should not be empty"
+                for run_index in range(self.runs):
+                    calibration_data, test_data = self._split_data(
+                        data,
+                        run_index,
+                        )
 
                     threshold = compute_threshold(alpha, calibration_data, a, confidence_method)
                     fraction_correct = self._evaluate_factual_correctness(
