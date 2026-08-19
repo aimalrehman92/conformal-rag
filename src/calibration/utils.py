@@ -6,6 +6,8 @@ from collections import defaultdict
 
 CORRECT_ANNOTATIONS = ["Y", "S"]
 
+NO_FAILURE_R_SCORE = -100000.0
+
 
 def load_subclaim_data(file_path):
     """Load calibration data from a JSON file"""
@@ -45,35 +47,24 @@ def _calculate_entailed_fraction(subclaims):
     )
 
 
-def get_r_score(entry: list, confidence_method: str, a: float):
+def get_r_score(entry: dict, confidence_method: str, a: float):
     """
-    Compute the r_a score for each data entry when confidence_method is used as the sub-claim scoring function.
+    Compute the critical r_a score for one data entry.
 
-    This function calculates the minimum threshold at which the fraction of correct subclaims
-    falls below the required threshold 'a'. The r_a score represents the confidence score
-    at which the model's reliability drops below the acceptable level.
+    Subclaims are progressively added from highest to lowest confidence.
+    The returned score is the first threshold at which the retained
+    subclaims fail to achieve the required factuality level ``a``.
 
-    The algorithm works by:
-    1. First checking if the score was already calculated and cached
-    2. Sorting all subclaim scores in descending order
-    3. Testing each score as a potential threshold
-    4. For each threshold, accepting only subclaims with scores >= threshold
-    5. Calculating the fraction of correct subclaims among the accepted ones
-    6. Returning the first threshold where this fraction falls below 'a'
-    7. Returning -1 if all possible thresholds maintain accuracy above 'a'
+    If factuality never falls below ``a``, a sentinel value smaller than
+    every implemented confidence score is returned.
 
-    Args:
-        entry: Dictionary containing claims data
-        confidence_method: Method used for scoring subclaims
-        a: Required fraction correct threshold
-
-    Returns:
-        float: r_a score for the entry
+    Results are cached in the entry so repeated calibration runs reuse
+    exactly the same value.
     """
     r_score_key = f"r_score_{a}_{confidence_method}"
+
     if r_score_key in entry:
         return entry[r_score_key]
-    #add a cache in entry to remember it's r_score
 
     scores = [
         subclaim["scores"][confidence_method] + subclaim["scores"]["noise"]
@@ -91,26 +82,37 @@ def get_r_score(entry: list, confidence_method: str, a: float):
             entry[r_score_key] = threshold
             return threshold
 
-    entry[r_score_key] = -1
-    return -100000
+    entry[r_score_key] = NO_FAILURE_R_SCORE
+    return NO_FAILURE_R_SCORE
 
 
 def compute_threshold(alpha, calibration_data, a, confidence_method):
     """
-    Computes the quantile/threshold from conformal prediction.
-    # alpha: float in (0, 1)
-    # calibration_data: calibration data
-    # a: as in paper, required fraction correct, section 4.1
-    # confidence_method: string
-    """
-    # Compute r score for each example.
-    r_scores = [get_r_score(entry, confidence_method, a) for entry in calibration_data]
+    Compute the finite-sample split-conformal threshold.
 
-    # Compute threshold for conformal prection. The quantile is ceil((n+1)*(1-alpha))/n, and
-    # We map this to the index by dropping the division by n and subtracting one (for zero-index).
-    quantile_target_index = ceil((len(r_scores) + 1) * (1 - alpha))
-    threshold = sorted(r_scores)[quantile_target_index - 1]
-    return threshold
+    When the requested quantile corresponds to the (n + 1)-th order
+    statistic, return +infinity. This is the conservative conformal
+    solution when the calibration sample is too small for the requested
+    error level.
+    """
+    if not 0 < alpha < 1:
+        raise ValueError(f"alpha must be in (0, 1), got {alpha}")
+
+    if not calibration_data:
+        raise ValueError("calibration_data must contain at least one entry")
+
+    r_scores = [
+        get_r_score(entry, confidence_method, a)
+        for entry in calibration_data
+    ]
+
+    n = len(r_scores)
+    quantile_target_index = ceil((n + 1) * (1 - alpha))
+
+    if quantile_target_index > n:
+        return np.inf
+
+    return sorted(r_scores)[quantile_target_index - 1]
 
     
 # Make sure the split calibrate_range ratio are all same not just in overall level but in group level
