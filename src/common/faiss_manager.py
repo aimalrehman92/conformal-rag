@@ -15,16 +15,18 @@ class FAISSIndexManager:
     def __init__(
         self,
         index_truncation_config,
-        dimension=3072,
+        dimension=None,
+        embedding_model="text-embedding-3-large",
         index_path="index_store/index.faiss",
         indice2fm_path="index_store/indice2fm.json",
     ):
 
         dotenv_path = os.path.join(os.getcwd(), ".env")
         load_dotenv(dotenv_path)
-        self.openaiManager = OpenAIManager()
+        self.openaiManager = None
+        self.embedding_model = embedding_model
         self.dimension = dimension
-        self.index = faiss.IndexFlatIP(dimension)
+        self.index = faiss.IndexFlatIP(dimension) if dimension is not None else None
         self.file_managers = []
         self.indice2fm = (
             {}
@@ -35,7 +37,11 @@ class FAISSIndexManager:
         # initialize index and indice2fm from saved files
         if os.path.exists(index_path):
             self.index = faiss.read_index(index_path)
-            print(f"Loaded FAISS index from {index_path}")
+            self.dimension = self.index.d
+            print(
+                f"Loaded FAISS index from {index_path} "
+                f"with dimension {self.dimension}"
+            )
 
         if os.path.exists(indice2fm_path):
             with open(indice2fm_path, "r") as file:
@@ -48,34 +54,73 @@ class FAISSIndexManager:
                     )
                 )
 
+
+    def _get_openai_manager(self):
+        """
+        Lazily initialize the OpenAI manager only when an OpenAI API call
+        is actually required.
+
+        This allows FAISS index management and offline tests to run
+        without requiring OpenAI credentials.
+        """
+        if self.openaiManager is None:
+            self.openaiManager = OpenAIManager()
+
+        return self.openaiManager
+
+
     def is_indice_align(self):
+        if self.index is None or self.index.ntotal == 0:
+            return not self.indice2fm
+
+        if not self.indice2fm:
+            return False
+
         last_index_id = self.index.ntotal - 1
-        return last_index_id == max(max(values) for values in self.indice2fm.values())
+        return last_index_id == max(
+            max(values) for values in self.indice2fm.values() if values
+        )
 
     def save_index(self, index_path, indice2fm_path):
-        if self.index:
+        if self.index is not None:
             os.makedirs(os.path.dirname(index_path), exist_ok=True)
             faiss.write_index(self.index, index_path)
             # also save file_path to indice mapping, self.indice2fm should be updated before calling this function
             with open(indice2fm_path, mode="w") as file:
                 json.dump(self.indice2fm, file, indent=4)
 
+
     def delete_index(self):
-        self.index.reset()
+        self.index = None
+        self.dimension = None
         self.indice2fm = {}
+        self.file_managers = []
+
         if os.path.exists(self.index_path):
             os.remove(self.index_path)
+
         if os.path.exists(self.indice2fm_path):
             os.remove(self.indice2fm_path)
+
         print("FAISS index deleted.")
+
 
     def upsert_file_to_faiss(
         self,
         file_manager,
-        model="text-embedding-3-large",
+        model=None,
         truncation_strategy: Optional[Union[str, bool]] = "fixed_length",
         truncate_by: Optional[str] = "\n",
     ):
+        model = model or self.embedding_model
+
+        if model != self.embedding_model:
+            raise ValueError(
+                "Embedding model mismatch: "
+                f"FAISSIndexManager is configured for '{self.embedding_model}', "
+                f"but indexing requested '{model}'."
+            )
+    
         if not file_manager.file_path in [
             file_manager.file_path for file_manager in self.file_managers
         ]:
@@ -96,15 +141,35 @@ class FAISSIndexManager:
         # Generate embeddings and append to index if not already present
         if not file_manager.file_path in self.indice2fm:
             print("Creating embedding for the document...")
-            embeddings = self.openaiManager.create_openai_embeddings(
-                file_manager.texts, model=model
+            embeddings = self._get_openai_manager().create_openai_embeddings(
+                file_manager.texts,
+                model=model,
             )
 
             # Normalize embeddings
             embeddings_np = self.normalize_embeddings(embeddings)
+
+            if embeddings_np.ndim != 2 or embeddings_np.shape[0] == 0:
+                raise ValueError("Embedding provider returned no valid embeddings.")
+
+            embedding_dimension = embeddings_np.shape[1]
+
+            if self.index is None:
+                self.dimension = embedding_dimension
+                self.index = faiss.IndexFlatIP(self.dimension)
+
+            elif self.index.d != embedding_dimension:
+                raise ValueError(
+                    "Embedding dimension mismatch: "
+                    f"FAISS index expects {self.index.d} dimensions, "
+                    f"but model '{model}' returned {embedding_dimension}."
+                )
+
             start_index = self.index.ntotal
+
             # Add embeddings to FAISS index
             self.index.add(embeddings_np)
+
             end_index = self.index.ntotal
             added_indices = list(range(start_index, end_index))
 
@@ -136,35 +201,49 @@ class FAISSIndexManager:
         truncation_strategy: Optional[Union[str, bool]] = "fixed_length",
         truncate_by: Optional[str] = "\n",
     ):
-        if self.index.ntotal == 0:
+
+        if self.index is None or self.index.ntotal == 0:
             return []
 
-        # Create a normalized embedding for the query
+        # Create a normalized embedding for the query using the same
+        # embedding model that was configured for the FAISS index.
         query_embedding = self.normalize_embeddings(
             [
-                self.openaiManager.client.embeddings.create(
-                    input=[query], model="text-embedding-3-large"
+                self._get_openai_manager().client.embeddings.create(
+                    input=[query],
+                    model=self.embedding_model,
                 )
                 .data[0]
                 .embedding
             ]
         )[0].reshape(1, -1)
 
-        # Perform the search
+        # Ensure the query embedding is compatible with the existing index.
+        if query_embedding.shape[1] != self.index.d:
+            raise ValueError(
+                "Query embedding dimension mismatch: "
+                f"FAISS index expects {self.index.d} dimensions, "
+                f"but model '{self.embedding_model}' returned "
+                f"{query_embedding.shape[1]}."
+            )
+
+        # Perform the search.
         similarity, indices = self.index.search(query_embedding, top_k)
+
         filtered_results = [
             (idx, similar)
             for idx, similar in zip(indices[0], similarity[0])
-            if similar >= threshold
+            if idx >= 0 and similar >= threshold
         ]
+
         results = []
 
-        # Reverse map indices to file paths and text
+        # Reverse map indices to file paths and text.
         for idx, dist in filtered_results:
             file_path_found = None
             relative_idx = None
 
-            # Find the file_path and relative index using self.indice2fm
+            # Find the file path and relative index using self.indice2fm.
             for file_path, indice_list in self.indice2fm.items():
                 if idx in indice_list:
                     file_path_found = file_path
@@ -172,7 +251,7 @@ class FAISSIndexManager:
                     break
 
             if file_path_found is not None and relative_idx is not None:
-                # Find the corresponding file_manager
+                # Find the corresponding FileManager.
                 file_manager = next(
                     (
                         fm
@@ -183,36 +262,35 @@ class FAISSIndexManager:
                 )
 
                 if file_manager:
-                    # Process the file if necessary
+                    # Process the file if necessary.
                     file_manager.process_document(
-                        truncation_strategy=truncation_strategy, truncate_by=truncate_by
+                        truncation_strategy=truncation_strategy,
+                        truncate_by=truncate_by,
                     )
+
                     try:
-                        # Get the text from the file_manager
-                        text = file_manager.texts[relative_idx][
-                            1
-                        ]  # Assuming (index, text) tuples in file_manager.texts
+                        # file_manager.texts contains (index, text) tuples.
+                        text = file_manager.texts[relative_idx][1]
+
                         results.append(
-                            f"{text} indice={idx} fileposition={relative_idx} score={dist:.4f}"
-                            # TODO reformat this
-                            # {
-                            #     "text": text,
-                            #     "indice": idx,
-                            #     "fileposition": relative_idx,
-                            #     "score": round(dist, 4),
-                            # }
+                            f"{text} "
+                            f"indice={idx} "
+                            f"fileposition={relative_idx} "
+                            f"score={dist:.4f}"
                         )
-                    except:
+                    except (IndexError, TypeError):
                         print(
-                            f"Error while retriving id={relative_idx} from file manager. Skipping over id={relative_idx}."
+                            f"Error while retrieving id={relative_idx} "
+                            f"from file manager. Skipping id={relative_idx}."
                         )
 
                 else:
                     results.append(
-                        f"File manager not found for '{file_path_found}' score={dist:.4f}"
+                        f"File manager not found for '{file_path_found}' "
+                        f"score={dist:.4f}"
                     )
+
             else:
-                # TODO reformat this
                 results.append(f"Index not mapped, score={dist:.4f}")
 
         return results
@@ -280,9 +358,13 @@ class FAISSIndexManager:
         ]
 
         # Generate response using OpenAI Chat API
-        response = self.openaiManager.client.chat.completions.create(
-            model=model, messages=messages, max_tokens=4096, temperature=0.7
+        response = self._get_openai_manager().client.chat.completions.create(
+            model=model,
+            messages=messages,
+            max_tokens=4096,
+            temperature=0.7,
         )
+
         return response.choices[0].message.content
 
 
