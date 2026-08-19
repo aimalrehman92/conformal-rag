@@ -32,7 +32,7 @@ def parse_args(dataset_aliases):
         choices=dataset_aliases,
     )
     parser.add_argument(
-        "--query_size", type=int, default=500, help="Override query size from config"
+        "--query_size", type=int, default=None, help="Override query size from config"
     )
     parser.add_argument("--run_id", type=str, help="Custom run identifier")
     return parser.parse_args()
@@ -60,11 +60,11 @@ def main():
     log_file, run_id = config_manager.setup_logging()
 
     # Update config with command line arguments if provided
-    if args.dataset or args.query_size:
+    if args.dataset is not None or args.query_size is not None:
         updates = {"dataset": {}}
-        if args.dataset:
+        if args.dataset is not None:
             updates["dataset"]["name"] = args.dataset
-        if args.query_size:
+        if args.query_size is not None:
             updates["dataset"]["query_size"] = args.query_size
         config_manager.update_config(updates)
 
@@ -77,27 +77,48 @@ def main():
 
     # Get the config
     config = config_manager.config
+    research_config = config_manager.normalized_config
     path_config = config_manager.path_config
     dataset_config = config_manager.dataset_config
 
     ####################################### Data and Folder Set up ############################################
-    dataset_name = config["dataset"]["name"]
-    query_size = config["dataset"]["query_size"]
-    wiki_db_file = config["dataset"]["wiki_db_file"]
 
-    delete_existing_index = config["index"]["delete_existing"]
-    embedding_model = config["index"]["embedding_model"]
-    index_truncation_config = config["index"]["truncation_config"]
+    experiment_config = research_config["experiment"]
+    dataset_runtime_config = research_config["dataset"]
+    models_config = research_config["models"]
+    index_config = research_config["index"]
+    conformal_config = research_config["conformal"]
+
+    seed = experiment_config["seed"]
+    runs = experiment_config["runs"]
+
+    dataset_name = dataset_runtime_config["name"]
+    dataset_type = dataset_runtime_config["type"]
+    query_size = dataset_runtime_config["query_size"]
+    wiki_db_file = dataset_runtime_config["wiki_db_file"]
+
+    delete_existing_index = index_config["delete_existing"]
+    embedding_model = models_config["embedding"]["name"]
+    index_truncation_config = index_config["truncation_config"]
+
     truncation_strategy = index_truncation_config["strategy"]
     truncate_by = index_truncation_config["truncate_by"]
 
-    response_model = config["rag"]["response_model"]
+    response_model = models_config["generator"]["name"]
 
-    alpha_config = config["conformal_prediction"]["conformal_alphas"]
+    alpha_config = conformal_config["alphas"]
     conformal_alphas = np.arange(
-        alpha_config["start"], alpha_config["end"], alpha_config["step"]
+        alpha_config["start"],
+        alpha_config["end"],
+        alpha_config["step"],
     )
-    a_value = config["conformal_prediction"]["a_value"]
+
+    a_value = conformal_config["a_value"]
+    split_conformal = conformal_config["split_conformal"]
+
+    logging.info(f"Experiment seed: {seed}")
+    logging.info(f"Calibration runs: {runs}")
+    logging.info(f"Dataset type: {dataset_type}")
 
     dataset_custom_config = dataset_config["datasets"].get(dataset_name)
     if not dataset_custom_config:
@@ -284,19 +305,25 @@ def main():
     )
 
     logging.info(f"Processing subclaims and generating scores")
+    subclaim_config = dict(config)
+    subclaim_config["seed"] = seed
     subclaim_with_annotation_data = process_subclaims(
         query_path=query_path,
         subclaims_path=subclaims_path,
         faiss_manager=faiss_manager,
         scorer=scorer,
-        config=config,
+        config=subclaim_config,
     )
     logging.info(f"Subclaims processed and saved to {subclaims_path}")
 
     # calibration and conformal prediction results
-    if config["conformal_prediction"]["split_conformal"]:
+    if split_conformal:
         logging.info("Running split conformal prediction")
-        conformal = SplitConformalCalibration(dataset_name=dataset_name)
+        conformal = SplitConformalCalibration(
+            dataset_name=dataset_name,
+            runs=runs,
+            seed=seed,
+        )
         logging.info(
             f"Plotting conformal removal with alphas: {conformal_alphas}, a={a_value}"
         )
@@ -322,7 +349,12 @@ def main():
 
     if group_conditional_conformal:
         logging.info("Running group conditional conformal prediction")
-        conformal = GroupConditionalConformal(dataset_name=dataset_name, result_dir=result_dir)
+        conformal = GroupConditionalConformal(
+            dataset_name=dataset_name,
+            result_dir=result_dir,
+            runs=runs,
+            seed=seed,
+        )
         logging.info(
             f"Plotting conformal removal with alphas: {conformal_alphas}, a={a_value}"
         )
