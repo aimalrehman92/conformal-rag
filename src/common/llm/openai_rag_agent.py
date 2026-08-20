@@ -7,15 +7,18 @@ from src.common.llm.llm_agent import LLMAgent
 class OpenAIRAGAgent(LLMAgent):
     def __init__(
         self,
-        faiss_manager,
-        model: str,
+        faiss_manager=None,
+        model: str = "gpt-4o-mini",
     ):
         dotenv_path = os.path.join(os.getcwd(), ".env")
         load_dotenv(dotenv_path)
-        self.instruction = "You are a helpful assistant that answers questions based on provided context."
+
+        self.instruction = (
+            "You are a helpful assistant that answers questions "
+            "based on provided context."
+        )
         self.model = model
         self.client = OpenAI()
-        self.faiss_manager = faiss_manager
 
     def answer(
         self,
