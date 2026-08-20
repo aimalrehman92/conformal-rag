@@ -1,4 +1,3 @@
-import numpy as np
 from openai import OpenAI
 from typing import List, Callable, Dict
 from langchain.schema import Document
@@ -23,6 +22,7 @@ AGGREGATION_STRATEGIES: Dict[str, Callable] = {
 SCORING_STRATEGIES: Dict[str, Callable] = {
     "product": ProductScoreStrategy,
 }
+
 
 class SubclaimScorer(IDocumentScorer):
     def __init__(
@@ -84,28 +84,16 @@ class SubclaimScorer(IDocumentScorer):
         if len(retrieved_docs) == 0:
             return 0
 
-        claim_embedding = (
-            self.faiss_manager._get_openai_manager()
-            .client.embeddings.create(
-                input=[claim],
-                model=self.embedding_model,
-            )
-        )
+        claim_embedding = self.faiss_manager.embedding_provider.embed_query(claim)
 
-        claim_vector = (
-            np.array(claim_embedding.data[0].embedding)
-            .astype("float32")
-            .reshape(1, -1)
-        )
+        claim_vector = self.faiss_manager.normalize_embeddings([claim_embedding])
 
         doc_scores = []
 
         for doc in retrieved_docs:
             parsed_doc = self.faiss_manager.parse_result(doc)
 
-            doc_embedding = self.faiss_manager.index.reconstruct(
-                parsed_doc["indice"]
-            )
+            doc_embedding = self.faiss_manager.index.reconstruct(parsed_doc["indice"])
 
             score = scoring_func.compute_score(
                 claim_vector=claim_vector,
@@ -122,38 +110,20 @@ class SubclaimScorer(IDocumentScorer):
         Compute cosine similarity between a claim embedding
         and the original query embedding.
         """
-        claim_embedding = (
-            self.faiss_manager._get_openai_manager()
-            .client.embeddings.create(
-                input=[claim],
-                model=self.embedding_model,
-            )
-        )
+        claim_embedding = self.faiss_manager.embedding_provider.embed_query(claim)
 
-        claim_vector = (
-            np.array(claim_embedding.data[0].embedding)
-            .astype("float32")
-            .reshape(1, -1)
-        )
+        claim_vector = self.faiss_manager.normalize_embeddings([claim_embedding])
 
-        query_embedding = (
-            self.faiss_manager._get_openai_manager()
-            .client.embeddings.create(
-                input=[query],
-                model=self.embedding_model,
-            )
-        )
+        query_embedding = self.faiss_manager.embedding_provider.embed_query(query)
 
-        query_vector = (
-            np.array(query_embedding.data[0].embedding)
-            .astype("float32")
-            .reshape(1, -1)
-        )
+        query_vector = self.faiss_manager.normalize_embeddings([query_embedding])
 
         score = cosine_similarity(
             claim_vector,
             query_vector,
-        )[0][0]
+        )[
+            0
+        ][0]
 
         return score
 
@@ -177,8 +147,7 @@ class SubclaimScorer(IDocumentScorer):
         )
 
         alternative_responses = [
-            choice.message.content
-            for choice in chat_responses.choices
+            choice.message.content for choice in chat_responses.choices
         ]
 
         scores = []
@@ -202,15 +171,12 @@ class SubclaimScorer(IDocumentScorer):
                 }
             ]
 
-            completion = (
-                self._get_openai_client()
-                .chat.completions.create(
-                    model=self.frequency_model,
-                    messages=messages,
-                    max_tokens=1000,
-                    temperature=0,
-                    n=1,
-                )
+            completion = self._get_openai_client().chat.completions.create(
+                model=self.frequency_model,
+                messages=messages,
+                max_tokens=1000,
+                temperature=0,
+                n=1,
             )
 
             score_response = completion.choices[0].message.content
@@ -222,7 +188,6 @@ class SubclaimScorer(IDocumentScorer):
                 print(score_response)
 
         return sum(scores) / len(scores)
-
 
     # def say_less(self, prompt, thresholds, model="gpt-4"):
     #     """
