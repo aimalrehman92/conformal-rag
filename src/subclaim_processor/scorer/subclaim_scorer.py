@@ -4,7 +4,6 @@ from typing import List, Callable, Dict
 from langchain.schema import Document
 from sklearn.metrics.pairwise import cosine_similarity
 from src.common.faiss_manager import FAISSIndexManager
-from src.common.llm.openai_atomicfact_generator import OpenAIAtomicFactGenerator
 from src.subclaim_processor.scorer.document_scorer import IDocumentScorer
 from src.subclaim_processor.strategies.aggregation import (
     AggregationStrategy,
@@ -25,24 +24,37 @@ SCORING_STRATEGIES: Dict[str, Callable] = {
     "product": ProductScoreStrategy,
 }
 
-
 class SubclaimScorer(IDocumentScorer):
     def __init__(
         self,
         index_truncation_config,
         embedding_model="text-embedding-3-large",
+        frequency_model="gpt-4o-mini",
         index_path="index_store/index.faiss",
         indice2fm_path="index_store/indice2fm.json",
     ):
         self.embedding_model = embedding_model
+        self.frequency_model = frequency_model
+
         self.faiss_manager = FAISSIndexManager(
             index_truncation_config=index_truncation_config,
             embedding_model=embedding_model,
             index_path=index_path,
             indice2fm_path=indice2fm_path,
         )
-        self.gen = OpenAIAtomicFactGenerator()
-        self.openai_client = OpenAI()
+
+        # Create the OpenAI client lazily only if frequency scoring is used.
+        self.openai_client = None
+
+    def _get_openai_client(self):
+        """
+        Lazily create the OpenAI client only when frequency scoring
+        actually requires it.
+        """
+        if self.openai_client is None:
+            self.openai_client = OpenAI()
+
+        return self.openai_client
 
     def score(
         self,
@@ -51,77 +63,97 @@ class SubclaimScorer(IDocumentScorer):
         aggregation_strategy: AggregationStrategy,
         scoring_strategy: ScoringStrategy,
     ) -> float:
-
         if aggregation_strategy not in AGGREGATION_STRATEGIES:
             raise ValueError(
                 f"Unknown aggregation strategy: {aggregation_strategy}. "
-                f"Supported strategies are: {list(AGGREGATION_STRATEGIES.keys())}"
+                f"Supported strategies are: "
+                f"{list(AGGREGATION_STRATEGIES.keys())}"
             )
-        else:
-            agg_func = AGGREGATION_STRATEGIES[aggregation_strategy]()
+
+        agg_func = AGGREGATION_STRATEGIES[aggregation_strategy]()
 
         if scoring_strategy not in SCORING_STRATEGIES:
             raise ValueError(
                 f"Unknown scoring strategy: {scoring_strategy}. "
-                f"Supported strategies are: {list(SCORING_STRATEGIES.keys())}"
+                f"Supported strategies are: "
+                f"{list(SCORING_STRATEGIES.keys())}"
             )
-        else:
-            scoring_func = SCORING_STRATEGIES[scoring_strategy]()
+
+        scoring_func = SCORING_STRATEGIES[scoring_strategy]()
 
         if len(retrieved_docs) == 0:
             return 0
 
         claim_embedding = (
-            self.faiss_manager._get_openai_manager().client.embeddings.create(
+            self.faiss_manager._get_openai_manager()
+            .client.embeddings.create(
                 input=[claim],
                 model=self.embedding_model,
             )
         )
-        
+
         claim_vector = (
-            np.array(claim_embedding.data[0].embedding).astype("float32").reshape(1, -1)
+            np.array(claim_embedding.data[0].embedding)
+            .astype("float32")
+            .reshape(1, -1)
         )
 
         doc_scores = []
+
         for doc in retrieved_docs:
             parsed_doc = self.faiss_manager.parse_result(doc)
-            doc_embedding = self.faiss_manager.index.reconstruct(parsed_doc["indice"])
+
+            doc_embedding = self.faiss_manager.index.reconstruct(
+                parsed_doc["indice"]
+            )
 
             score = scoring_func.compute_score(
                 claim_vector=claim_vector,
                 doc_embedding=doc_embedding,
                 parsed_doc=parsed_doc,
             )
+
             doc_scores.append(score)
 
-        return 0 if len(retrieved_docs) == 0 else agg_func.aggregate(doc_scores)
+        return agg_func.aggregate(doc_scores)
 
     def cosine_similarity(self, claim: str, query: str) -> float:
-        # claim score will be the maximum product of cosine similarity between the claim and the retrieved documents
-
+        """
+        Compute cosine similarity between a claim embedding
+        and the original query embedding.
+        """
         claim_embedding = (
-            self.faiss_manager._get_openai_manager().client.embeddings.create(
+            self.faiss_manager._get_openai_manager()
+            .client.embeddings.create(
                 input=[claim],
                 model=self.embedding_model,
             )
         )
 
         claim_vector = (
-            np.array(claim_embedding.data[0].embedding).astype("float32").reshape(1, -1)
+            np.array(claim_embedding.data[0].embedding)
+            .astype("float32")
+            .reshape(1, -1)
         )
 
         query_embedding = (
-            self.faiss_manager._get_openai_manager().client.embeddings.create(
+            self.faiss_manager._get_openai_manager()
+            .client.embeddings.create(
                 input=[query],
                 model=self.embedding_model,
             )
         )
-        
+
         query_vector = (
-            np.array(query_embedding.data[0].embedding).astype("float32").reshape(1, -1)
+            np.array(query_embedding.data[0].embedding)
+            .astype("float32")
+            .reshape(1, -1)
         )
 
-        score = cosine_similarity(claim_vector, query_vector)[0][0]
+        score = cosine_similarity(
+            claim_vector,
+            query_vector,
+        )[0][0]
 
         return score
 
@@ -134,33 +166,55 @@ class SubclaimScorer(IDocumentScorer):
         temperature: float,
         n_samples: int,
     ) -> float:
-        # Generate n_samples alternate outputs with temperature 1.0.
-
+        """
+        Estimate subclaim support frequency across alternative responses.
+        """
         chat_responses = response_agent.answer(
-            question, retrived_docs, temperature=temperature, n_samples=n_samples
+            question,
+            retrived_docs,
+            temperature=temperature,
+            n_samples=n_samples,
         )
+
         alternative_responses = [
-            choice.message.content for choice in chat_responses.choices
+            choice.message.content
+            for choice in chat_responses.choices
         ]
 
-        # Count the number of times the alternate outputs support the sub-claims (using LM).
         scores = []
+
         for response in alternative_responses:
             counting_prompt = (
-                "You will get a claim and piece of text. Score whether the text supports, contradicts, or is unrelated to the claim. Directly return a SCORE with no explanation or other formatting. For the SCORE, return 1 for supports, -1 for contradicts, and 0 for unrelated. The claim is:\n"
+                "You will get a claim and piece of text. "
+                "Score whether the text supports, contradicts, or is unrelated "
+                "to the claim. Directly return a SCORE with no explanation or "
+                "other formatting. For the SCORE, return 1 for supports, "
+                "-1 for contradicts, and 0 for unrelated. The claim is:\n"
                 + subclaim
                 + "\n\nThe text is:\n"
                 + response
             )
-            messages = [{"role": "user", "content": counting_prompt}]
-            completion = self.openai_client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=messages,
-                max_tokens=1000,
-                temperature=0,
-                n=1,
+
+            messages = [
+                {
+                    "role": "user",
+                    "content": counting_prompt,
+                }
+            ]
+
+            completion = (
+                self._get_openai_client()
+                .chat.completions.create(
+                    model=self.frequency_model,
+                    messages=messages,
+                    max_tokens=1000,
+                    temperature=0,
+                    n=1,
+                )
             )
+
             score_response = completion.choices[0].message.content
+
             try:
                 scores.append(int(score_response))
             except Exception as ex:
@@ -168,6 +222,7 @@ class SubclaimScorer(IDocumentScorer):
                 print(score_response)
 
         return sum(scores) / len(scores)
+
 
     # def say_less(self, prompt, thresholds, model="gpt-4"):
     #     """
