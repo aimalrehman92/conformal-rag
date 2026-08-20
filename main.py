@@ -40,7 +40,7 @@ def parse_args(dataset_aliases):
 
 def main():
     avaliable_datasets = []
-    with open("conf/dataset_config.yaml", 'r') as f:
+    with open("conf/dataset_config.yaml", "r") as f:
         dataset_config = yaml.safe_load(f)
         avaliable_datasets = list(dataset_config["datasets"].keys())
     # Parse arguments
@@ -99,6 +99,7 @@ def main():
 
     delete_existing_index = index_config["delete_existing"]
     embedding_model = models_config["embedding"]["name"]
+    frequency_model = models_config["frequency_scorer"]["name"]
     index_truncation_config = index_config["truncation_config"]
 
     truncation_strategy = index_truncation_config["strategy"]
@@ -301,10 +302,11 @@ def main():
     scorer = SubclaimScorer(
         index_truncation_config=index_truncation_config,
         embedding_model=embedding_model,
+        frequency_model=frequency_model,
         index_path=index_file_path,
         indice2fm_path=indice2fm_path,
     )
-
+    logging.info(f"Using frequency scoring model: {frequency_model}")
     logging.info(f"Processing subclaims and generating scores")
     subclaim_config = dict(config)
     subclaim_config["seed"] = seed
