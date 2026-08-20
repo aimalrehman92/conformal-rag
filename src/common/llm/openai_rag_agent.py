@@ -7,7 +7,6 @@ from src.common.llm.llm_agent import LLMAgent
 class OpenAIRAGAgent(LLMAgent):
     def __init__(
         self,
-        faiss_manager=None,
         model: str = "gpt-4o-mini",
     ):
         dotenv_path = os.path.join(os.getcwd(), ".env")
