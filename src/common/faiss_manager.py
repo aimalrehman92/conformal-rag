@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 import numpy as np
 from sklearn.preprocessing import normalize
 from src.common.file_manager import FileManager
-from src.common.llm.openai_manager import OpenAIManager
 from src.common.embedding_provider import EmbeddingProvider
 from src.common.openai_embedding_provider import OpenAIEmbeddingProvider
 
@@ -44,9 +43,6 @@ class FAISSIndexManager:
         self.embedding_provider = embedding_provider
         self.embedding_model = embedding_provider.model_name
 
-        # Retained temporarily for legacy OpenAI response-generation code.
-        self.openaiManager = None
-
         self.dimension = dimension
         self.index = faiss.IndexFlatIP(dimension) if dimension is not None else None
 
@@ -76,19 +72,6 @@ class FAISSIndexManager:
                         index_truncation_config=index_truncation_config,
                     )
                 )
-
-    def _get_openai_manager(self):
-        """
-        Lazily initialize the OpenAI manager only when an OpenAI API call
-        is actually required.
-
-        This allows FAISS index management and offline tests to run
-        without requiring OpenAI credentials.
-        """
-        if self.openaiManager is None:
-            self.openaiManager = OpenAIManager()
-
-        return self.openaiManager
 
     def is_indice_align(self):
         if self.index is None or self.index.ntotal == 0:
@@ -331,53 +314,6 @@ class FAISSIndexManager:
             }
         return parsed_item
 
-    def generate_response_from_context(self, query, retrieved_docs, model="gpt-4o"):
-        if not retrieved_docs:
-            return "No relevant documents found in the FAISS index."
-
-        # Process retrieved documents into a clean context
-        formatted_docs = []
-        for doc in retrieved_docs:
-            try:
-                # Split the document string into page_content and metadata
-                doc_parts = doc.split("metadata=")
-                page_content = doc_parts[0].replace("page_content=", "").strip()
-                metadata = (
-                    doc_parts[1].strip() if len(doc_parts) > 1 else "Unknown source"
-                )
-
-                # Format each document clearly
-                formatted_doc = f"Content: {page_content}\nSource: {metadata}"
-                formatted_docs.append(formatted_doc)
-            except Exception as e:
-                formatted_docs.append(f"Error processing document: {e}")
-
-        # Combine the formatted documents into a single context
-        context = "\n\n---\n\n".join(formatted_docs)
-
-        # Construct the prompt for the OpenAI API
-        messages = [
-            {
-                "role": "system",
-                "content": "You are a helpful assistant that answers questions based on provided context.",
-            },
-            {"role": "user", "content": query},
-            {
-                "role": "assistant",
-                "content": f"The following context was retrieved from the database:\n\n{context}",
-            },
-        ]
-
-        # Generate response using OpenAI Chat API
-        response = self._get_openai_manager().client.chat.completions.create(
-            model=model,
-            messages=messages,
-            max_tokens=4096,
-            temperature=0.7,
-        )
-
-        return response.choices[0].message.content
-
 
 def main():
     # Example Usage
@@ -393,8 +329,6 @@ def main():
     query = "tell me about corrective rag system."
     retrieved_docs = manager.search_faiss_index(query, top_k=10, threshold=0.1)
     print(retrieved_docs)
-    response = manager.generate_response_from_context(query, retrieved_docs)
-    print(response)
 
 
 if __name__ == "__main__":
