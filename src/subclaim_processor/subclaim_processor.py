@@ -28,15 +28,12 @@ def _make_stable_rng(
     The generated random values are stable across reruns and do not
     depend on the order in which entries or subclaims are processed.
     """
-    payload = (
-        f"{seed}|{purpose}|{query}|{subclaim_index}|{subclaim}"
-    ).encode("utf-8")
+    payload = (f"{seed}|{purpose}|{query}|{subclaim_index}|{subclaim}").encode("utf-8")
 
     digest = hashlib.sha256(payload).digest()
     stable_seed = int.from_bytes(digest[:8], byteorder="big")
 
     return random.Random(stable_seed)
-
 
 
 class SubclaimProcessor(IQueryProcessor):
@@ -49,13 +46,13 @@ class SubclaimProcessor(IQueryProcessor):
         scorer: IScorer,
         subclaims_file: str,
         seed: int = 42,
-        ):
-
+    ):
         self.faiss_manager = faiss_manager
-        self.response_agent = OpenAIRAGAgent(faiss_manager, model=response_model)
+        self.response_agent = OpenAIRAGAgent(model=response_model)
         self.generator = OpenAIAtomicFactGenerator(model=fact_generation_model)
         self.verifier = OpenAIClaimVerification(model=claim_verification_model)
         print(f"claim_verification_model: {claim_verification_model}")
+
         self.scorer = scorer
         self.subclaims_file = subclaims_file
         self.seed = seed
@@ -183,7 +180,7 @@ class SubclaimProcessor(IQueryProcessor):
                                 purpose="noise",
                             )
                             subclaim["scores"]["noise"] = noise_rng.gauss(0, 0.001)
-                        
+
                         if "relavance" not in subclaim["scores"].keys():
                             relavance_score = self.scorer.score(
                                 claim=subclaim["subclaim"],
@@ -238,9 +235,9 @@ class SubclaimProcessor(IQueryProcessor):
                                 subclaim=subclaim["subclaim"],
                                 subclaim_index=i,
                                 purpose="random",
-                                )
+                            )
                             subclaim["scores"]["random"] = random_rng.random()
-  
+
                         if "ordinal" not in subclaim["scores"].keys():
                             subclaim["scores"]["ordinal"] = (
                                 (i / len(entry["subclaims"]))
@@ -413,7 +410,7 @@ def process_subclaims(
         claim_verification_model,
         scorer,
         subclaims_path,
-        seed=seed
+        seed=seed,
     )
 
     # Generate subclaims if data doesn't exist
