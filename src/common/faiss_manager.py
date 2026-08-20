@@ -9,6 +9,8 @@ import numpy as np
 from sklearn.preprocessing import normalize
 from src.common.file_manager import FileManager
 from src.common.llm.openai_manager import OpenAIManager
+from src.common.embedding_provider import EmbeddingProvider
+from src.common.openai_embedding_provider import OpenAIEmbeddingProvider
 
 
 class FAISSIndexManager:
@@ -16,25 +18,45 @@ class FAISSIndexManager:
         self,
         index_truncation_config,
         dimension=None,
-        embedding_model="text-embedding-3-large",
+        embedding_model=None,
+        embedding_provider: Optional[EmbeddingProvider] = None,
         index_path="index_store/index.faiss",
         indice2fm_path="index_store/indice2fm.json",
     ):
-
         dotenv_path = os.path.join(os.getcwd(), ".env")
         load_dotenv(dotenv_path)
+
+        if embedding_provider is None:
+            resolved_model = embedding_model or "text-embedding-3-large"
+            embedding_provider = OpenAIEmbeddingProvider(
+                model_name=resolved_model,
+            )
+        elif (
+            embedding_model is not None
+            and embedding_model != embedding_provider.model_name
+        ):
+            raise ValueError(
+                "Embedding configuration mismatch: "
+                f"embedding_model='{embedding_model}' but provider uses "
+                f"'{embedding_provider.model_name}'."
+            )
+
+        self.embedding_provider = embedding_provider
+        self.embedding_model = embedding_provider.model_name
+
+        # Retained temporarily for legacy OpenAI response-generation code.
         self.openaiManager = None
-        self.embedding_model = embedding_model
+
         self.dimension = dimension
         self.index = faiss.IndexFlatIP(dimension) if dimension is not None else None
+
         self.file_managers = []
-        self.indice2fm = (
-            {}
-        )  # Mapping from file texts tracking from file_path to faiss index indices, guarantee indice in asc order
+        self.indice2fm = {}
+
         self.index_path = index_path
         self.indice2fm_path = indice2fm_path
 
-        # initialize index and indice2fm from saved files
+        # Initialize index and indice2fm from saved files.
         if os.path.exists(index_path):
             self.index = faiss.read_index(index_path)
             self.dimension = self.index.d
@@ -46,6 +68,7 @@ class FAISSIndexManager:
         if os.path.exists(indice2fm_path):
             with open(indice2fm_path, "r") as file:
                 self.indice2fm = json.load(file)
+
             for file_path, _ in self.indice2fm.items():
                 self.file_managers.append(
                     FileManager(
@@ -53,7 +76,6 @@ class FAISSIndexManager:
                         index_truncation_config=index_truncation_config,
                     )
                 )
-
 
     def _get_openai_manager(self):
         """
@@ -67,7 +89,6 @@ class FAISSIndexManager:
             self.openaiManager = OpenAIManager()
 
         return self.openaiManager
-
 
     def is_indice_align(self):
         if self.index is None or self.index.ntotal == 0:
@@ -89,7 +110,6 @@ class FAISSIndexManager:
             with open(indice2fm_path, mode="w") as file:
                 json.dump(self.indice2fm, file, indent=4)
 
-
     def delete_index(self):
         self.index = None
         self.dimension = None
@@ -103,7 +123,6 @@ class FAISSIndexManager:
             os.remove(self.indice2fm_path)
 
         print("FAISS index deleted.")
-
 
     def upsert_file_to_faiss(
         self,
@@ -120,7 +139,7 @@ class FAISSIndexManager:
                 f"FAISSIndexManager is configured for '{self.embedding_model}', "
                 f"but indexing requested '{model}'."
             )
-    
+
         if not file_manager.file_path in [
             file_manager.file_path for file_manager in self.file_managers
         ]:
@@ -141,10 +160,9 @@ class FAISSIndexManager:
         # Generate embeddings and append to index if not already present
         if not file_manager.file_path in self.indice2fm:
             print("Creating embedding for the document...")
-            embeddings = self._get_openai_manager().create_openai_embeddings(
-                file_manager.texts,
-                model=model,
-            )
+            document_texts = [text for _, text in file_manager.texts]
+
+            embeddings = self.embedding_provider.embed_documents(document_texts)
 
             # Normalize embeddings
             embeddings_np = self.normalize_embeddings(embeddings)
@@ -188,9 +206,9 @@ class FAISSIndexManager:
         if np.isnan(embeddings).any() or np.isinf(embeddings).any():
             raise ValueError("Embeddings contain NaNs or Infs.")
         embeddings_np = np.array(embeddings).astype("float32")
-        #faiss normalize give error zsh: segmentation fault python faiss manager at some edge case in hotpotqa
-        #faiss.normalize_L2(embeddings_np)
-        embeddings_normalized = normalize(embeddings_np, norm='l2', axis=1)
+        # faiss normalize give error zsh: segmentation fault python faiss manager at some edge case in hotpotqa
+        # faiss.normalize_L2(embeddings_np)
+        embeddings_normalized = normalize(embeddings_np, norm="l2", axis=1)
         return embeddings_normalized
 
     def search_faiss_index(
@@ -207,16 +225,9 @@ class FAISSIndexManager:
 
         # Create a normalized embedding for the query using the same
         # embedding model that was configured for the FAISS index.
-        query_embedding = self.normalize_embeddings(
-            [
-                self._get_openai_manager().client.embeddings.create(
-                    input=[query],
-                    model=self.embedding_model,
-                )
-                .data[0]
-                .embedding
-            ]
-        )[0].reshape(1, -1)
+        query_vector = self.embedding_provider.embed_query(query)
+
+        query_embedding = self.normalize_embeddings([query_vector])[0].reshape(1, -1)
 
         # Ensure the query embedding is compatible with the existing index.
         if query_embedding.shape[1] != self.index.d:
