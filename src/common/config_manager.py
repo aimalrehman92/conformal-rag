@@ -189,10 +189,73 @@ class ConfigManager:
                     "threshold",
                     legacy_rag_config.get("retrival_threshold", 0.3),
                 ),
-                "multi_hop": retrieval_config.get(
-                    "multi_hop",
-                    {},
-                ),
+                "multi_hop": {
+                    "max_hops": retrieval_config.get("multi_hop", {}).get(
+                        "max_hops",
+                        3,
+                    ),
+                    "accumulate_documents": retrieval_config.get(
+                        "multi_hop",
+                        {},
+                    ).get(
+                        "accumulate_documents",
+                        True,
+                    ),
+                    "stop_if_no_new_documents": retrieval_config.get(
+                        "multi_hop",
+                        {},
+                    ).get(
+                        "stop_if_no_new_documents",
+                        True,
+                    ),
+                    "query_rewriter": {
+                        "provider": retrieval_config.get(
+                            "multi_hop",
+                            {},
+                        )
+                        .get("query_rewriter", {})
+                        .get(
+                            "provider",
+                            "openai",
+                        ),
+                        "model": retrieval_config.get(
+                            "multi_hop",
+                            {},
+                        )
+                        .get("query_rewriter", {})
+                        .get(
+                            "model",
+                            "gpt-4o-mini",
+                        ),
+                        "temperature": retrieval_config.get(
+                            "multi_hop",
+                            {},
+                        )
+                        .get("query_rewriter", {})
+                        .get(
+                            "temperature",
+                            0.0,
+                        ),
+                        "max_documents": retrieval_config.get(
+                            "multi_hop",
+                            {},
+                        )
+                        .get("query_rewriter", {})
+                        .get(
+                            "max_documents",
+                            5,
+                        ),
+                        "max_chars_per_document": retrieval_config.get(
+                            "multi_hop",
+                            {},
+                        )
+                        .get("query_rewriter", {})
+                        .get(
+                            "max_chars_per_document",
+                            1200,
+                        ),
+                    },
+                },
             },
             "index": {
                 "delete_existing": index_config.get(
