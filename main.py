@@ -10,6 +10,7 @@ from src.dataloader.dataloader import DataLoader
 from src.data_processor.query_processor import QueryProcessor
 from src.common.file_manager import FileManager
 from src.common.faiss_manager import FAISSIndexManager
+from src.common.retriever_factory import create_retriever
 from src.subclaim_processor.scorer.subclaim_scorer import SubclaimScorer
 from src.subclaim_processor.subclaim_processor import process_subclaims
 from src.calibration.conformal import SplitConformalCalibration
@@ -297,6 +298,18 @@ def main():
     else:
         logging.info(f"Document '{document_path}' is already indexed")
 
+    retrieval_config = research_config["retrieval"]
+
+    logging.info(f"Initializing retrieval strategy: {retrieval_config['strategy']}")
+
+    retriever = create_retriever(
+        strategy=retrieval_config["strategy"],
+        faiss_manager=faiss_manager,
+        truncation_strategy=truncation_strategy,
+        truncate_by=truncate_by,
+        multi_hop_config=retrieval_config["multi_hop"],
+    )
+
     # generate subclaims with scores
     logging.info(f"Initializing SubclaimScorer with embedding model {embedding_model}")
     scorer = SubclaimScorer(
@@ -313,9 +326,9 @@ def main():
     subclaim_with_annotation_data = process_subclaims(
         query_path=query_path,
         subclaims_path=subclaims_path,
-        faiss_manager=faiss_manager,
         scorer=scorer,
         config=research_config,
+        retriever=retriever,
     )
 
     logging.info(f"Subclaims processed and saved to {subclaims_path}")
