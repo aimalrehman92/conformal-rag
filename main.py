@@ -306,10 +306,14 @@ def main():
         index_path=index_file_path,
         indice2fm_path=indice2fm_path,
     )
+
     logging.info(f"Using frequency scoring model: {frequency_model}")
     logging.info(f"Processing subclaims and generating scores")
+
     subclaim_config = dict(config)
     subclaim_config["seed"] = seed
+    subclaim_config["retrieval"] = research_config["retrieval"]
+
     subclaim_with_annotation_data = process_subclaims(
         query_path=query_path,
         subclaims_path=subclaims_path,
