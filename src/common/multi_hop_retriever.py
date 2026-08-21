@@ -1,23 +1,7 @@
-from typing import Optional, Protocol
+from typing import Optional
 
+from src.common.query_rewriter import QueryRewriter
 from src.common.retriever import Retriever
-
-
-class QueryRewriter(Protocol):
-    """
-    Callable interface used to generate the query for the next retrieval hop.
-
-    Implementations may use OpenAI, Hugging Face, Llama, rules, or any
-    other strategy without changing MultiHopRetriever itself.
-    """
-
-    def __call__(
-        self,
-        original_query: str,
-        current_query: str,
-        retrieved_docs: list[str],
-        next_hop: int,
-    ) -> Optional[str]: ...
 
 
 class MultiHopRetriever(Retriever):
@@ -37,7 +21,7 @@ class MultiHopRetriever(Retriever):
     def __init__(
         self,
         base_retriever: Retriever,
-        query_rewriter: QueryRewriter,
+        query_rewriter: Optional[QueryRewriter],
         max_hops: int = 3,
         accumulate_documents: bool = True,
         stop_if_no_new_documents: bool = True,
