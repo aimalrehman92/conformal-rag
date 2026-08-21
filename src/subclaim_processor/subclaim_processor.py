@@ -13,7 +13,7 @@ from src.subclaim_processor.scorer.base_scorer import IScorer
 from src.subclaim_processor.scorer.document_scorer import IDocumentScorer
 from src.calibration.utils import load_subclaim_data
 from src.common.retriever import Retriever
-from src.common.single_hop_retriever import SingleHopRetriever
+from src.common.retriever_factory import create_retriever
 
 
 def _make_stable_rng(
@@ -344,6 +344,11 @@ def process_subclaims(
 
     top_k = config["rag"]["retrival_topk"]
     threshold = config["rag"]["retrival_threshold"]
+
+    retrieval_config = config.get("retrieval", {})
+    retrieval_strategy = retrieval_config.get("strategy", "single_hop")
+    multi_hop_config = retrieval_config.get("multi_hop", {})
+
     seed = config.get("seed", 42)
     response_model = config["rag"]["response_model"]
     response_temperature = config["rag"]["response_temperature"]
@@ -399,10 +404,14 @@ def process_subclaims(
                 print(f"Subclaims data already exists in {subclaims_path}.")
                 return data
 
-    retriever = SingleHopRetriever(
+    logging.info(f"Using retrieval strategy: {retrieval_strategy}")
+
+    retriever = create_retriever(
+        strategy=retrieval_strategy,
         faiss_manager=faiss_manager,
         truncation_strategy=truncation_strategy,
         truncate_by=truncate_by,
+        multi_hop_config=multi_hop_config,
     )
 
     # Initialize processor only when needed
