@@ -342,10 +342,18 @@ def process_subclaims(
     truncation_strategy = config["index"]["truncation_config"]["strategy"]
     truncate_by = config["index"]["truncation_config"]["truncate_by"]
 
-    top_k = config["rag"]["retrival_topk"]
-    threshold = config["rag"]["retrival_threshold"]
-
     retrieval_config = config.get("retrieval", {})
+
+    top_k = retrieval_config.get(
+        "top_k",
+        config["rag"]["retrival_topk"],
+    )
+
+    threshold = retrieval_config.get(
+        "threshold",
+        config["rag"]["retrival_threshold"],
+    )
+
     retrieval_strategy = retrieval_config.get("strategy", "single_hop")
     multi_hop_config = retrieval_config.get("multi_hop", {})
 
