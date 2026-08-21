@@ -1,6 +1,7 @@
 from typing import Optional, Union
 
 from src.common.faiss_manager import FAISSIndexManager
+from src.common.multi_hop_retriever import MultiHopRetriever, QueryRewriter
 from src.common.retriever import Retriever
 from src.common.single_hop_retriever import SingleHopRetriever
 
@@ -11,48 +12,69 @@ def create_retriever(
     truncation_strategy: Optional[Union[str, bool]] = "fixed_length",
     truncate_by: Optional[str] = "\n",
     multi_hop_config: Optional[dict] = None,
+    query_rewriter: Optional[QueryRewriter] = None,
 ) -> Retriever:
     """
     Create a retrieval strategy from configuration.
 
     Args:
         strategy:
-            Retrieval strategy name. Currently supports "single_hop".
-            "multi_hop" is reserved for the upcoming implementation.
+            Retrieval strategy name. Supports "single_hop" and "multi_hop".
         faiss_manager:
-            FAISS index manager used by retrieval strategies.
+            FAISS index manager used by the base retrieval strategy.
         truncation_strategy:
-            Document-processing strategy used by the current FAISS pipeline.
+            Document-processing strategy used by the FAISS retriever.
         truncate_by:
             Delimiter used by document processing when applicable.
         multi_hop_config:
-            Configuration reserved for multi-hop retrieval.
+            Configuration for multi-hop retrieval.
+        query_rewriter:
+            Callable responsible for generating the next-hop query.
+            Required when strategy is "multi_hop" and max_hops > 1.
 
     Returns:
         Configured Retriever implementation.
 
     Raises:
-        NotImplementedError:
-            If multi-hop retrieval is requested before its implementation
-            is available.
         ValueError:
-            If an unknown retrieval strategy is requested.
+            If required configuration is missing or the strategy is unknown.
     """
     if not strategy:
         raise ValueError("A retrieval strategy must be provided.")
 
     normalized_strategy = strategy.strip().lower()
 
+    base_retriever = SingleHopRetriever(
+        faiss_manager=faiss_manager,
+        truncation_strategy=truncation_strategy,
+        truncate_by=truncate_by,
+    )
+
     if normalized_strategy == "single_hop":
-        return SingleHopRetriever(
-            faiss_manager=faiss_manager,
-            truncation_strategy=truncation_strategy,
-            truncate_by=truncate_by,
-        )
+        return base_retriever
 
     if normalized_strategy == "multi_hop":
-        raise NotImplementedError(
-            "Multi-hop retrieval is configured but has not been " "implemented yet."
+        config = multi_hop_config or {}
+
+        max_hops = config.get("max_hops", 3)
+        accumulate_documents = config.get("accumulate_documents", True)
+        stop_if_no_new_documents = config.get(
+            "stop_if_no_new_documents",
+            True,
+        )
+
+        if max_hops > 1 and query_rewriter is None:
+            raise ValueError(
+                "A query_rewriter is required for multi-hop retrieval "
+                "when max_hops is greater than 1."
+            )
+
+        return MultiHopRetriever(
+            base_retriever=base_retriever,
+            query_rewriter=query_rewriter,
+            max_hops=max_hops,
+            accumulate_documents=accumulate_documents,
+            stop_if_no_new_documents=stop_if_no_new_documents,
         )
 
     raise ValueError(
