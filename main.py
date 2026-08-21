@@ -89,6 +89,7 @@ def main():
     models_config = research_config["models"]
     index_config = research_config["index"]
     conformal_config = research_config["conformal"]
+    retrieval_config = research_config["retrieval"]
 
     seed = experiment_config["seed"]
     runs = experiment_config["runs"]
@@ -184,8 +185,13 @@ def main():
 
     subclaims_path = os.path.join(
         response_dir,
-        f"{dataset_name}_{query_size}_subclaims_with_scores_{response_model}.json",
+        (
+            f"{dataset_name}_{query_size}_"
+            f"{retrieval_config['strategy']}_"
+            f"subclaims_with_scores_{response_model}.json"
+        ),
     )
+
     CP_result_fig_path = os.path.join(
         result_dir, f"{dataset_name}_{query_size}_a={a_value:.2f}_CP_removal.png"
     )
@@ -297,8 +303,6 @@ def main():
     # Case 3: Document is already indexed
     else:
         logging.info(f"Document '{document_path}' is already indexed")
-
-    retrieval_config = research_config["retrieval"]
 
     logging.info(f"Initializing retrieval strategy: {retrieval_config['strategy']}")
 
