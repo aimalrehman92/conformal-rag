@@ -1,7 +1,9 @@
 from typing import Optional, Union
 
 from src.common.faiss_manager import FAISSIndexManager
-from src.common.multi_hop_retriever import MultiHopRetriever, QueryRewriter
+from src.common.multi_hop_retriever import MultiHopRetriever
+from src.common.openai_query_rewriter import OpenAIQueryRewriter
+from src.common.query_rewriter import QueryRewriter
 from src.common.retriever import Retriever
 from src.common.single_hop_retriever import SingleHopRetriever
 
@@ -29,15 +31,16 @@ def create_retriever(
         multi_hop_config:
             Configuration for multi-hop retrieval.
         query_rewriter:
-            Callable responsible for generating the next-hop query.
-            Required when strategy is "multi_hop" and max_hops > 1.
+            Optional preconstructed query rewriter. This is useful for
+            testing or for injecting a non-OpenAI implementation.
 
     Returns:
         Configured Retriever implementation.
 
     Raises:
         ValueError:
-            If required configuration is missing or the strategy is unknown.
+            If configuration is invalid or an unsupported strategy or
+            query-rewriter provider is requested.
     """
     if not strategy:
         raise ValueError("A retrieval strategy must be provided.")
@@ -64,10 +67,33 @@ def create_retriever(
         )
 
         if max_hops > 1 and query_rewriter is None:
-            raise ValueError(
-                "A query_rewriter is required for multi-hop retrieval "
-                "when max_hops is greater than 1."
-            )
+            rewriter_config = config.get("query_rewriter", {})
+            provider = rewriter_config.get("provider", "openai").strip().lower()
+
+            if provider == "openai":
+                query_rewriter = OpenAIQueryRewriter(
+                    model=rewriter_config.get(
+                        "model",
+                        "gpt-4o-mini",
+                    ),
+                    temperature=rewriter_config.get(
+                        "temperature",
+                        0.0,
+                    ),
+                    max_documents=rewriter_config.get(
+                        "max_documents",
+                        5,
+                    ),
+                    max_chars_per_document=rewriter_config.get(
+                        "max_chars_per_document",
+                        1200,
+                    ),
+                )
+            else:
+                raise ValueError(
+                    f"Unsupported query rewriter provider: '{provider}'. "
+                    "Currently supported providers are: openai."
+                )
 
         return MultiHopRetriever(
             base_retriever=base_retriever,
