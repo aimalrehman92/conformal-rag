@@ -336,7 +336,6 @@ def process_subclaims(
     scorer,
     config,
     retriever: Retriever,
-    faiss_manager=None,
 ):
 
     retrieval_config = config["retrieval"]
