@@ -348,6 +348,28 @@ def process_subclaims(
     retrieval_strategy = retrieval_config["strategy"]
     multi_hop_config = retrieval_config["multi_hop"]
 
+    experiment_config = config["experiment"]
+    seed = experiment_config["seed"]
+
+    models_config = config["models"]
+
+    response_model = models_config["generator"]["name"]
+    response_temperature = models_config["generator"]["temperature"]
+    fact_generation_model = models_config["claim_decomposer"]["name"]
+    claim_verification_model = models_config["claim_verifier"]["name"]
+
+    conformal_config = config["conformal"]
+    aggregation_strategy = conformal_config["aggregation_strategy"]
+    scoring_strategy = conformal_config["scoring_strategy"]
+
+    truncate_by = config["index"]["truncation_config"]["truncate_by"]
+
+    retrieval_config = config["retrieval"]
+    top_k = retrieval_config["top_k"]
+    threshold = retrieval_config["threshold"]
+    retrieval_strategy = retrieval_config["strategy"]
+    multi_hop_config = retrieval_config["multi_hop"]
+
     seed = config.get("seed", 42)
     response_model = config["rag"]["response_model"]
     response_temperature = config["rag"]["response_temperature"]
