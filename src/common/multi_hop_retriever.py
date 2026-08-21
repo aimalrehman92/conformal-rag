@@ -1,3 +1,4 @@
+import re
 from typing import Optional
 
 from src.common.query_rewriter import QueryRewriter
@@ -47,6 +48,22 @@ class MultiHopRetriever(Retriever):
         """
         return " ".join(query.strip().lower().split())
 
+    @staticmethod
+    def _document_identity(document: str) -> str:
+        """
+        Return a stable identity for a retrieved document.
+
+        FAISS retrieval currently appends a similarity score to the
+        document string. The score may change across hops even when the
+        underlying document is identical, so it must not participate in
+        deduplication.
+        """
+        return re.sub(
+            r"\s+score=[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?\s*$",
+            "",
+            document,
+        ).strip()
+
     def retrieve(
         self,
         query: str,
@@ -84,10 +101,16 @@ class MultiHopRetriever(Retriever):
                 threshold=threshold,
             )
 
-            new_documents = [doc for doc in retrieved_docs if doc not in seen_documents]
+            new_documents = []
 
-            for doc in new_documents:
-                seen_documents.add(doc)
+            for doc in retrieved_docs:
+                document_identity = self._document_identity(doc)
+
+                if document_identity in seen_documents:
+                    continue
+
+                seen_documents.add(document_identity)
+                new_documents.append(doc)
 
             if self.accumulate_documents:
                 accumulated_documents.extend(new_documents)
