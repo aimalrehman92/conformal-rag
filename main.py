@@ -310,17 +310,14 @@ def main():
     logging.info(f"Using frequency scoring model: {frequency_model}")
     logging.info(f"Processing subclaims and generating scores")
 
-    subclaim_config = dict(config)
-    subclaim_config["seed"] = seed
-    subclaim_config["retrieval"] = research_config["retrieval"]
-
     subclaim_with_annotation_data = process_subclaims(
         query_path=query_path,
         subclaims_path=subclaims_path,
         faiss_manager=faiss_manager,
-        scorer=scorer,
-        config=subclaim_config,
+        scorer=subclaim_scorer,
+        config=research_config,
     )
+
     logging.info(f"Subclaims processed and saved to {subclaims_path}")
 
     # calibration and conformal prediction results
