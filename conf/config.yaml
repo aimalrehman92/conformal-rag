@@ -25,6 +25,25 @@ rag:
   fact_generation_model: "gpt-4o-mini"  
 
 
+# Research retrieval configuration
+retrieval:
+  strategy: "single_hop"  # Options: single_hop, multi_hop
+  top_k: 10
+  threshold: 0.3
+
+  multi_hop:
+    max_hops: 3
+    accumulate_documents: true
+    stop_if_no_new_documents: true
+
+    query_rewriter:
+      provider: "openai"
+      model: "gpt-4o-mini"
+      temperature: 0.0
+      max_documents: 5
+      max_chars_per_document: 1200
+
+
 # Prediction configuration
 conformal_prediction:
   aggregation_strategy: "mean"
