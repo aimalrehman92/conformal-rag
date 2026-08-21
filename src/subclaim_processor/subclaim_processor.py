@@ -5,6 +5,7 @@ import hashlib
 import logging
 from tqdm import tqdm
 from jsonschema import validate
+from typing import Optional
 from src.subclaim_processor.query_processor import IQueryProcessor
 from src.common.llm.openai_rag_agent import OpenAIRAGAgent
 from src.common.llm.openai_atomicfact_generator import OpenAIAtomicFactGenerator
@@ -337,6 +338,7 @@ def process_subclaims(
     faiss_manager,
     scorer,
     config,
+    retriever: Optional[Retriever] = None,
 ):
 
     truncation_strategy = config["index"]["truncation_config"]["strategy"]
@@ -361,25 +363,6 @@ def process_subclaims(
     conformal_config = config["conformal"]
     aggregation_strategy = conformal_config["aggregation_strategy"]
     scoring_strategy = conformal_config["scoring_strategy"]
-
-    truncate_by = config["index"]["truncation_config"]["truncate_by"]
-
-    retrieval_config = config["retrieval"]
-    top_k = retrieval_config["top_k"]
-    threshold = retrieval_config["threshold"]
-    retrieval_strategy = retrieval_config["strategy"]
-    multi_hop_config = retrieval_config["multi_hop"]
-
-    seed = config.get("seed", 42)
-    response_model = config["rag"]["response_model"]
-    response_temperature = config["rag"]["response_temperature"]
-    fact_generation_model = config["rag"]["fact_generation_model"]
-
-    aggregation_strategy = config["conformal_prediction"]["aggregation_strategy"]
-    scoring_strategy = config["conformal_prediction"]["scoring_strategy"]
-    claim_verification_model = config["conformal_prediction"][
-        "claim_verification_model"
-    ]
 
     # Check if the file exists and load it if it does
     data = None
@@ -425,15 +408,18 @@ def process_subclaims(
                 print(f"Subclaims data already exists in {subclaims_path}.")
                 return data
 
-    logging.info(f"Using retrieval strategy: {retrieval_strategy}")
+    if retriever is None:
+        logging.info(f"Creating retrieval strategy: {retrieval_strategy}")
 
-    retriever = create_retriever(
-        strategy=retrieval_strategy,
-        faiss_manager=faiss_manager,
-        truncation_strategy=truncation_strategy,
-        truncate_by=truncate_by,
-        multi_hop_config=multi_hop_config,
-    )
+        retriever = create_retriever(
+            strategy=retrieval_strategy,
+            faiss_manager=faiss_manager,
+            truncation_strategy=truncation_strategy,
+            truncate_by=truncate_by,
+            multi_hop_config=multi_hop_config,
+        )
+    else:
+        logging.info(f"Using injected retriever: {retriever.__class__.__name__}")
 
     # Initialize processor only when needed
     processor = SubclaimProcessor(
