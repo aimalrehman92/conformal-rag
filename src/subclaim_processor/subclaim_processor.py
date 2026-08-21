@@ -3,7 +3,6 @@ import json
 import random
 import hashlib
 import logging
-from typing import Union, Optional
 from tqdm import tqdm
 from jsonschema import validate
 from src.subclaim_processor.query_processor import IQueryProcessor
@@ -13,6 +12,8 @@ from src.common.llm.openai_claim_verification import OpenAIClaimVerification
 from src.subclaim_processor.scorer.base_scorer import IScorer
 from src.subclaim_processor.scorer.document_scorer import IDocumentScorer
 from src.calibration.utils import load_subclaim_data
+from src.common.retriever import Retriever
+from src.common.single_hop_retriever import SingleHopRetriever
 
 
 def _make_stable_rng(
@@ -39,7 +40,7 @@ def _make_stable_rng(
 class SubclaimProcessor(IQueryProcessor):
     def __init__(
         self,
-        faiss_manager,
+        retriever: Retriever,
         response_model: str,
         fact_generation_model: str,
         claim_verification_model: str,
@@ -47,7 +48,7 @@ class SubclaimProcessor(IQueryProcessor):
         subclaims_file: str,
         seed: int = 42,
     ):
-        self.faiss_manager = faiss_manager
+        self.retriever = retriever
         self.response_agent = OpenAIRAGAgent(model=response_model)
         self.generator = OpenAIAtomicFactGenerator(model=fact_generation_model)
         self.verifier = OpenAIClaimVerification(model=claim_verification_model)
@@ -68,8 +69,6 @@ class SubclaimProcessor(IQueryProcessor):
         top_k: int,
         threshold: float,
         response_temperature: float = 0.7,
-        truncation_strategy: Optional[Union[str, bool]] = "fixed_length",
-        truncate_by: Optional[str] = "\n",
     ):
         """Generate responses for queries"""
         # Read queries
@@ -82,12 +81,10 @@ class SubclaimProcessor(IQueryProcessor):
             groups = query.get("groups", [])
 
             # Document retrieval
-            retrieved_docs = self.faiss_manager.search_faiss_index(
-                question,
+            retrieved_docs = self.retriever.retrieve(
+                query=question,
                 top_k=top_k,
                 threshold=threshold,
-                truncation_strategy=truncation_strategy,
-                truncate_by=truncate_by,
             )
 
             # Generate response
@@ -402,9 +399,15 @@ def process_subclaims(
                 print(f"Subclaims data already exists in {subclaims_path}.")
                 return data
 
+    retriever = SingleHopRetriever(
+        faiss_manager=faiss_manager,
+        truncation_strategy=truncation_strategy,
+        truncate_by=truncate_by,
+    )
+
     # Initialize processor only when needed
     processor = SubclaimProcessor(
-        faiss_manager,
+        retriever,
         response_model,
         fact_generation_model,
         claim_verification_model,
@@ -420,8 +423,6 @@ def process_subclaims(
             top_k=top_k,
             threshold=threshold,
             response_temperature=response_temperature,
-            truncation_strategy=truncation_strategy,
-            truncate_by=truncate_by,
         )
         processor.get_subclaims_from_responses()
         processor.score_subclaim(
