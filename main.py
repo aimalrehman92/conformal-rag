@@ -314,7 +314,7 @@ def main():
         query_path=query_path,
         subclaims_path=subclaims_path,
         faiss_manager=faiss_manager,
-        scorer=subclaim_scorer,
+        scorer=scorer,
         config=research_config,
     )
 
