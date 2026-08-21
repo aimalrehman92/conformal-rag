@@ -5,7 +5,6 @@ import hashlib
 import logging
 from tqdm import tqdm
 from jsonschema import validate
-from typing import Optional
 from src.subclaim_processor.query_processor import IQueryProcessor
 from src.common.llm.openai_rag_agent import OpenAIRAGAgent
 from src.common.llm.openai_atomicfact_generator import OpenAIAtomicFactGenerator
@@ -14,7 +13,6 @@ from src.subclaim_processor.scorer.base_scorer import IScorer
 from src.subclaim_processor.scorer.document_scorer import IDocumentScorer
 from src.calibration.utils import load_subclaim_data
 from src.common.retriever import Retriever
-from src.common.retriever_factory import create_retriever
 
 
 def _make_stable_rng(
@@ -335,20 +333,15 @@ class SubclaimProcessor(IQueryProcessor):
 def process_subclaims(
     query_path,
     subclaims_path,
-    faiss_manager,
     scorer,
     config,
-    retriever: Optional[Retriever] = None,
+    retriever: Retriever,
+    faiss_manager=None,
 ):
-
-    truncation_strategy = config["index"]["truncation_config"]["strategy"]
-    truncate_by = config["index"]["truncation_config"]["truncate_by"]
 
     retrieval_config = config["retrieval"]
     top_k = retrieval_config["top_k"]
     threshold = retrieval_config["threshold"]
-    retrieval_strategy = retrieval_config["strategy"]
-    multi_hop_config = retrieval_config["multi_hop"]
 
     experiment_config = config["experiment"]
     seed = experiment_config["seed"]
@@ -409,17 +402,9 @@ def process_subclaims(
                 return data
 
     if retriever is None:
-        logging.info(f"Creating retrieval strategy: {retrieval_strategy}")
+        raise ValueError("A retriever must be provided.")
 
-        retriever = create_retriever(
-            strategy=retrieval_strategy,
-            faiss_manager=faiss_manager,
-            truncation_strategy=truncation_strategy,
-            truncate_by=truncate_by,
-            multi_hop_config=multi_hop_config,
-        )
-    else:
-        logging.info(f"Using injected retriever: {retriever.__class__.__name__}")
+    logging.info(f"Using retriever: {retriever.__class__.__name__}")
 
     # Initialize processor only when needed
     processor = SubclaimProcessor(
