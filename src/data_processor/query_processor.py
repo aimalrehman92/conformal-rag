@@ -83,17 +83,19 @@ class QueryProcessor(IRawDataProcessor):
 
         # Sample queries if needed
         if self.query_size and self.query_size != -1 and len(queries) > self.query_size:
-            random.seed(seed)
+            rng = random.Random(seed)
             if "groups" in queries[0]:
                 # Build group-to-queries mapping
                 group_to_queries = defaultdict(list)
                 for item in queries:
                     for group in item.get("groups", []):
                         group_to_queries[group].append(item)
-                
+
                 # Sort base on group size ascending
                 group_sizes = {g: len(qs) for g, qs in group_to_queries.items()}
-                sorted_groups = sorted(group_sizes.items(), key=lambda x: x[1])  # (group, count)
+                sorted_groups = sorted(
+                    group_sizes.items(), key=lambda x: x[1]
+                )  # (group, count)
 
                 remaining_size = self.query_size
                 group_allocation = {}
@@ -104,7 +106,11 @@ class QueryProcessor(IRawDataProcessor):
                 # First pass: allocate full group if it's too small
                 remaining_groups = []
                 for group, size in sorted_groups:
-                    fair_share = remaining_size // (len(sorted_groups) - len(group_allocation)) if (len(sorted_groups) - len(group_allocation)) > 0 else 0
+                    fair_share = (
+                        remaining_size // (len(sorted_groups) - len(group_allocation))
+                        if (len(sorted_groups) - len(group_allocation)) > 0
+                        else 0
+                    )
                     if size <= fair_share:
                         group_allocation[group] = size
                         remaining_size -= size
@@ -113,7 +119,10 @@ class QueryProcessor(IRawDataProcessor):
 
                 # Second pass: fair allocation among remaining groups
                 for group in remaining_groups:
-                    fair_share = remaining_size // (len(remaining_groups) - len([g for g in group_allocation if g in remaining_groups]))
+                    fair_share = remaining_size // (
+                        len(remaining_groups)
+                        - len([g for g in group_allocation if g in remaining_groups])
+                    )
                     allocated = min(fair_share, group_sizes[group])
                     group_allocation[group] = allocated
                     remaining_size -= allocated
@@ -121,11 +130,11 @@ class QueryProcessor(IRawDataProcessor):
                 # Now sample
                 sampled = []
                 for group, count in group_allocation.items():
-                    sampled.extend(random.sample(group_to_queries[group], count))  
-                self.queries = sampled              
-             
+                    sampled.extend(rng.sample(group_to_queries[group], count))
+                self.queries = sampled
+
             else:
-                self.queries = random.sample(queries, self.query_size)
+                self.queries = rng.sample(queries, self.query_size)
 
             # Write the sampled queries back to the output file
             query_path = os.path.join(
