@@ -4,6 +4,7 @@ import logging
 import datetime
 import json
 import shutil
+import hashlib
 from pathlib import Path
 
 
@@ -291,6 +292,27 @@ class ConfigManager:
                 ),
             },
         }
+
+    @staticmethod
+    def fingerprint(config_fragment: dict, length: int = 12) -> str:
+        """
+        Create a deterministic short fingerprint for a configuration fragment.
+
+        Dictionary key ordering does not affect the result. The caller should
+        provide only the settings that are relevant to the artifact being cached.
+        """
+        if length < 1:
+            raise ValueError("Fingerprint length must be at least 1.")
+
+        canonical_json = json.dumps(
+            config_fragment,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+        )
+
+        digest = hashlib.sha256(canonical_json.encode("utf-8")).hexdigest()
+        return digest[:length]
 
     def save_config(self, output_path=None):
         """
