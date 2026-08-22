@@ -268,6 +268,7 @@ def main():
         input_file=input_file,
         output_dir=processed_data_dir,
         output_file=query_output_file,
+        seed=seed,
     )
     logging.info(f"Query size: {len(queries)}")
 
