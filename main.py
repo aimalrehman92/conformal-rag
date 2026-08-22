@@ -229,7 +229,7 @@ def main():
     subclaims_path = os.path.join(
         response_dir,
         (
-            f"{dataset_name}_{query_size}_"
+            f"{dataset_name}_{query_size}_seed_{seed}_"
             f"{retrieval_config['strategy']}_"
             f"subclaims_with_scores_{response_model}.json"
         ),
