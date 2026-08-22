@@ -23,6 +23,7 @@ class QueryProcessor(IRawDataProcessor):
         self.db = DocDB(db_path=db_path, data_path=None)
         self.dataset = None
         self.query_size = query_size
+        self.sample_seed = None
         self.processors = {
             "fact_score": FactScoreProcessor(),
             "hotpot_qa": HotpotQAProcessor(),
@@ -54,6 +55,7 @@ class QueryProcessor(IRawDataProcessor):
         """
         self.dataset = dataset
         self.input_file = input_file
+        self.sample_seed = seed
 
         # Case 1: Output file already exists - load instead of process
         query_path = os.path.join(output_dir, output_file)
@@ -138,7 +140,8 @@ class QueryProcessor(IRawDataProcessor):
 
             # Write the sampled queries back to the output file
             query_path = os.path.join(
-                output_dir, f"sampled_{self.query_size}_{output_file}"
+                output_dir,
+                f"sampled_{self.query_size}_seed_{seed}_{output_file}",
             )
             with open(query_path, "w", encoding="utf-8") as jsonfile:
                 json.dump(self.queries, jsonfile, indent=4)
@@ -167,8 +170,15 @@ class QueryProcessor(IRawDataProcessor):
         os.makedirs(output_dir, exist_ok=True)
 
         # Construct output path
+        if self.sample_seed is None:
+            raise RuntimeError(
+                "get_queries() must be called before get_documents() "
+                "so the sampling seed is known."
+            )
+
         output_path = os.path.join(
-            output_dir, f"sampled_{self.query_size}_{output_file}"
+            output_dir,
+            f"sampled_{self.query_size}_seed_{self.sample_seed}_{output_file}",
         )
 
         # Return if output file already exists
