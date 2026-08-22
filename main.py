@@ -281,15 +281,26 @@ def main():
     )
     logging.info(f"Documents saved to {document_path}")
 
+    index_cache_config = {
+        "dataset": dataset_runtime_config,
+        "seed": seed,
+        "embedding": models_config["embedding"],
+        "truncation_config": index_truncation_config,
+    }
+
+    index_fingerprint = ConfigManager.fingerprint(index_cache_config)
+
+    logging.info(f"Index configuration fingerprint: {index_fingerprint}")
+
     # Index creation and retrieval
     os.makedirs(index_store_dir, exist_ok=True)
     index_file_path = os.path.join(
         index_store_dir,
-        f"index_{query_size}_seed_{seed}.faiss",
+        f"index_{index_fingerprint}.faiss",
     )
     indice2fm_path = os.path.join(
         index_store_dir,
-        f"indice2fm_{query_size}_seed_{seed}.json",
+        f"indice2fm_{index_fingerprint}.json",
     )
 
     logging.info(f"Setting up FAISS index manager")
