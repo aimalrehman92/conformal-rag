@@ -1,8 +1,11 @@
+import logging
 import re
 from typing import Optional
 
 from src.common.query_rewriter import QueryRewriter
 from src.common.retriever import Retriever
+
+logger = logging.getLogger(__name__)
 
 
 class MultiHopRetriever(Retriever):
@@ -77,6 +80,7 @@ class MultiHopRetriever(Retriever):
         Documents are deduplicated across hops while preserving their
         first-seen order.
         """
+
         if not query or not query.strip():
             raise ValueError("A non-empty query must be provided.")
 
@@ -88,9 +92,22 @@ class MultiHopRetriever(Retriever):
         accumulated_documents = []
 
         for hop_index in range(self.max_hops):
+            hop_number = hop_index + 1
+
+            logger.info(
+                "Multi-hop retrieval hop %d/%d: query=%r",
+                hop_number,
+                self.max_hops,
+                current_query,
+            )
+
             normalized_query = self._normalize_query(current_query)
 
             if normalized_query in seen_queries:
+                logger.info(
+                    "Multi-hop retrieval stopped at hop %d: repeated query.",
+                    hop_number,
+                )
                 break
 
             seen_queries.add(normalized_query)
@@ -99,6 +116,12 @@ class MultiHopRetriever(Retriever):
                 query=current_query,
                 top_k=top_k,
                 threshold=threshold,
+            )
+
+            logger.info(
+                "Multi-hop retrieval hop %d: retrieved %d document(s).",
+                hop_number,
+                len(retrieved_docs),
             )
 
             new_documents = []
@@ -112,6 +135,12 @@ class MultiHopRetriever(Retriever):
                 seen_documents.add(document_identity)
                 new_documents.append(doc)
 
+            logger.info(
+                "Multi-hop retrieval hop %d: %d new document(s).",
+                hop_number,
+                len(new_documents),
+            )
+
             if self.accumulate_documents:
                 accumulated_documents.extend(new_documents)
             else:
@@ -120,9 +149,17 @@ class MultiHopRetriever(Retriever):
             is_last_hop = hop_index == self.max_hops - 1
 
             if is_last_hop:
+                logger.info(
+                    "Multi-hop retrieval stopped: reached max_hops=%d.",
+                    self.max_hops,
+                )
                 break
 
             if self.stop_if_no_new_documents and not new_documents:
+                logger.info(
+                    "Multi-hop retrieval stopped after hop %d: no new documents.",
+                    hop_number,
+                )
                 break
 
             next_query = self.query_rewriter(
@@ -132,10 +169,26 @@ class MultiHopRetriever(Retriever):
                 next_hop=hop_index + 2,
             )
 
+            logger.info(
+                "Multi-hop retrieval hop %d: next query=%r",
+                hop_number,
+                next_query,
+            )
+
             if next_query is None or not next_query.strip():
+                logger.info(
+                    "Multi-hop retrieval stopped after hop %d: "
+                    "query rewriter requested stop.",
+                    hop_number,
+                )
                 break
 
             if self._normalize_query(next_query) in seen_queries:
+                logger.info(
+                    "Multi-hop retrieval stopped after hop %d: "
+                    "next query repeats a previous query.",
+                    hop_number,
+                )
                 break
 
             current_query = next_query
