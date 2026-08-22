@@ -45,3 +45,13 @@ dist/
 # Model / experiment caches
 .cache/
 .cache/*
+
+# Generated retrieval indexes and runtime logs
+index_store/
+logs/
+
+# Generated sampled dataset subsets
+data/processed/*/sampled_*
+
+# Generated pipeline outputs
+data/out/*/*_subclaims_with_scores_*.json
