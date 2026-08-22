@@ -2,6 +2,7 @@ import os
 import argparse
 import numpy as np
 import logging
+import sqlite3
 import yaml
 from pathlib import Path
 
@@ -37,6 +38,45 @@ def parse_args(dataset_aliases):
     )
     parser.add_argument("--run_id", type=str, help="Custom run identifier")
     return parser.parse_args()
+
+
+def validate_wiki_db_schema(wiki_db_path: str) -> None:
+    """
+    Validate that the configured WikiDB is a readable SQLite database
+    with the documents(title, text) schema expected by the pipeline.
+    """
+    required_columns = {"title", "text"}
+    database_uri = Path(wiki_db_path).resolve().as_uri() + "?mode=ro"
+
+    try:
+        connection = sqlite3.connect(database_uri, uri=True)
+
+        try:
+            table_info = connection.execute("PRAGMA table_info(documents)").fetchall()
+        finally:
+            connection.close()
+
+    except sqlite3.DatabaseError as exc:
+        raise ValueError(
+            f"Configured WikiDB at '{wiki_db_path}' is not a valid "
+            "readable SQLite database."
+        ) from exc
+
+    if not table_info:
+        raise ValueError(
+            f"Configured WikiDB at '{wiki_db_path}' does not contain "
+            "the required 'documents' table."
+        )
+
+    columns = {row[1] for row in table_info}
+    missing_columns = required_columns - columns
+
+    if missing_columns:
+        missing = ", ".join(sorted(missing_columns))
+        raise ValueError(
+            f"Configured WikiDB at '{wiki_db_path}' has an invalid "
+            f"'documents' schema. Missing column(s): {missing}."
+        )
 
 
 def main():
@@ -162,18 +202,21 @@ def main():
         data_loader.load_qa_data(output_path=raw_data_path)
         logging.info(f"Data loaded and saved to {raw_data_path}")
 
-    # create wiki db if needed
-    if not os.path.exists(wiki_db_path) or not os.path.isfile(wiki_db_path):
-        wiki_source = os.path.join(
-            path_config["paths"]["wiki_db_dir"],
-            "enwiki-20171001-pages-meta-current-withlinks-abstracts",
+    # Require the explicitly configured WikiDB.
+    #
+    # Do not silently build a database from a hard-coded Wikipedia snapshot:
+    # the corpus version is part of the experimental configuration and must be
+    # supplied explicitly for reproducible runs.
+    if not os.path.isfile(wiki_db_path):
+        raise FileNotFoundError(
+            "Configured WikiDB not found at "
+            f"'{wiki_db_path}'. "
+            "Provide the intended SQLite WikiDB before running the experiment. "
+            "The database must use the repository's documents(title, text) schema."
         )
-        if not os.path.exists(wiki_source):
-            raise FileNotFoundError(f"Wiki source data not found at {wiki_source}")
-        logging.info(f"Wiki DB not found. Creating from source {wiki_source}")
-        data_loader = DataLoader(dataset_name)
-        data_loader.create_wiki_db(source_path=wiki_source, output_path=wiki_db_path)
-        logging.info(f"Wiki DB created at {wiki_db_path}")
+
+    validate_wiki_db_schema(wiki_db_path)
+    logging.info(f"Using validated WikiDB: {wiki_db_path}")
 
     # Process queries and documents
     input_file = raw_data_path
