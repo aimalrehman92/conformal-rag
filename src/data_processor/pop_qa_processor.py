@@ -32,20 +32,25 @@ class PopQAProcessor(DatasetProcessor):
     def process_documents(
         self, query_file: str, db: DocDB, queries: dict = None, **kwargs
     ) -> dict:
+        """
+        Retrieve Wikipedia documents for PopQA queries.
+
+        If sampled queries are supplied explicitly, use them directly.
+        Otherwise, load queries from query_file.
+        """
         documents = {}
-        # if sampled queries are provided, use them instead of the queries in the query_file
-        # however, for medlfqa, the query file is mandatory
+
         if queries is None:
             with open(query_file, "r", encoding="utf-8") as jsonfile:
                 queries = json.load(jsonfile)
 
-        with open(query_file, "r", encoding="utf-8") as jsonfile:
-            queries = json.load(jsonfile)
-            for query in queries:
-                title = query["output"]["provenance"][0]["title"]
-                if title not in documents:
-                    document = self._get_documents_per_query(title, db)
-                    documents[title] = document
+        for query in queries:
+            title = query["output"]["provenance"][0]["title"]
+
+            if title not in documents:
+                document = self._get_documents_per_query(title, db)
+                documents[title] = document
+
         return documents
 
     def _get_documents_per_query(self, title: str, db: DocDB) -> list:
