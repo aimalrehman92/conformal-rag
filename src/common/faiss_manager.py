@@ -270,7 +270,7 @@ class FAISSIndexManager:
                             f"{text} "
                             f"indice={idx} "
                             f"fileposition={relative_idx} "
-                            f"score={dist:.4f}"
+                            f"score={float(dist)!r}"
                         )
                     except (IndexError, TypeError):
                         print(
@@ -281,11 +281,11 @@ class FAISSIndexManager:
                 else:
                     results.append(
                         f"File manager not found for '{file_path_found}' "
-                        f"score={dist:.4f}"
+                        f"score={float(dist)!r}"
                     )
 
             else:
-                results.append(f"Index not mapped, score={dist:.4f}")
+                results.append(f"Index not mapped, score={float(dist)!r}")
 
         return results
 
@@ -296,9 +296,11 @@ class FAISSIndexManager:
         # Parse the input
         parsed_item = None
         pattern = re.compile(
-            r"page_content='(.*?)'\smetadata=(\{.*?\})\sindice=(\d+)\sfileposition=(\d+)\sscore=([\d.]+)",
+            r"page_content='(.*?)'\smetadata=(\{.*?\})\sindice=(\d+)\sfileposition=(\d+)\s"
+            r"score=([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)",
             re.DOTALL,
         )
+
         matches = pattern.findall(result)
         # assume only 1 row with matched pattern will be feed in each time, only remain last item
         for match in matches:
