@@ -1,11 +1,12 @@
 import os
 import re
-import ast
 import bz2
 import sqlite3
 import json
 from collections import defaultdict
 from datasets import load_dataset
+from transformers import RobertaTokenizer
+from src.rag.retrieval import MAX_LENGTH, SPECIAL_SEPARATOR
 
 
 class DataLoader:
@@ -29,66 +30,143 @@ class DataLoader:
 
     def create_wiki_db(
         self,
-        source_path: str = "data/raw/WikiDB/enwiki-20171001-pages-meta-current-withlinks-abstracts",
-        output_path: str = "data/raw/WikiDB/enwiki_20190113.db",
+        source_path: str,
+        output_path: str,
     ):
-        "Create a SQLite database from the Wikipedia dump data."
+        """
+        Create the canonical WikiDB expected by DocDB.
+
+        The source must be an explicit directory containing the compressed
+        Wikipedia JSONL files. The output uses the repository's canonical
+        documents(title, text) SQLite schema.
+
+        Wikipedia text is tokenized and chunked using the same RoBERTa-based
+        representation as DocDB.build_db(), including SPECIAL_SEPARATOR between
+        passages.
+        """
 
         if os.path.exists(output_path):
-            print(f"Database already exists at {output_path}.")
-            return
-
-        if not os.path.exists(source_path):
-            raise FileNotFoundError(f"Source path {source_path} not found.")
-        else:
-            print(f"Reading data from {source_path}")
-            # Create a connection to the SQLite database
-            conn = sqlite3.connect(output_path)
-            cursor = conn.cursor()
-
-            # Create a table to store the content
-            cursor.execute("""DROP TABLE IF EXISTS wiki_content""")
-            cursor.execute(
-                """
-            CREATE TABLE IF NOT EXISTS wiki_content (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                title TEXT,
-                url TEXT,
-                text TEXT
-            )
-            """
+            raise FileExistsError(
+                f"Refusing to overwrite existing database at '{output_path}'."
             )
 
-            # Iterate through each bz2 file in the folder
-            for folder in os.listdir(source_path):
-                folder_path = f"{source_path}/{folder}"
-                for file_name in os.listdir(folder_path):
-                    if file_name.endswith(".bz2"):
-                        file_path = os.path.join(folder_path, file_name)
-                        with bz2.open(file_path, "rt") as file:
-                            content = file.read()
-                            lines = content.split("\n")
-                            for line in lines:
-                                if line.strip():
-                                    data = json.loads(line)
-                                    line = ast.literal_eval(line)
-                                    id = line.get("id", "")
-                                    title = line["title"]
-                                    url = line.get("url", "")
-                                    text = str(line.get("text", ""))
-                                    cursor.execute(
-                                        """
-                                    INSERT INTO wiki_content (id, title, url, text)
-                                    VALUES (?, ?, ?, ?)
-                                    """,
-                                        (id, title, url, text),
-                                    )
-                                    # print(f'Inserted {title} into the database')
+        if not os.path.isdir(source_path):
+            raise FileNotFoundError(
+                f"Wiki source directory not found at '{source_path}'."
+            )
 
-            # Commit the changes and close the connection
-            conn.commit()
-            conn.close()
-            print(f"Created database at {output_path}")
+        output_directory = os.path.dirname(output_path)
+        if output_directory:
+            os.makedirs(output_directory, exist_ok=True)
+
+        print(f"Building WikiDB from {source_path}")
+        print(f"Output database: {output_path}")
+
+        tokenizer = RobertaTokenizer.from_pretrained("roberta-large")
+        connection = sqlite3.connect(output_path)
+
+        try:
+            cursor = connection.cursor()
+            cursor.execute("CREATE TABLE documents (title PRIMARY KEY, text)")
+
+            seen_titles = set()
+            pending_rows = []
+            document_count = 0
+            batch_size = 10000
+
+            for folder_name in sorted(os.listdir(source_path)):
+                folder_path = os.path.join(source_path, folder_name)
+
+                if not os.path.isdir(folder_path):
+                    continue
+
+                for file_name in sorted(os.listdir(folder_path)):
+                    if not file_name.endswith(".bz2"):
+                        continue
+
+                    file_path = os.path.join(folder_path, file_name)
+                    print(f"Reading {file_path}")
+
+                    with bz2.open(file_path, "rt", encoding="utf-8") as source_file:
+                        for line in source_file:
+                            if not line.strip():
+                                continue
+
+                            data = json.loads(line)
+                            title = data["title"]
+
+                            if title in seen_titles:
+                                continue
+
+                            seen_titles.add(title)
+
+                            text = data.get("text", "")
+
+                            if isinstance(text, str):
+                                text = [text]
+
+                            passages = [[]]
+
+                            for sentence in text:
+                                sentence = str(sentence)
+
+                                if not sentence.strip():
+                                    continue
+
+                                tokens = tokenizer(sentence)["input_ids"]
+                                max_length = MAX_LENGTH - len(passages[-1])
+
+                                if len(tokens) <= max_length:
+                                    passages[-1].extend(tokens)
+                                else:
+                                    passages[-1].extend(tokens[:max_length])
+                                    offset = max_length
+
+                                    while offset < len(tokens):
+                                        passages.append(
+                                            tokens[offset : offset + MAX_LENGTH]
+                                        )
+                                        offset += MAX_LENGTH
+
+                            decoded_passages = [
+                                tokenizer.decode(tokens)
+                                for tokens in passages
+                                if any(token not in {0, 2} for token in tokens)
+                            ]
+
+                            if not decoded_passages:
+                                continue
+
+                            encoded_text = SPECIAL_SEPARATOR.join(decoded_passages)
+                            pending_rows.append((title, encoded_text))
+                            document_count += 1
+
+                            if len(pending_rows) >= batch_size:
+                                cursor.executemany(
+                                    "INSERT INTO documents VALUES (?, ?)",
+                                    pending_rows,
+                                )
+                                connection.commit()
+                                pending_rows = []
+
+                                print(f"Saved {document_count} Wikipedia documents.")
+
+            if pending_rows:
+                cursor.executemany(
+                    "INSERT INTO documents VALUES (?, ?)",
+                    pending_rows,
+                )
+
+            connection.commit()
+
+        except Exception:
+            connection.rollback()
+            raise
+
+        finally:
+            connection.close()
+
+        print(f"Created WikiDB at {output_path} " f"with {document_count} documents.")
 
 
 def load_fact_score_data(output_path: str):
@@ -202,18 +280,6 @@ def clean_medlfqa_data(data_path: str, output_path: str):
             print(f"Saved {name} dataset to {filepath}")
 
 
-# example code
-if __name__ == "__main__":
-    # loader = DataLoader("fact_score")
-    # loader.load_qa_data("data/raw/FactScore/factscore_names.txt")
-
-    # loader = DataLoader("hotpot_qa")
-    # loader.load_qa_data("data/raw/HotpotQA/hotpotqa_validation_set.jsonl")
-
-    # loader = DataLoader("pop_qa")
-    # loader.load_qa_data("data/raw/PopQA/popQA_test.json")
-
-    loader = DataLoader("medlfqa")
-    loader.load_qa_data("data/raw/MedLFQA/")
-
-    loader.create_wiki_db(output_path="data/raw/WikiDB/enwiki-20230401.db")
+# WikiDB creation is intentionally not run automatically from this module.
+# The Wikipedia source snapshot and output database path must both be
+# supplied explicitly by experiment setup code.
