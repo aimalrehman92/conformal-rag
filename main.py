@@ -226,15 +226,6 @@ def main():
     query_output_file = f"{dataset_name}_queries.json"
     document_output_file = f"{dataset_name}_documents.txt"
 
-    subclaims_path = os.path.join(
-        response_dir,
-        (
-            f"{dataset_name}_{query_size}_seed_{seed}_"
-            f"{retrieval_config['strategy']}_"
-            f"subclaims_with_scores_{response_model}.json"
-        ),
-    )
-
     CP_result_fig_path = os.path.join(
         result_dir, f"{dataset_name}_{query_size}_a={a_value:.2f}_CP_removal.png"
     )
@@ -291,6 +282,33 @@ def main():
     index_fingerprint = ConfigManager.fingerprint(index_cache_config)
 
     logging.info(f"Index configuration fingerprint: {index_fingerprint}")
+
+    subclaim_cache_config = {
+        "cache_schema_version": 1,
+        "dataset": dataset_runtime_config,
+        "seed": seed,
+        "index_fingerprint": index_fingerprint,
+        "retrieval": retrieval_config,
+        "models": {
+            "generator": models_config["generator"],
+            "claim_decomposer": models_config["claim_decomposer"],
+            "claim_verifier": models_config["claim_verifier"],
+            "frequency_scorer": models_config["frequency_scorer"],
+        },
+        "scoring_strategy": conformal_config["scoring_strategy"],
+    }
+
+    subclaim_fingerprint = ConfigManager.fingerprint(subclaim_cache_config)
+
+    logging.info(f"Subclaim configuration fingerprint: {subclaim_fingerprint}")
+
+    subclaims_path = os.path.join(
+        response_dir,
+        (
+            f"{dataset_name}_{query_size}_"
+            f"subclaims_with_scores_{subclaim_fingerprint}.json"
+        ),
+    )
 
     # Index creation and retrieval
     os.makedirs(index_store_dir, exist_ok=True)
