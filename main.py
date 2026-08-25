@@ -284,7 +284,7 @@ def main():
     logging.info(f"Index configuration fingerprint: {index_fingerprint}")
 
     subclaim_cache_config = {
-        "cache_schema_version": 1,
+        "cache_schema_version": 2,
         "dataset": dataset_runtime_config,
         "seed": seed,
         "index_fingerprint": index_fingerprint,
