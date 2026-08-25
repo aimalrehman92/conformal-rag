@@ -1,5 +1,7 @@
 import os
 import json
+import hashlib
+
 from typing import Union, Optional
 from PyPDF2 import PdfReader
 from langchain.schema import Document
@@ -13,9 +15,23 @@ class FileManager:
         self.chunk_size = index_truncation_config["chunk_size"]
         self.chunk_overlap = index_truncation_config["chunk_overlap"]
         self.texts = []
+
         directory = os.path.dirname(file_path)
         base_name = os.path.splitext(os.path.basename(file_path))[0]
-        self.texts_file = os.path.join(directory, f"{base_name}_texts.json")
+
+        cache_payload = json.dumps(
+            index_truncation_config,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+
+        cache_fingerprint = hashlib.sha256(cache_payload).hexdigest()[:12]
+
+        self.texts_file = os.path.join(
+            directory,
+            f"{base_name}_texts_{cache_fingerprint}.json",
+        )
+
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=self.chunk_size, chunk_overlap=self.chunk_overlap
         )  # TODO
@@ -61,14 +77,21 @@ class FileManager:
     def process_document(
         self,
         truncation_strategy: Optional[Union[str, bool]] = "fixed_length",
-        chunk_size: int = 2000,
-        overlap_size: int = 25,
+        chunk_size: Optional[int] = None,
+        overlap_size: Optional[int] = None,
         truncate_by: Optional[str] = "\n",
     ):
         """
         Process document according to the specified strategy.
         Either truncation_strategy or truncate_by must be provided, but not both.
         """
+
+        if chunk_size is None:
+            chunk_size = self.chunk_size
+
+        if overlap_size is None:
+            overlap_size = self.chunk_overlap
+
         if truncation_strategy is None and truncate_by is None:
             raise ValueError(
                 "Either truncation_strategy or truncate_by must be provided"
