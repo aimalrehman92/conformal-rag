@@ -12,8 +12,8 @@ class OpenAIClaimVerification(object):
         self.annotations = ["S", "I", "U", "N"]
         self.instruction = f"""Given query $query and true answer $answer, 
                 with following supporting documents: $documents,
-                please help verify by any means including using internet 
-                if the following claim can be labeled in following categories according to query and answer:
+                please verify the following claim using only the query, true answer,
+                and supporting documents provided below, and label it according to:
                 {self.labels}
                 Supported: If the claim is true and is relevant to infer the answer from query,
                 Irrelevant: If the claim is true but irrelevant to answer and query,
