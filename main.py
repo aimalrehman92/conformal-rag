@@ -235,26 +235,6 @@ def main():
     query_output_file = f"{dataset_name}_queries.json"
     document_output_file = f"{dataset_name}_documents.txt"
 
-    CP_result_fig_path = os.path.join(
-        result_dir, f"{dataset_name}_{query_size}_a={a_value:.2f}_CP_removal.png"
-    )
-    GCP_result_fig_path = os.path.join(
-        result_dir, f"{dataset_name}_{query_size}_a={a_value:.2f}_GCP_removal.png"
-    )
-    factual_result_fig_path = os.path.join(
-        result_dir,
-        f"{dataset_name}_{query_size}_a={a_value:.2f}_factual_correctness.png",
-    )
-    group_factual_result_fig_path = os.path.join(
-        result_dir,
-        f"group_{dataset_name}_{query_size}_a={a_value:.2f}_factual_correctness.png",
-    )
-    result_path = os.path.join(
-        result_dir, f"{dataset_name}_{query_size}_a={a_value:.2f}.csv"
-    )
-    group_result_path = os.path.join(
-        result_dir, f"group_{dataset_name}_{query_size}_a={a_value:.2f}.csv"
-    )
     ####################################### End of Data and Folder Set up ######################################
 
     # Create QueryProcessor
@@ -270,7 +250,58 @@ def main():
         output_file=query_output_file,
         seed=seed,
     )
-    logging.info(f"Query size: {len(queries)}")
+
+    effective_query_size = query_processor.effective_query_size
+
+    if effective_query_size != len(queries):
+        raise RuntimeError(
+            "QueryProcessor effective query size does not match returned queries: "
+            f"{effective_query_size} != {len(queries)}"
+        )
+
+    logging.info(f"Requested query size: {query_size}")
+    logging.info(f"Effective query size: {effective_query_size}")
+
+    effective_dataset_runtime_config = {
+        **dataset_runtime_config,
+        "query_size": effective_query_size,
+    }
+
+    CP_result_fig_path = os.path.join(
+        result_dir,
+        f"{dataset_name}_{effective_query_size}_a={a_value:.2f}_CP_removal.png",
+    )
+
+    GCP_result_fig_path = os.path.join(
+        result_dir,
+        f"{dataset_name}_{effective_query_size}_a={a_value:.2f}_GCP_removal.png",
+    )
+
+    factual_result_fig_path = os.path.join(
+        result_dir,
+        (
+            f"{dataset_name}_{effective_query_size}_"
+            f"a={a_value:.2f}_factual_correctness.png"
+        ),
+    )
+
+    group_factual_result_fig_path = os.path.join(
+        result_dir,
+        (
+            f"group_{dataset_name}_{effective_query_size}_"
+            f"a={a_value:.2f}_factual_correctness.png"
+        ),
+    )
+
+    result_path = os.path.join(
+        result_dir,
+        f"{dataset_name}_{effective_query_size}_a={a_value:.2f}.csv",
+    )
+
+    group_result_path = os.path.join(
+        result_dir,
+        f"group_{dataset_name}_{effective_query_size}_a={a_value:.2f}.csv",
+    )
 
     # Create documents data
     logging.info("Processing documents")
@@ -282,7 +313,7 @@ def main():
     logging.info(f"Documents saved to {document_path}")
 
     index_cache_config = {
-        "dataset": dataset_runtime_config,
+        "dataset": effective_dataset_runtime_config,
         "seed": seed,
         "embedding": models_config["embedding"],
         "truncation_config": index_truncation_config,
@@ -294,7 +325,7 @@ def main():
 
     subclaim_cache_config = {
         "cache_schema_version": 2,
-        "dataset": dataset_runtime_config,
+        "dataset": effective_dataset_runtime_config,
         "seed": seed,
         "index_fingerprint": index_fingerprint,
         "retrieval": retrieval_config,
@@ -314,7 +345,7 @@ def main():
     subclaims_path = os.path.join(
         response_dir,
         (
-            f"{dataset_name}_{query_size}_"
+            f"{dataset_name}_{effective_query_size}_"
             f"subclaims_with_scores_{subclaim_fingerprint}.json"
         ),
     )
