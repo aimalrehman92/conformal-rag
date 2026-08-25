@@ -53,5 +53,8 @@ logs/
 # Generated sampled dataset subsets
 data/processed/*/sampled_*
 
+# Generated MedLFQA processed query cache
+data/processed/MedLFQA/medlf_qa_queries.json
+
 # Generated pipeline outputs
 data/out/*/*_subclaims_with_scores_*.json
