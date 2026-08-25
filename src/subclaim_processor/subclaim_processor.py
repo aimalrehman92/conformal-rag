@@ -14,6 +14,17 @@ from src.subclaim_processor.scorer.document_scorer import IDocumentScorer
 from src.calibration.utils import load_subclaim_data
 from src.common.retriever import Retriever
 
+VALID_GPT_ANNOTATIONS = {"S", "I", "U", "N"}
+
+
+def _has_valid_gpt_annotation(subclaim: dict) -> bool:
+    annotations = subclaim.get("annotations", {})
+
+    return (
+        isinstance(annotations, dict)
+        and annotations.get("gpt") in VALID_GPT_ANNOTATIONS
+    )
+
 
 def _make_stable_rng(
     seed: int,
@@ -271,7 +282,7 @@ class SubclaimProcessor(IQueryProcessor):
 
                     # Skip if already annotated
                     if all(
-                        subclaim.get("annotations", {}).get("gpt")
+                        _has_valid_gpt_annotation(subclaim)
                         for subclaim in entry["subclaims"]
                     ):
                         continue
@@ -295,8 +306,8 @@ class SubclaimProcessor(IQueryProcessor):
                     context = "\n".join(doc_contents)
 
                     for subclaim in entry["subclaims"]:
-                        if not subclaim.get("annotations", {}).get(
-                            "gpt"
+                        if not _has_valid_gpt_annotation(
+                            subclaim
                         ):  # Only annotate if not already done
                             gold_answer = (
                                 " ".join(entry["gld_ans"])
@@ -394,7 +405,7 @@ def process_subclaims(
                 )
 
                 needs_annotation = any(
-                    len(subclaim["annotations"]) == 0
+                    not _has_valid_gpt_annotation(subclaim)
                     for pt in data
                     for subclaim in pt["subclaims"]
                 )
@@ -444,4 +455,29 @@ def process_subclaims(
         if needs_annotation:
             processor.annotate_subclaim()
 
-    return load_subclaim_data(subclaims_path)
+    processed_data = load_subclaim_data(subclaims_path)
+
+    invalid_annotations = [
+        (
+            entry_index,
+            subclaim_index,
+            subclaim.get("annotations", {}).get("gpt"),
+        )
+        for entry_index, entry in enumerate(processed_data)
+        for subclaim_index, subclaim in enumerate(entry["subclaims"])
+        if not _has_valid_gpt_annotation(subclaim)
+    ]
+
+    if invalid_annotations:
+        preview = ", ".join(
+            (f"entry {entry_index}, subclaim {subclaim_index}: " f"{annotation!r}")
+            for entry_index, subclaim_index, annotation in invalid_annotations[:5]
+        )
+
+        raise ValueError(
+            "Subclaim processing completed with invalid or missing GPT "
+            f"annotations for {len(invalid_annotations)} subclaim(s). "
+            f"Examples: {preview}"
+        )
+
+    return processed_data
