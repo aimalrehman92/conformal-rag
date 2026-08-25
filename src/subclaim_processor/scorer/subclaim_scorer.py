@@ -139,6 +139,10 @@ class SubclaimScorer(IDocumentScorer):
         """
         Estimate subclaim support frequency across alternative responses.
         """
+
+        if n_samples < 1:
+            raise ValueError(f"n_samples must be at least 1, got {n_samples}")
+
         chat_responses = response_agent.answer(
             question,
             retrived_docs,
@@ -181,11 +185,24 @@ class SubclaimScorer(IDocumentScorer):
 
             score_response = completion.choices[0].message.content
 
-            try:
-                scores.append(int(score_response))
-            except Exception as ex:
-                print(ex)
-                print(score_response)
+            if not isinstance(score_response, str):
+                raise ValueError(
+                    "Frequency scorer response must be a string. "
+                    f"Received: {score_response!r}"
+                )
+
+            normalized_score = score_response.strip()
+
+            if normalized_score not in {"-1", "0", "1"}:
+                raise ValueError(
+                    "Frequency scorer must return exactly one of '-1', '0', or '1'. "
+                    f"Received: {score_response!r}"
+                )
+
+            scores.append(int(normalized_score))
+
+        if not scores:
+            raise ValueError("Frequency scoring produced no valid scores.")
 
         return sum(scores) / len(scores)
 
