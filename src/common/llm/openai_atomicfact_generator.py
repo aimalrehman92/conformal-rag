@@ -33,7 +33,7 @@ class OpenAIAtomicFactGenerator(object):
         log_prob = [
             (
                 completion.choices[0].logprobs.content[i].token,
-                completion.choices[0].logprobs.content[i].top_logprobs[0].logprob,
+                completion.choices[0].logprobs.content[i].logprob,
             )
             for i in range(num_tokens)
         ]
