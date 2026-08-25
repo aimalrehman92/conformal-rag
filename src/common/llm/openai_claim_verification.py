@@ -19,7 +19,10 @@ class OpenAIClaimVerification(object):
                 Irrelevant: If the claim is true but irrelevant to answer and query,
                 Unverifiable: If the claim is unverifiable,
                 NoneFactual: Only if this claim is none factual. 
-                The claim is:"""
+                The claim is:
+                Return exactly one final label in this format:
+                LABEL: <supported|irrelevant|unverifiable|nonefactual>
+                Do not include any explanation."""
         self.client = OpenAI()
         self.model = model
 
@@ -47,20 +50,37 @@ class OpenAIClaimVerification(object):
         return completion.choices[0].message.content
 
     def detect_label(self, answer):
+        if not isinstance(answer, str):
+            raise ValueError("Verifier response must be a string.")
 
-        # Create a regex pattern to match the labels
-        pattern = re.compile(r"\b(" + "|".join(self.labels) + r")\b", re.IGNORECASE)
+        label_pattern = "|".join(self.labels)
 
-        # Search for the first label in the answer
-        match = pattern.search(answer)
+        # Preferred machine-readable format produced by the verifier prompt.
+        explicit_match = re.fullmatch(
+            rf"\s*(?:final\s+)?label\s*:\s*({label_pattern})\s*[.!]?\s*",
+            answer,
+            re.IGNORECASE,
+        )
 
-        if match:
-            # Find the index of the matched label and return the corresponding annotation
-            label_index = self.labels.index(match.group(0).lower())
-            return self.annotations[label_index]
-        else:
-            # Return 'NF' if no label is found
-            return "NF"
+        if explicit_match:
+            label = explicit_match.group(1).lower()
+            return self.annotations[self.labels.index(label)]
+
+        # Accept a bare label for compatibility with concise model responses.
+        bare_match = re.fullmatch(
+            rf"\s*({label_pattern})\s*[.!]?\s*",
+            answer,
+            re.IGNORECASE,
+        )
+
+        if bare_match:
+            label = bare_match.group(1).lower()
+            return self.annotations[self.labels.index(label)]
+
+        raise ValueError(
+            "Verifier response did not contain exactly one valid final label. "
+            f"Response: {answer!r}"
+        )
 
     def annotate(self, query, answer, documents, claim):
         response = self.openAI_response(query, answer, documents, claim)
