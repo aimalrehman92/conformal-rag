@@ -215,18 +215,21 @@ def main():
             "medication_qa.jsonl",
         }
 
-        existing_medlfqa_files = (
-            {
-                file_name
-                for file_name in os.listdir(raw_data_path)
-                if file_name.endswith(".jsonl")
-            }
-            if os.path.isdir(raw_data_path)
-            else set()
-        )
+        def get_valid_medlfqa_files():
+            if not os.path.isdir(raw_data_path):
+                return set()
 
+            return {
+                file_name
+                for file_name in required_medlfqa_files
+                if os.path.isfile(os.path.join(raw_data_path, file_name))
+                and os.path.getsize(os.path.join(raw_data_path, file_name)) > 0
+            }
+
+        existing_medlfqa_files = get_valid_medlfqa_files()
         missing_raw_files = required_medlfqa_files - existing_medlfqa_files
         raw_data_ready = not missing_raw_files
+
     else:
         missing_raw_files = set()
         raw_data_ready = os.path.exists(raw_data_path)
@@ -240,15 +243,7 @@ def main():
         data_loader.load_qa_data(output_path=raw_data_path)
 
         if dataset_name == "medlf_qa":
-            existing_medlfqa_files = (
-                {
-                    file_name
-                    for file_name in os.listdir(raw_data_path)
-                    if file_name.endswith(".jsonl")
-                }
-                if os.path.isdir(raw_data_path)
-                else set()
-            )
+            existing_medlfqa_files = get_valid_medlfqa_files()
 
             missing_raw_files = required_medlfqa_files - existing_medlfqa_files
 
