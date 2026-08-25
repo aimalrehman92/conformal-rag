@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Any
 
+
 class BaseChunker(ABC):
     """
     Abstract base class for all chunking strategies.
@@ -17,13 +18,31 @@ class BaseChunker(ABC):
         Abstract method to be implemented by subclasses for chunking text.
         """
         pass
-        
+
+
 class FixedLengthChunker(BaseChunker):
     """
     Chunker that splits text into overlapping fixed-size chunks of words.
     """
 
     def create_chunks(self) -> list[str]:
+
+        if self.chunk_size <= 0:
+            raise ValueError(
+                f"chunk_size must be greater than 0, got {self.chunk_size}"
+            )
+
+        if self.overlap_size < 0:
+            raise ValueError(
+                f"overlap_size must be non-negative, got {self.overlap_size}"
+            )
+
+        if self.overlap_size >= self.chunk_size:
+            raise ValueError(
+                "overlap_size must be smaller than chunk_size. "
+                f"Got chunk_size={self.chunk_size}, "
+                f"overlap_size={self.overlap_size}."
+            )
 
         chunks: list[str] = []
 
