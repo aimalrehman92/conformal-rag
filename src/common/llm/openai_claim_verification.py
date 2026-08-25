@@ -35,8 +35,9 @@ class OpenAIClaimVerification(object):
             self.instruction.replace("$query", query)
             .replace("$answer", answer)
             .replace("$documents", documents)
-            + claim
+            + f"\n{claim}"
         )
+
         completion = self.client.chat.completions.create(
             model=self.model,
             messages=[
