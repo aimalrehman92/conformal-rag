@@ -205,10 +205,64 @@ def main():
     logging.info(f"Raw data path: {raw_data_path}")
 
     # Load data if needed
-    if not os.path.exists(raw_data_path):
-        logging.info(f"Raw data not found. Loading data for {dataset_name}")
+
+    if dataset_name == "medlf_qa":
+        required_medlfqa_files = {
+            "healthsearch_qa.jsonl",
+            "kqa_golden.jsonl",
+            "kqa_silver_wogold.jsonl",
+            "live_qa.jsonl",
+            "medication_qa.jsonl",
+        }
+
+        existing_medlfqa_files = (
+            {
+                file_name
+                for file_name in os.listdir(raw_data_path)
+                if file_name.endswith(".jsonl")
+            }
+            if os.path.isdir(raw_data_path)
+            else set()
+        )
+
+        missing_raw_files = required_medlfqa_files - existing_medlfqa_files
+        raw_data_ready = not missing_raw_files
+    else:
+        missing_raw_files = set()
+        raw_data_ready = os.path.exists(raw_data_path)
+
+    if not raw_data_ready:
+        logging.info(
+            f"Raw data not found or incomplete. Loading data for {dataset_name}"
+        )
+
         data_loader = DataLoader(dataset_name)
         data_loader.load_qa_data(output_path=raw_data_path)
+
+        if dataset_name == "medlf_qa":
+            existing_medlfqa_files = (
+                {
+                    file_name
+                    for file_name in os.listdir(raw_data_path)
+                    if file_name.endswith(".jsonl")
+                }
+                if os.path.isdir(raw_data_path)
+                else set()
+            )
+
+            missing_raw_files = required_medlfqa_files - existing_medlfqa_files
+
+            if missing_raw_files:
+                raise FileNotFoundError(
+                    "MedLFQA loading completed but required raw files are still missing: "
+                    f"{sorted(missing_raw_files)}"
+                )
+
+        elif not os.path.exists(raw_data_path):
+            raise FileNotFoundError(
+                f"Dataset loader did not create the expected raw data at '{raw_data_path}'."
+            )
+
         logging.info(f"Data loaded and saved to {raw_data_path}")
 
     # Require the explicitly configured WikiDB.
