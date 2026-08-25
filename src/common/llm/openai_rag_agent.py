@@ -36,8 +36,12 @@ class OpenAIRAGAgent(LLMAgent):
         for doc in retrieved_docs:
             try:
                 # Split the document string into page_content and metadata
-                doc_parts = doc.split("metadata=")
-                page_content = doc_parts[0].replace("page_content=", "").strip()
+                doc_parts = doc.rsplit("metadata=", 1)
+
+                page_content = doc_parts[0].strip()
+                if page_content.startswith("page_content="):
+                    page_content = page_content.removeprefix("page_content=").strip()
+
                 metadata = (
                     doc_parts[1].strip() if len(doc_parts) > 1 else "Unknown source"
                 )
