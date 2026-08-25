@@ -135,9 +135,10 @@ def main():
     runs = experiment_config["runs"]
 
     dataset_name = dataset_runtime_config["name"]
+    requires_wiki_db = dataset_name != "medlf_qa"
     dataset_type = dataset_runtime_config["type"]
     query_size = dataset_runtime_config["query_size"]
-    wiki_db_file = dataset_runtime_config["wiki_db_file"]
+    wiki_db_file = dataset_runtime_config["wiki_db_file"] if requires_wiki_db else None
 
     delete_existing_index = index_config["delete_existing"]
     embedding_model = models_config["embedding"]["name"]
@@ -175,7 +176,11 @@ def main():
         path_config["paths"]["processed_data_dir"], full_dataset_name
     )
     response_dir = os.path.join(path_config["paths"]["response_dir"], full_dataset_name)
-    wiki_db_path = os.path.join(path_config["paths"]["wiki_db_dir"], wiki_db_file)
+    wiki_db_path = (
+        os.path.join(path_config["paths"]["wiki_db_dir"], wiki_db_file)
+        if requires_wiki_db
+        else None
+    )
     result_dir = os.path.join(
         path_config["paths"]["result_dir"], full_dataset_name, run_id
     )
@@ -262,8 +267,6 @@ def main():
 
     # Wikipedia-backed datasets require the explicitly configured WikiDB.
     # MedLFQA supplies its own reference documents and does not use WikiDB.
-    requires_wiki_db = dataset_name != "medlf_qa"
-
     if requires_wiki_db:
         # Do not silently build a database from a hard-coded Wikipedia snapshot:
         # the corpus version is part of the experimental configuration and must be
@@ -341,6 +344,11 @@ def main():
         "query_size": effective_query_size,
     }
 
+    cache_dataset_config = dict(effective_dataset_runtime_config)
+
+    if not requires_wiki_db:
+        cache_dataset_config.pop("wiki_db_file", None)
+
     CP_result_fig_path = os.path.join(
         result_dir,
         f"{dataset_name}_{effective_query_size}_a={a_value:.2f}_CP_removal.png",
@@ -387,7 +395,7 @@ def main():
     logging.info(f"Documents saved to {document_path}")
 
     index_cache_config = {
-        "dataset": effective_dataset_runtime_config,
+        "dataset": cache_dataset_config,
         "seed": seed,
         "embedding": models_config["embedding"],
         "truncation_config": index_truncation_config,
@@ -399,7 +407,7 @@ def main():
 
     subclaim_cache_config = {
         "cache_schema_version": 2,
-        "dataset": effective_dataset_runtime_config,
+        "dataset": cache_dataset_config,
         "seed": seed,
         "index_fingerprint": index_fingerprint,
         "retrieval": retrieval_config,
