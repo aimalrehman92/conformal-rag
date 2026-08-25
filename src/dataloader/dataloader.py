@@ -1,3 +1,4 @@
+import urllib.request
 import os
 import re
 import bz2
@@ -213,19 +214,33 @@ def load_medlfqa_data(output_path: str):
         "medication_qa",
     ]
 
+    base_url = (
+        "https://raw.githubusercontent.com/jjcherian/conformal-safety/"
+        "refs/heads/main/data/MedLFQAv2"
+    )
+
     for fname in dataset_names:
         file_path = os.path.join(output_path, f"{fname}.jsonl")
 
-        if os.path.exists(file_path):
+        if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
             print(f"Dataset {fname} already exists.")
             continue
 
-        os.system(
-            "wget "
-            f"-O {file_path} "
-            "https://raw.githubusercontent.com/jjcherian/conformal-safety/"
-            f"refs/heads/main/data/MedLFQAv2/{fname}.jsonl"
-        )
+        temp_path = f"{file_path}.tmp"
+        url = f"{base_url}/{fname}.jsonl"
+
+        try:
+            urllib.request.urlretrieve(url, temp_path)
+
+            if os.path.getsize(temp_path) == 0:
+                raise RuntimeError(f"Downloaded MedLFQA file is empty: {fname}.jsonl")
+
+            os.replace(temp_path, file_path)
+
+        except Exception:
+            if os.path.exists(temp_path):
+                os.remove(temp_path)
+            raise
 
     print(f"MedLFQA dataset saved to {output_path}")
 
