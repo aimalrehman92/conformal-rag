@@ -187,8 +187,17 @@ def main():
 
     # Determine raw data file path
     if dataset_name == "medlf_qa":
-        input_file = os.path.join(path_config["paths"]["raw_data_dir"], "MedLFQA")
-        raw_data_path = input_file
+        raw_data_path = os.path.join(
+            path_config["paths"]["raw_data_dir"],
+            "MedLFQA",
+        )
+
+    elif dataset_name == "fact_score":
+        raw_data_path = os.path.join(
+            raw_data_dir,
+            "factscore_names.txt",
+        )
+
     else:
         raw_data_file = f"raw_{dataset_name}.json"
         raw_data_path = os.path.join(raw_data_dir, raw_data_file)
