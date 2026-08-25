@@ -53,11 +53,18 @@ class OpenAIRAGAgent(LLMAgent):
 
         # Construct the prompt for the OpenAI API
         messages = [
-            {"role": "system", "content": self.instruction},
-            {"role": "user", "content": question},
             {
-                "role": "assistant",
-                "content": f"The following context was retrieved from the database:\n\n{context}",
+                "role": "system",
+                "content": self.instruction,
+            },
+            {
+                "role": "user",
+                "content": (
+                    "Use the following retrieved context to answer the question. "
+                    "If the context does not contain enough information, say so.\n\n"
+                    f"Context:\n{context}\n\n"
+                    f"Question:\n{question}"
+                ),
             },
         ]
 
