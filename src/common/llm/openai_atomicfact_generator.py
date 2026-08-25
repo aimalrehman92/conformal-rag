@@ -62,30 +62,33 @@ class OpenAIAtomicFactGenerator(object):
     #     return facts
 
     def extract_subclaim_log_probs(self, log_prob_tuples: list) -> list:
-        # Initialize variables
+        """
+        Group token probabilities by semicolon-delimited subclaim.
+
+        A semicolon may appear as its own token or be attached to text.
+        Preserve any non-delimiter text rather than discarding the entire
+        token when a semicolon is present.
+        """
         current_subclaim = []
         subclaims = []
 
-        # Iterate through the data
-        for item in log_prob_tuples:
-            token, log_prob = item
+        for token, log_prob in log_prob_tuples:
+            probability = math.exp(log_prob)
+            token_parts = token.split(";")
 
-            # If we encounter a semicolon, save the current subclaim and reset
-            if ";" in token:
-                if current_subclaim:
-                    subclaims.append(current_subclaim)
-                    current_subclaim = []
-                continue
+            for part_index, part in enumerate(token_parts):
+                if part:
+                    current_subclaim.append((part, probability))
 
-            # Append the current token and log prob to the current subclaim
-            current_subclaim.append((token, math.exp(log_prob)))
+                is_delimiter = part_index < len(token_parts) - 1
 
-        # Add the last subclaim if not empty
+                if is_delimiter:
+                    if current_subclaim:
+                        subclaims.append(current_subclaim)
+                        current_subclaim = []
+
         if current_subclaim:
             subclaims.append(current_subclaim)
-
-        # # Calculate mean log probabilities for each subclaim
-        # subclaim_means = [sum(subclaim) / len(subclaim) for subclaim in subclaims]
 
         return subclaims
 
@@ -93,13 +96,13 @@ class OpenAIAtomicFactGenerator(object):
     #     current_subclaim = []
     #     subclaims = []
     #     in_subclaim = False
-        
+
     #     for token, log_prob in log_prob_tuples:
     #         # Detect start of a new subclaim
     #         if '{"' in token and not in_subclaim:
     #             in_subclaim = True
     #             continue
-                
+
     #         # Detect end of subclaim
     #         if '"}' in token or '"]' in token or '.","' in token:
     #             if current_subclaim:
@@ -107,29 +110,29 @@ class OpenAIAtomicFactGenerator(object):
     #                 current_subclaim = []
     #             in_subclaim = False
     #             continue
-                
+
     #         # Skip tokens related to subclaim markers
     #         if token in ['sub', 'claim', '":["']:
     #             continue
-                
+
     #         # If we're inside a subclaim, collect token and probability
     #         if in_subclaim:
     #             current_subclaim.append((token, log_prob))
-                
+
     #     return subclaims
 
     # def preprocess_llm_response(self, response_text: str) -> list:
     #     """
     #     Convert jsonl formatted llm response into a list of strings.
-        
+
     #     Args:
     #         response_text (str): original llm output formated as jsonl.
-            
+
     #     Returns:
-    #         list: a list of subclaims 
+    #         list: a list of subclaims
     #     """
     #     clean_text = response_text.replace('```jsonl\n', '').replace('```', '')
-        
+
     #     subclaims = []
     #     for line in clean_text.strip().split('\n'):
     #         if line.strip():
@@ -139,7 +142,7 @@ class OpenAIAtomicFactGenerator(object):
     #                     subclaims.extend(json_obj['subclaim'])
     #             except json.JSONDecodeError:
     #                 continue
-        
+
     #     return subclaims
 
     def get_facts_from_text(self, text):
@@ -163,4 +166,3 @@ class OpenAIAtomicFactGenerator(object):
                 )
 
         return zip(subclaims, reduced_subclaim_log_probs)
-    
