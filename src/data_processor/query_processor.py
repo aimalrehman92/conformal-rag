@@ -17,10 +17,12 @@ class QueryProcessor(IRawDataProcessor):
 
     def __init__(
         self,
-        db_path: str = "data/raw/WikiDB/enwiki-20230401.db",
+        db_path: str | None = "data/raw/WikiDB/enwiki-20230401.db",
         query_size: int = None,
     ):
-        self.db = DocDB(db_path=db_path, data_path=None)
+        self.db = (
+            DocDB(db_path=db_path, data_path=None) if db_path is not None else None
+        )
         self.dataset = None
         self.effective_query_size = None
         self.query_size = query_size
@@ -203,6 +205,11 @@ class QueryProcessor(IRawDataProcessor):
         queries_to_use = None
         if self.query_size and self.query_size != -1:
             queries_to_use = self.queries
+
+        if self.dataset != "medlf_qa" and self.db is None:
+            raise RuntimeError(
+                f"Dataset '{self.dataset}' requires a WikiDB, but no database was configured."
+            )
 
         # Process documents
         documents = processor.process_documents(
