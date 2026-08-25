@@ -14,19 +14,25 @@ class DataLoader:
         self.dataset = dataset
 
     def load_qa_data(self, output_path: str):
+        if self.dataset == "medlf_qa":
+            print(f"Loading {self.dataset} dataset.")
+            load_medlfqa_data(output_path)
+            return
+
         if os.path.exists(output_path):
             print(f"Dataset already exists at {output_path}.")
+            return
+
+        print(f"Loading {self.dataset} dataset.")
+
+        if self.dataset == "fact_score":
+            load_fact_score_data(output_path)
+        elif self.dataset == "hotpot_qa":
+            load_hotpot_qa_data(output_path)
+        elif self.dataset == "pop_qa":
+            load_pop_qa_data(output_path)
         else:
-            print(f"Loading {self.dataset} dataset.")
-            if self.dataset == "fact_score":
-                load_fact_score_data(output_path)
-            elif self.dataset == "hotpot_qa":
-                load_hotpot_qa_data(output_path)
-            elif self.dataset == "pop_qa":
-                load_pop_qa_data(output_path)
-            elif self.dataset == "medlfqa":
-                output_path = load_medlfqa_data("data/.source_data/MedLFQA")
-                clean_medlfqa_data(data_path=output_path, output_path=output_path)
+            raise ValueError(f"Unsupported dataset: {self.dataset}")
 
     def create_wiki_db(
         self,
@@ -194,11 +200,11 @@ def load_pop_qa_data(output_path: str):
     return
 
 
-def load_medlfqa_data(output_path: str = "data/.source_data/MedLFQA"):
-    """Load MedLFQA dataset and save to json file."""
+def load_medlfqa_data(output_path: str):
+    """Load the raw MedLFQA JSONL files into the requested directory."""
 
-    if not os.path.exists(f"{output_path}"):
-        os.system(f"mkdir -p {output_path}")
+    os.makedirs(output_path, exist_ok=True)
+
     dataset_names = [
         "healthsearch_qa",
         "kqa_golden",
@@ -206,14 +212,20 @@ def load_medlfqa_data(output_path: str = "data/.source_data/MedLFQA"):
         "live_qa",
         "medication_qa",
     ]
+
     for fname in dataset_names:
-        if f"{fname}.jsonl" in os.listdir(output_path):
+        file_path = os.path.join(output_path, f"{fname}.jsonl")
+
+        if os.path.exists(file_path):
             print(f"Dataset {fname} already exists.")
             continue
-        else:
-            os.system(
-                f"wget -O {output_path}/{fname}.jsonl https://raw.githubusercontent.com/jjcherian/conformal-safety/refs/heads/main/data/MedLFQAv2/{fname}.jsonl"
-            )
+
+        os.system(
+            "wget "
+            f"-O {file_path} "
+            "https://raw.githubusercontent.com/jjcherian/conformal-safety/"
+            f"refs/heads/main/data/MedLFQAv2/{fname}.jsonl"
+        )
 
     print(f"MedLFQA dataset saved to {output_path}")
 
