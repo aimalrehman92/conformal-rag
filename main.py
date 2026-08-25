@@ -311,6 +311,20 @@ def main():
     logging.info(f"Requested query size: {query_size}")
     logging.info(f"Effective query size: {effective_query_size}")
 
+    if (
+        query_size is not None
+        and query_size != -1
+        and effective_query_size < query_size
+    ):
+
+        logging.warning(
+            "Requested %d queries for dataset '%s', but only %d are available; "
+            "using all available queries.",
+            query_size,
+            dataset_name,
+            effective_query_size,
+        )
+
     effective_dataset_runtime_config = {
         **dataset_runtime_config,
         "query_size": effective_query_size,
