@@ -260,21 +260,29 @@ def main():
 
         logging.info(f"Data loaded and saved to {raw_data_path}")
 
-    # Require the explicitly configured WikiDB.
-    #
-    # Do not silently build a database from a hard-coded Wikipedia snapshot:
-    # the corpus version is part of the experimental configuration and must be
-    # supplied explicitly for reproducible runs.
-    if not os.path.isfile(wiki_db_path):
-        raise FileNotFoundError(
-            "Configured WikiDB not found at "
-            f"'{wiki_db_path}'. "
-            "Provide the intended SQLite WikiDB before running the experiment. "
-            "The database must use the repository's documents(title, text) schema."
-        )
+    # Wikipedia-backed datasets require the explicitly configured WikiDB.
+    # MedLFQA supplies its own reference documents and does not use WikiDB.
+    requires_wiki_db = dataset_name != "medlf_qa"
 
-    validate_wiki_db_schema(wiki_db_path)
-    logging.info(f"Using validated WikiDB: {wiki_db_path}")
+    if requires_wiki_db:
+        # Do not silently build a database from a hard-coded Wikipedia snapshot:
+        # the corpus version is part of the experimental configuration and must be
+        # supplied explicitly for reproducible runs.
+        if not os.path.isfile(wiki_db_path):
+            raise FileNotFoundError(
+                "Configured WikiDB not found at "
+                f"'{wiki_db_path}'. "
+                "Provide the intended SQLite WikiDB before running the experiment. "
+                "The database must use the repository's documents(title, text) schema."
+            )
+
+        validate_wiki_db_schema(wiki_db_path)
+        logging.info(f"Using validated WikiDB: {wiki_db_path}")
+    else:
+        logging.info(
+            "Skipping WikiDB validation for MedLFQA; "
+            "the dataset supplies its own reference documents."
+        )
 
     # Process queries and documents
     input_file = raw_data_path
@@ -288,7 +296,10 @@ def main():
 
     # Create QueryProcessor
     logging.info("Initializing QueryProcessor")
-    query_processor = QueryProcessor(db_path=wiki_db_path, query_size=query_size)
+    query_processor = QueryProcessor(
+        db_path=wiki_db_path if requires_wiki_db else None,
+        query_size=query_size,
+    )
 
     # Create queries data
     logging.info("Processing queries")
