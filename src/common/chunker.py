@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import List, Any
 
 
 class BaseChunker(ABC):
@@ -13,9 +12,11 @@ class BaseChunker(ABC):
         self.overlap_size = overlap_size
 
     @abstractmethod
-    def create_chunks(self) -> list[dict[str, Any]]:
+    def create_chunks(self) -> tuple[list[str], int]:
         """
-        Abstract method to be implemented by subclasses for chunking text.
+        Split the document into chunks.
+        Returns:
+        A tuple containing the text chunks and the original word count.
         """
         pass
 
@@ -25,7 +26,7 @@ class FixedLengthChunker(BaseChunker):
     Chunker that splits text into overlapping fixed-size chunks of words.
     """
 
-    def create_chunks(self) -> list[str]:
+    def create_chunks(self) -> tuple[list[str], int]:
 
         if self.chunk_size <= 0:
             raise ValueError(
