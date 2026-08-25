@@ -20,6 +20,20 @@ class QueryProcessor(IRawDataProcessor):
         db_path: str | None = "data/raw/WikiDB/enwiki-20230401.db",
         query_size: int = None,
     ):
+
+        if query_size is not None:
+            if isinstance(query_size, bool) or not isinstance(query_size, int):
+                raise TypeError(
+                    "query_size must be an integer, None, or -1 for all queries. "
+                    f"Got {query_size!r}."
+                )
+
+            if query_size != -1 and query_size < 1:
+                raise ValueError(
+                    "query_size must be -1 for all queries or a positive integer. "
+                    f"Got {query_size}."
+                )
+
         self.db = (
             DocDB(db_path=db_path, data_path=None) if db_path is not None else None
         )
