@@ -251,22 +251,17 @@ class OpenAIAtomicFactGenerator(object):
 
     def get_facts_from_text(self, text):
         response, log_probs = self.get_atomic_facts_from_paragraph(text)
+
         subclaim_log_probs = self.extract_subclaim_log_probs(log_probs)
-        # subclaims = self.preprocess_llm_response(response)
+
         result = string_utils.extract_array_result(response)
         subclaims = string_utils.extract_string_array(result)
 
-        reduced_subclaim_log_probs = subclaim_log_probs
-        while len(subclaims) != len(reduced_subclaim_log_probs):
-            if len(reduced_subclaim_log_probs[-1]) == 1:
-                print(f"removing last subclaim {reduced_subclaim_log_probs[-1][0][0]}")
-                del reduced_subclaim_log_probs[-1]
-            else:
-                raise ValueError(
-                    f"""facts list and subclaim_mean_log_probs list must have the same length. 
-                    Fact count: {len(subclaims)}; 
-                    log_prob Count: {len(reduced_subclaim_log_probs)}
-                    """
-                )
+        if len(subclaims) != len(subclaim_log_probs):
+            raise ValueError(
+                "Parsed subclaims and token-probability groups must have the same length. "
+                f"Subclaim count: {len(subclaims)}; "
+                f"probability group count: {len(subclaim_log_probs)}."
+            )
 
-        return zip(subclaims, reduced_subclaim_log_probs)
+        return zip(subclaims, subclaim_log_probs)
