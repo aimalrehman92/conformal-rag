@@ -22,6 +22,7 @@ class QueryProcessor(IRawDataProcessor):
     ):
         self.db = DocDB(db_path=db_path, data_path=None)
         self.dataset = None
+        self.effective_query_size = None
         self.query_size = query_size
         self.sample_seed = None
         self.processors = {
@@ -141,13 +142,15 @@ class QueryProcessor(IRawDataProcessor):
             # Write the sampled queries back to the output file
             query_path = os.path.join(
                 output_dir,
-                f"sampled_{self.query_size}_seed_{seed}_{output_file}",
+                f"sampled_{len(self.queries)}_seed_{seed}_{output_file}",
             )
             with open(query_path, "w", encoding="utf-8") as jsonfile:
                 json.dump(self.queries, jsonfile, indent=4)
 
         else:
             self.queries = queries
+
+        self.effective_query_size = len(self.queries)
 
         # Create input to answer mapping
         return {
@@ -178,7 +181,7 @@ class QueryProcessor(IRawDataProcessor):
 
         output_path = os.path.join(
             output_dir,
-            f"sampled_{self.query_size}_seed_{self.sample_seed}_{output_file}",
+            f"sampled_{self.effective_query_size}_seed_{self.sample_seed}_{output_file}",
         )
 
         # Return if output file already exists
