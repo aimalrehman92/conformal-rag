@@ -177,8 +177,15 @@ class DataLoader:
 
 
 def load_fact_score_data(output_path: str):
-    # raise NotImplementedError
-    pass
+    """Fail explicitly when the repository's bundled FActScore query list is missing."""
+
+    raise FileNotFoundError(
+        "The FActScore query artifact is expected to be bundled with this repository "
+        f"at '{output_path}', but it is missing. The repository does not define a "
+        "reproducible procedure for regenerating its exact FActScore subset. "
+        "Restore 'factscore_names.txt' from the repository rather than substituting "
+        "a different FActScore dataset."
+    )
 
 
 def load_hotpot_qa_data(output_path: str):
