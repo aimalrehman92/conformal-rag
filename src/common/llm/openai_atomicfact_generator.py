@@ -61,6 +61,98 @@ class OpenAIAtomicFactGenerator(object):
     #         # print("array list get extracted from is: " + result)
     #     return facts
 
+    @staticmethod
+    def _clean_subclaim_token_group(
+        token_group: list,
+        strip_opening_bracket: bool = False,
+        strip_closing_bracket: bool = False,
+    ) -> list:
+        """
+        Remove response-formatting characters from a subclaim token group.
+
+        The model may wrap the full response in square brackets and individual
+        claims in quotation marks. These formatting characters should not
+        contribute token probabilities to the claim confidence score.
+        """
+
+        cleaned_group = list(token_group)
+
+        if not cleaned_group:
+            return cleaned_group
+
+        if strip_opening_bracket:
+            while cleaned_group:
+                token, probability = cleaned_group[0]
+                cleaned_token = token.lstrip()
+
+                if not cleaned_token.startswith("["):
+                    break
+
+                cleaned_token = cleaned_token[1:].lstrip()
+
+                if cleaned_token:
+                    cleaned_group[0] = (cleaned_token, probability)
+                    break
+
+                cleaned_group.pop(0)
+
+        if strip_closing_bracket:
+            while cleaned_group:
+                token, probability = cleaned_group[-1]
+                cleaned_token = token.rstrip()
+
+                if not cleaned_token.endswith("]"):
+                    break
+
+                cleaned_token = cleaned_token[:-1].rstrip()
+
+                if cleaned_token:
+                    cleaned_group[-1] = (cleaned_token, probability)
+                    break
+
+                cleaned_group.pop()
+
+        if not cleaned_group:
+            return cleaned_group
+
+        # Remove matching quotation marks that wrap the entire claim,
+        # while preserving quotation marks occurring inside claim text.
+        quote_pairs = [
+            ('"', '"'),
+            ("“", "”"),
+            ("‘", "’"),
+        ]
+
+        first_token = cleaned_group[0][0].lstrip()
+        last_token = cleaned_group[-1][0].rstrip()
+
+        for opening_quote, closing_quote in quote_pairs:
+            if first_token.startswith(opening_quote) and last_token.endswith(
+                closing_quote
+            ):
+                token, probability = cleaned_group[0]
+                cleaned_token = token.lstrip()[1:].lstrip()
+
+                if cleaned_token:
+                    cleaned_group[0] = (cleaned_token, probability)
+                else:
+                    cleaned_group.pop(0)
+
+                if not cleaned_group:
+                    break
+
+                token, probability = cleaned_group[-1]
+                cleaned_token = token.rstrip()[:-1].rstrip()
+
+                if cleaned_token:
+                    cleaned_group[-1] = (cleaned_token, probability)
+                else:
+                    cleaned_group.pop()
+
+                break
+
+        return cleaned_group
+
     def extract_subclaim_log_probs(self, log_prob_tuples: list) -> list:
         """
         Group token probabilities by semicolon-delimited subclaim.
@@ -90,7 +182,19 @@ class OpenAIAtomicFactGenerator(object):
         if current_subclaim:
             subclaims.append(current_subclaim)
 
-        return subclaims
+        cleaned_subclaims = []
+
+        for index, subclaim in enumerate(subclaims):
+            cleaned_subclaim = self._clean_subclaim_token_group(
+                subclaim,
+                strip_opening_bracket=index == 0,
+                strip_closing_bracket=index == len(subclaims) - 1,
+            )
+
+            if cleaned_subclaim:
+                cleaned_subclaims.append(cleaned_subclaim)
+
+        return cleaned_subclaims
 
     # def extract_subclaim_log_probs(self, log_prob_tuples):
     #     current_subclaim = []
