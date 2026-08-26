@@ -90,6 +90,17 @@ class ConfigManager:
         retrieval_config = config.get("retrieval", {})
         conformal_config = config.get("conformal", {})
 
+        conformal_implementation = conformal_config.get(
+            "implementation",
+            "aimal",
+        )
+
+        if conformal_implementation not in {"author", "aimal"}:
+            raise ValueError(
+                "conformal.implementation must be either 'author' or 'aimal'. "
+                f"Got {conformal_implementation!r}."
+            )
+
         generator_config = models_config.get("generator", {})
         decomposer_config = models_config.get("claim_decomposer", {})
         verifier_config = models_config.get("claim_verifier", {})
@@ -270,6 +281,7 @@ class ConfigManager:
                 ),
             },
             "conformal": {
+                "implementation": conformal_implementation,
                 "aggregation_strategy": conformal_config.get(
                     "aggregation_strategy",
                     legacy_conformal_config.get("aggregation_strategy"),
