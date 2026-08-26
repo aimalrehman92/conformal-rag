@@ -1,4 +1,5 @@
 import os
+import copy
 import argparse
 import numpy as np
 import logging
@@ -14,8 +15,10 @@ from src.common.faiss_manager import FAISSIndexManager
 from src.common.retriever_factory import create_retriever
 from src.subclaim_processor.scorer.subclaim_scorer import SubclaimScorer
 from src.subclaim_processor.subclaim_processor import process_subclaims
-from src.calibration.conformal import SplitConformalCalibration
-from src.calibration.conditional_conformal import GroupConditionalConformal
+from src.calibration.calibration_factory import (
+    create_group_conditional_calibration,
+    create_split_conformal_calibration,
+)
 
 
 def parse_args(dataset_aliases):
@@ -159,10 +162,12 @@ def main():
 
     a_value = conformal_config["a_value"]
     split_conformal = conformal_config["split_conformal"]
+    conformal_implementation = conformal_config["implementation"]
 
     logging.info(f"Experiment seed: {seed}")
     logging.info(f"Calibration runs: {runs}")
     logging.info(f"Dataset type: {dataset_type}")
+    logging.info(f"Conformal implementation: {conformal_implementation}")
 
     dataset_custom_config = dataset_config["datasets"].get(dataset_name)
     if not dataset_custom_config:
@@ -349,18 +354,24 @@ def main():
     if not requires_wiki_db:
         cache_dataset_config.pop("wiki_db_file", None)
 
-    CP_result_fig_path = os.path.join(
+    conformal_result_dir = os.path.join(
         result_dir,
+        conformal_implementation,
+    )
+    os.makedirs(conformal_result_dir, exist_ok=True)
+
+    CP_result_fig_path = os.path.join(
+        conformal_result_dir,
         f"{dataset_name}_{effective_query_size}_a={a_value:.2f}_CP_removal.png",
     )
 
     GCP_result_fig_path = os.path.join(
-        result_dir,
+        conformal_result_dir,
         f"{dataset_name}_{effective_query_size}_a={a_value:.2f}_GCP_removal.png",
     )
 
     factual_result_fig_path = os.path.join(
-        result_dir,
+        conformal_result_dir,
         (
             f"{dataset_name}_{effective_query_size}_"
             f"a={a_value:.2f}_factual_correctness.png"
@@ -368,7 +379,7 @@ def main():
     )
 
     group_factual_result_fig_path = os.path.join(
-        result_dir,
+        conformal_result_dir,
         (
             f"group_{dataset_name}_{effective_query_size}_"
             f"a={a_value:.2f}_factual_correctness.png"
@@ -376,12 +387,12 @@ def main():
     )
 
     result_path = os.path.join(
-        result_dir,
+        conformal_result_dir,
         f"{dataset_name}_{effective_query_size}_a={a_value:.2f}.csv",
     )
 
     group_result_path = os.path.join(
-        result_dir,
+        conformal_result_dir,
         f"group_{dataset_name}_{effective_query_size}_a={a_value:.2f}.csv",
     )
 
@@ -538,19 +549,23 @@ def main():
 
     logging.info(f"Subclaims processed and saved to {subclaims_path}")
 
+    conformal_data = copy.deepcopy(subclaim_with_annotation_data)
+
     # calibration and conformal prediction results
     if split_conformal:
         logging.info("Running split conformal prediction")
-        conformal = SplitConformalCalibration(
+        conformal = create_split_conformal_calibration(
+            implementation=conformal_implementation,
             dataset_name=dataset_name,
             runs=runs,
             seed=seed,
         )
+
         logging.info(
             f"Plotting conformal removal with alphas: {conformal_alphas}, a={a_value}"
         )
         conformal.plot_conformal_removal(
-            data=subclaim_with_annotation_data,
+            data=conformal_data,
             alphas=conformal_alphas,
             a=a_value,
             fig_filename=CP_result_fig_path,
@@ -560,7 +575,7 @@ def main():
 
         logging.info("Plotting factual removal")
         conformal.plot_factual_removal(
-            data=subclaim_with_annotation_data,
+            data=conformal_data,
             alphas=conformal_alphas,
             a=a_value,
             fig_filename=factual_result_fig_path,
@@ -571,9 +586,10 @@ def main():
 
     if group_conditional_conformal:
         logging.info("Running group conditional conformal prediction")
-        conformal = GroupConditionalConformal(
+        conformal = create_group_conditional_calibration(
+            implementation=conformal_implementation,
             dataset_name=dataset_name,
-            result_dir=result_dir,
+            result_dir=conformal_result_dir,
             runs=runs,
             seed=seed,
         )
@@ -581,7 +597,7 @@ def main():
             f"Plotting conformal removal with alphas: {conformal_alphas}, a={a_value}"
         )
         conformal.plot_conformal_removal(
-            data=subclaim_with_annotation_data,
+            data=conformal_data,
             alphas=conformal_alphas,
             a=a_value,
             fig_filename=GCP_result_fig_path,
@@ -591,7 +607,7 @@ def main():
 
         logging.info("Plotting factual removal")
         conformal.plot_factual_removal(
-            data=subclaim_with_annotation_data,
+            data=conformal_data,
             alphas=conformal_alphas,
             a=a_value,
             fig_filename=group_factual_result_fig_path,
