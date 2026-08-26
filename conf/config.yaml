@@ -44,6 +44,11 @@ retrieval:
       max_chars_per_document: 1200
 
 
+# Conformal implementation
+conformal:
+  implementation: "aimal"
+
+
 # Prediction configuration
 conformal_prediction:
   aggregation_strategy: "max"
