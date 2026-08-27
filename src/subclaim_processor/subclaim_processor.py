@@ -6,9 +6,11 @@ import logging
 from tqdm import tqdm
 from jsonschema import validate
 from src.subclaim_processor.query_processor import IQueryProcessor
-from src.common.llm.openai_rag_agent import OpenAIRAGAgent
-from src.common.llm.openai_atomicfact_generator import OpenAIAtomicFactGenerator
-from src.common.llm.openai_claim_verification import OpenAIClaimVerification
+from src.common.llm.llm_factory import (
+    create_atomic_fact_generator,
+    create_claim_verifier,
+    create_rag_agent,
+)
 from src.subclaim_processor.scorer.base_scorer import IScorer
 from src.subclaim_processor.scorer.document_scorer import IDocumentScorer
 from src.calibration.utils import load_subclaim_data
@@ -57,11 +59,23 @@ class SubclaimProcessor(IQueryProcessor):
         scorer: IScorer,
         subclaims_file: str,
         seed: int = 42,
+        response_provider: str = "openai",
+        fact_generation_provider: str = "openai",
+        claim_verification_provider: str = "openai",
     ):
         self.retriever = retriever
-        self.response_agent = OpenAIRAGAgent(model=response_model)
-        self.generator = OpenAIAtomicFactGenerator(model=fact_generation_model)
-        self.verifier = OpenAIClaimVerification(model=claim_verification_model)
+        self.response_agent = create_rag_agent(
+            provider=response_provider,
+            model=response_model,
+        )
+        self.generator = create_atomic_fact_generator(
+            provider=fact_generation_provider,
+            model=fact_generation_model,
+        )
+        self.verifier = create_claim_verifier(
+            provider=claim_verification_provider,
+            model=claim_verification_model,
+        )
         print(f"claim_verification_model: {claim_verification_model}")
 
         self.scorer = scorer
@@ -361,9 +375,14 @@ def process_subclaims(
 
     models_config = config["models"]
 
+    response_provider = models_config["generator"]["provider"]
     response_model = models_config["generator"]["name"]
     response_temperature = models_config["generator"]["temperature"]
+
+    fact_generation_provider = models_config["claim_decomposer"]["provider"]
     fact_generation_model = models_config["claim_decomposer"]["name"]
+
+    claim_verification_provider = models_config["claim_verifier"]["provider"]
     claim_verification_model = models_config["claim_verifier"]["name"]
 
     conformal_config = config["conformal"]
@@ -428,6 +447,9 @@ def process_subclaims(
         scorer,
         subclaims_path,
         seed=seed,
+        response_provider=response_provider,
+        fact_generation_provider=fact_generation_provider,
+        claim_verification_provider=claim_verification_provider,
     )
 
     # Generate subclaims if data doesn't exist
