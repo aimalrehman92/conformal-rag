@@ -528,3 +528,55 @@ class AuthorSplitConformalCalibration(ICalibration):
         )
 
         return ax
+
+    def _evaluate_factual_correctness(
+        self,
+        data: list,
+        threshold: float,
+        a: float,
+        confidence_method: str,
+    ):
+        """
+        Evaluates the factual correctness of subclaims within the provided data.
+        This function processes a list of data entries, each containing subclaims with similarity scores.
+        It calculates the percentage of correctly retained subclaims based on a given threshold and
+        compares it to a specified accuracy level `a`.
+        Args:
+            data (list): A list of dictionaries, where each dictionary represents an entry containing subclaims.
+            threshold (float): The similarity score threshold above which subclaims are considered retained.
+            a (float): The accuracy level to compare the correctly retained percentage against.
+        Returns:
+            float: The percentage of entries in the data that satisfy the correct level of accuracy `a`.
+        """
+
+        correctly_retained = []
+
+        for entry in data:
+            retained_cnt = 0
+            correctly_retained_count = 0
+
+            for subclaim in entry["subclaims"]:
+                score = subclaim["scores"][confidence_method]
+                noise = subclaim["scores"]["noise"]
+
+                if score + noise >= threshold:
+                    retained_cnt += 1
+
+                    if (
+                        subclaim.get("annotations", {}).get("gpt", "")
+                        in CORRECT_ANNOTATIONS
+                    ):
+                        correctly_retained_count += 1
+
+            correctly_retained_percentage = (
+                correctly_retained_count / retained_cnt if retained_cnt > 0 else 1
+            )
+
+            correctly_retained.append(correctly_retained_percentage)
+
+        correctness_list = [
+            correctly_retained_percentage >= a
+            for correctly_retained_percentage in correctly_retained
+        ]
+
+        return sum(correctness_list) / len(correctness_list)
