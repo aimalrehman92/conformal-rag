@@ -145,6 +145,7 @@ def main():
 
     delete_existing_index = index_config["delete_existing"]
     embedding_model = models_config["embedding"]["name"]
+    frequency_provider = models_config["frequency_scorer"]["provider"]
     frequency_model = models_config["frequency_scorer"]["name"]
     index_truncation_config = index_config["truncation_config"]
 
@@ -534,9 +535,14 @@ def main():
         frequency_model=frequency_model,
         index_path=index_file_path,
         indice2fm_path=indice2fm_path,
+        frequency_provider=frequency_provider,
     )
 
-    logging.info(f"Using frequency scoring model: {frequency_model}")
+    logging.info(
+        "Using frequency scoring provider/model: %s/%s",
+        frequency_provider,
+        frequency_model,
+    )
     logging.info(f"Processing subclaims and generating scores")
 
     subclaim_with_annotation_data = process_subclaims(
