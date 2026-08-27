@@ -1,6 +1,7 @@
 from typing import Optional, Union
 
 from src.common.faiss_manager import FAISSIndexManager
+from src.common.huggingface_query_rewriter import HuggingFaceQueryRewriter
 from src.common.multi_hop_retriever import MultiHopRetriever
 from src.common.openai_query_rewriter import OpenAIQueryRewriter
 from src.common.query_rewriter import QueryRewriter
@@ -32,7 +33,7 @@ def create_retriever(
             Configuration for multi-hop retrieval.
         query_rewriter:
             Optional preconstructed query rewriter. This is useful for
-            testing or for injecting a non-OpenAI implementation.
+            testing or for injecting a custom implementation.
 
     Returns:
         Configured Retriever implementation.
@@ -89,10 +90,29 @@ def create_retriever(
                         1200,
                     ),
                 )
+            elif provider == "huggingface":
+                query_rewriter = HuggingFaceQueryRewriter(
+                    model=rewriter_config.get(
+                        "model",
+                        "meta-llama/Llama-3.1-8B-Instruct",
+                    ),
+                    temperature=rewriter_config.get(
+                        "temperature",
+                        0.0,
+                    ),
+                    max_documents=rewriter_config.get(
+                        "max_documents",
+                        5,
+                    ),
+                    max_chars_per_document=rewriter_config.get(
+                        "max_chars_per_document",
+                        1200,
+                    ),
+                )
             else:
                 raise ValueError(
                     f"Unsupported query rewriter provider: '{provider}'. "
-                    "Currently supported providers are: openai."
+                    "Supported providers are: openai, huggingface."
                 )
 
         return MultiHopRetriever(
