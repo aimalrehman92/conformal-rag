@@ -73,16 +73,25 @@ class HuggingFaceRuntime:
             from transformers import AutoModelForCausalLM, AutoTokenizer
 
             if torch.cuda.is_available():
-                device = torch.device("cuda")
                 dtype = (
                     torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
                 )
+                load_kwargs = {
+                    "dtype": dtype,
+                    "device_map": "auto",
+                }
             elif torch.backends.mps.is_available():
                 device = torch.device("mps")
                 dtype = torch.float16
+                load_kwargs = {
+                    "dtype": dtype,
+                }
             else:
                 device = torch.device("cpu")
                 dtype = torch.float32
+                load_kwargs = {
+                    "dtype": dtype,
+                }
 
             tokenizer = AutoTokenizer.from_pretrained(self.model_name)
 
@@ -97,10 +106,14 @@ class HuggingFaceRuntime:
 
             model = AutoModelForCausalLM.from_pretrained(
                 self.model_name,
-                dtype=dtype,
+                **load_kwargs,
             )
-            model.to(device)
+
+            if not torch.cuda.is_available():
+                model.to(device)
+
             model.eval()
+            device = model.device
 
             if model.config.pad_token_id is None:
                 model.config.pad_token_id = tokenizer.pad_token_id
@@ -194,7 +207,6 @@ class HuggingFaceRuntime:
             "do_sample": do_sample,
             "num_return_sequences": n_samples,
             "pad_token_id": self._tokenizer.pad_token_id,
-            "eos_token_id": self._tokenizer.eos_token_id,
             "return_dict_in_generate": True,
             "output_scores": return_token_probabilities,
         }
@@ -209,12 +221,22 @@ class HuggingFaceRuntime:
             )
 
         generations = []
+        eos_token_ids = self._model.generation_config.eos_token_id
+
+        if eos_token_ids is None:
+            eos_token_ids = self._tokenizer.eos_token_id
+
+        if eos_token_ids is None:
+            eos_token_ids = []
+        elif isinstance(eos_token_ids, int):
+            eos_token_ids = [eos_token_ids]
+
         special_token_ids = {
             token_id
-            for token_id in (
+            for token_id in [
                 self._tokenizer.pad_token_id,
-                self._tokenizer.eos_token_id,
-            )
+                *eos_token_ids,
+            ]
             if token_id is not None
         }
 
