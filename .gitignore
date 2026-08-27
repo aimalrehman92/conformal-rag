@@ -49,6 +49,7 @@ dist/
 # Generated retrieval indexes and runtime logs
 index_store/
 logs/
+data/result/
 
 # Generated sampled dataset subsets
 data/processed/*/sampled_*
