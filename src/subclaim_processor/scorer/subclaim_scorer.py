@@ -1,5 +1,9 @@
 from openai import OpenAI
 from typing import List, Callable, Dict
+
+from src.common.llm.huggingface_frequency_judge import (
+    HuggingFaceFrequencyJudge,
+)
 from langchain.schema import Document
 from sklearn.metrics.pairwise import cosine_similarity
 from src.common.faiss_manager import FAISSIndexManager
@@ -32,9 +36,22 @@ class SubclaimScorer(IDocumentScorer):
         frequency_model="gpt-4o-mini",
         index_path="index_store/index.faiss",
         indice2fm_path="index_store/indice2fm.json",
+        frequency_provider="openai",
     ):
         self.embedding_model = embedding_model
         self.frequency_model = frequency_model
+
+        if not isinstance(frequency_provider, str) or not frequency_provider.strip():
+            raise ValueError("frequency_provider must be a non-empty string.")
+
+        self.frequency_provider = frequency_provider.strip().lower()
+
+        if self.frequency_provider not in {"openai", "huggingface"}:
+            raise ValueError(
+                "Unknown frequency scorer provider: "
+                f"{frequency_provider!r}. Supported providers are: "
+                "['huggingface', 'openai']."
+            )
 
         self.faiss_manager = FAISSIndexManager(
             index_truncation_config=index_truncation_config,
@@ -43,8 +60,13 @@ class SubclaimScorer(IDocumentScorer):
             indice2fm_path=indice2fm_path,
         )
 
-        # Create the OpenAI client lazily only if frequency scoring is used.
+        # Create provider-specific frequency judging resources lazily.
         self.openai_client = None
+        self.frequency_judge = (
+            HuggingFaceFrequencyJudge(model=frequency_model)
+            if self.frequency_provider == "huggingface"
+            else None
+        )
 
     def _get_openai_client(self):
         """
@@ -157,6 +179,15 @@ class SubclaimScorer(IDocumentScorer):
         scores = []
 
         for response in alternative_responses:
+            if self.frequency_provider == "huggingface":
+                scores.append(
+                    self.frequency_judge.score(
+                        claim=subclaim,
+                        text=response,
+                    )
+                )
+                continue
+
             counting_prompt = (
                 "You will get a claim and piece of text. "
                 "Score whether the text supports, contradicts, or is unrelated "
