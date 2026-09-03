@@ -12,6 +12,7 @@ from src.dataloader.dataloader import DataLoader
 from src.data_processor.query_processor import QueryProcessor
 from src.common.file_manager import FileManager
 from src.common.faiss_manager import FAISSIndexManager
+from src.common.embedding_factory import create_embedding_provider
 from src.common.retriever_factory import create_retriever
 from src.subclaim_processor.scorer.subclaim_scorer import SubclaimScorer
 from src.subclaim_processor.subclaim_processor import process_subclaims
@@ -144,6 +145,7 @@ def main():
     wiki_db_file = dataset_runtime_config["wiki_db_file"] if requires_wiki_db else None
 
     delete_existing_index = index_config["delete_existing"]
+    embedding_provider_name = models_config["embedding"]["provider"]
     embedding_model = models_config["embedding"]["name"]
     frequency_provider = models_config["frequency_scorer"]["provider"]
     frequency_model = models_config["frequency_scorer"]["name"]
@@ -455,10 +457,21 @@ def main():
         f"indice2fm_{index_fingerprint}.json",
     )
 
-    logging.info(f"Setting up FAISS index manager")
+    logging.info(
+        "Using embedding provider/model: %s/%s",
+        embedding_provider_name,
+        embedding_model,
+    )
+    embedding_provider = create_embedding_provider(
+        provider=embedding_provider_name,
+        model_name=embedding_model,
+    )
+
+    logging.info("Setting up FAISS index manager")
     faiss_manager = FAISSIndexManager(
         index_truncation_config=index_truncation_config,
         embedding_model=embedding_model,
+        embedding_provider=embedding_provider,
         index_path=index_file_path,
         indice2fm_path=indice2fm_path,
     )
@@ -536,6 +549,7 @@ def main():
         index_path=index_file_path,
         indice2fm_path=indice2fm_path,
         frequency_provider=frequency_provider,
+        embedding_provider=embedding_provider,
     )
 
     logging.info(

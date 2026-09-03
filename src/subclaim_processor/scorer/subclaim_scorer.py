@@ -1,5 +1,5 @@
 from openai import OpenAI
-from typing import List, Callable, Dict
+from typing import List, Callable, Dict, Optional
 
 from src.common.llm.huggingface_frequency_judge import (
     HuggingFaceFrequencyJudge,
@@ -7,6 +7,7 @@ from src.common.llm.huggingface_frequency_judge import (
 from langchain.schema import Document
 from sklearn.metrics.pairwise import cosine_similarity
 from src.common.faiss_manager import FAISSIndexManager
+from src.common.embedding_provider import EmbeddingProvider
 from src.subclaim_processor.scorer.document_scorer import IDocumentScorer
 from src.subclaim_processor.strategies.aggregation import (
     AggregationStrategy,
@@ -37,6 +38,7 @@ class SubclaimScorer(IDocumentScorer):
         index_path="index_store/index.faiss",
         indice2fm_path="index_store/indice2fm.json",
         frequency_provider="openai",
+        embedding_provider: Optional[EmbeddingProvider] = None,
     ):
         self.embedding_model = embedding_model
         self.frequency_model = frequency_model
@@ -56,6 +58,7 @@ class SubclaimScorer(IDocumentScorer):
         self.faiss_manager = FAISSIndexManager(
             index_truncation_config=index_truncation_config,
             embedding_model=embedding_model,
+            embedding_provider=embedding_provider,
             index_path=index_path,
             indice2fm_path=indice2fm_path,
         )
