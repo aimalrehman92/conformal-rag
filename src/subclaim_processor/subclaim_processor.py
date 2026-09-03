@@ -479,6 +479,29 @@ def process_subclaims(
 
     processed_data = load_subclaim_data(subclaims_path)
 
+    # Never allow a failed decomposition to silently enter
+    # conformal calibration.
+    empty_subclaim_entries = [
+        (entry_index, entry.get("query", ""))
+        for entry_index, entry in enumerate(processed_data)
+        if not entry.get("subclaims")
+    ]
+
+    if empty_subclaim_entries:
+        preview = ", ".join(
+            f"entry {entry_index}: {query!r}"
+            for entry_index, query
+            in empty_subclaim_entries[:5]
+        )
+
+        raise ValueError(
+            "Subclaim processing completed with zero parsed "
+            "subclaims for "
+            f"{len(empty_subclaim_entries)} entrie(s). "
+            f"Examples: {preview}"
+        )
+
+
     invalid_annotations = [
         (
             entry_index,

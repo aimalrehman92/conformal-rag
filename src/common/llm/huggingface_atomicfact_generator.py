@@ -223,6 +223,13 @@ class HuggingFaceAtomicFactGenerator:
         )
 
         result = string_utils.extract_array_result(response)
+
+        # Llama occasionally omits the requested outer square
+        # brackets while still returning correctly semicolon-
+        # delimited claims. Fall back to parsing the raw response.
+        if result == "[]" and response.strip():
+            result = response
+
         subclaims = string_utils.extract_string_array(result)
 
         if len(subclaims) != len(subclaim_token_probabilities):
