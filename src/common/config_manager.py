@@ -389,12 +389,15 @@ class ConfigManager:
             logging.info(f"Dataset: {self.config['dataset']['name']}")
             logging.info(f"Query size: {self.config['dataset']['query_size']}")
 
-        # Log index info
-        if "index" in self.config:
-            logging.info(f"Embedding model: {self.config['index']['embedding_model']}")
-            logging.info(
-                f"Delete existing index: {self.config['index']['delete_existing']}"
-            )
+        # Log normalized index info so both legacy and research
+        # configuration formats are handled consistently.
+        index_config = self.normalized_config.get("index", {})
+        logging.info(
+            f"Embedding model: {index_config.get('embedding_model')}"
+        )
+        logging.info(
+            f"Delete existing index: {index_config.get('delete_existing')}"
+        )
 
         logging.info("========================")
 

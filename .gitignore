@@ -59,3 +59,6 @@ data/processed/MedLFQA/medlf_qa_queries.json
 
 # Generated pipeline outputs
 data/out/*/*_subclaims_with_scores_*.json
+
+# Large external Wikipedia database
+data/raw/WikiDB/
